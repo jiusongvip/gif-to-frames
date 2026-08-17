@@ -1,0 +1,75 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'What GIF frame metadata can I inspect?',
+    a: 'You can inspect frame number, delay, dimensions, offset, disposal type, and transparency state for every decoded frame.',
+  },
+  {
+    q: 'How do I export frame metadata?',
+    a: 'Load a GIF, then use Metadata JSON or Metadata CSV to download a structured report.',
+  },
+  {
+    q: 'Why is disposal important?',
+    a: 'Disposal controls how a decoder treats the previous frame before drawing the next one, which matters for transparency and partial-frame animations.',
+  },
+  {
+    q: 'What is frame delay?',
+    a: 'Frame delay is how long each frame stays visible before the animation moves to the next frame. It is measured in milliseconds.',
+  },
+  {
+    q: 'What do offset X and offset Y mean?',
+    a: 'GIF frames can be smaller than the full canvas and positioned at an offset. Offset X and offset Y show where that frame is placed.',
+  },
+  {
+    q: 'Can I export metadata for every frame at once?',
+    a: 'Yes. Metadata JSON or CSV exports include a row or object for every decoded frame.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-png-frames', label: 'GIF to PNG Frames', description: 'Export lossless frames with transparency.' },
+  { href: '/gif-to-zip-frames', label: 'GIF to ZIP Frames', description: 'Package selected frames into an organized archive.' },
+  { href: '/frames-to-gif', label: 'Frames to GIF', description: 'Use the inspected frames to rebuild a new animation.' },
+];
+---
+
+<ToolLanding
+  title="GIF Frame Metadata: Inspect and Export JSON or CSV Online"
+  description="Inspect GIF frame delay, dimensions, offset, disposal, and transparency online. Export frame metadata as JSON or CSV locally."
+  h1="GIF Frame Metadata"
+  lead="Inspect delay, dimensions, offset, disposal, and transparency for every GIF frame, then export the metadata as JSON or CSV."
+  formats={['png', 'jpg', 'webp']}
+  defaultFormat="png"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF to inspect its frame timing, dimensions, disposal, and transparency metadata."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'Understand what is inside the GIF',
+      body: [
+        'Animated GIFs store more than images. Each frame has a delay, dimensions, offset, disposal method, and optional transparency.',
+        'Exporting that metadata as JSON or CSV is useful for QA, debugging animation timing, and rebuilding a GIF accurately in another tool.',
+      ],
+    },
+    {
+      heading: 'Plain-language field guide',
+      body: [
+        'Delay is how long a frame stays visible. Offset is where a smaller frame is placed on the full canvas. Disposal controls what happens to the previous frame before drawing the next one.',
+        'Transparency indicates whether a frame contains alpha information. Checking these values before export helps catch timing or compositing mistakes.',
+      ],
+    },
+    {
+      heading: 'Use metadata for QA',
+      body: [
+        'Export CSV to compare frames in a spreadsheet, or JSON for scripts and build pipelines. This is useful when documenting animation issues or checking a sequence before shipping.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

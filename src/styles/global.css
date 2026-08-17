@@ -1,0 +1,88 @@
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-accent: #0f766e;
+  --color-accent-strong: #115e59;
+  --color-accent-soft: #ecfdf5;
+  --color-canvas: #f8faf9;
+  --color-ink: #111715;
+  --color-ink-muted: #56635f;
+  --color-line: #dce4e1;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 34rem),
+    var(--color-canvas);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #f8faf9;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+input[type="range"] {
+  accent-color: var(--color-accent);
+}
+
+details > summary {
+  cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(45, 212, 191, 0.10), transparent 34rem),
+      #0f1714;
+  }
+}

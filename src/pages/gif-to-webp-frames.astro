@@ -1,0 +1,70 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'How do I convert a GIF to WebP frames?',
+    a: 'Upload the GIF, select the frames you need, choose WebP, and download them as individual images or a ZIP archive.',
+  },
+  {
+    q: 'Does WebP keep transparency?',
+    a: 'Yes. WebP supports transparency and produces modern compressed frames for web use.',
+  },
+  {
+    q: 'Why choose WebP over PNG?',
+    a: 'WebP usually produces smaller files than PNG while keeping transparency, making it a good choice for web and app assets.',
+  },
+  {
+    q: 'Can I adjust WebP quality?',
+    a: 'Yes. Use the Quality slider to balance file size and detail for each export.',
+  },
+  {
+    q: 'Can I export a full image sequence as WebP?',
+    a: 'Yes. Select all frames or a custom range, then download them as a ZIP archive.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-png-frames', label: 'GIF to PNG Frames', description: 'Choose lossless PNG when compatibility is more important.' },
+  { href: '/gif-to-jpg-frames', label: 'GIF to JPG Frames', description: 'Create smaller flattened frames for quick sharing.' },
+  { href: '/gif-to-zip-frames', label: 'GIF to ZIP Frames', description: 'Package selected frames into one organized archive.' },
+];
+---
+
+<ToolLanding
+  title="GIF to WebP Frames: Convert Animated GIF to WebP Online"
+  description="Convert an animated GIF to WebP frames online. Extract selected frames as modern compressed images and download them locally as WebP or ZIP."
+  h1="GIF to WebP Frames"
+  lead="Convert an animated GIF into modern WebP frames. Preview the animation, select a range, and download compressed frames with transparency."
+  formats={['webp']}
+  defaultFormat="webp"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF, paste it, or load from a URL. WebP creates modern compressed frames."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'Why choose WebP frames',
+      body: [
+        'WebP offers a modern balance of quality and file size while preserving transparency. It is well suited for websites, apps, and content workflows.',
+        'Use the scale control and custom naming fields to prepare a clean image sequence for your project.',
+      ],
+    },
+    {
+      heading: 'WebP for modern web assets',
+      body: [
+        'WebP is designed for efficient web delivery. Use it when your target platform supports WebP and you want smaller files than PNG without losing transparency.',
+      ],
+    },
+    {
+      heading: 'Quality and sequence workflow',
+      body: [
+        'Adjust quality for each export, choose a frame range, and use numbered file names so the sequence stays ordered when imported into another tool.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

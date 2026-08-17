@@ -1,0 +1,170 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import GifFrameTool from '../components/GifFrameTool.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  lead: string;
+  formats?: ('png' | 'jpg' | 'webp')[];
+  defaultFormat?: 'png' | 'jpg' | 'webp';
+  accept?: string;
+  uploadTitle?: string;
+  uploadHint?: string;
+  selectLabel?: string;
+  sampleLabel?: string;
+  urlPlaceholder?: string;
+  intro?: { heading: string; body: string[] }[];
+  faq?: { q: string; a: string }[];
+  related?: { href: string; label: string; description: string }[];
+}
+
+const {
+  title,
+  description,
+  h1,
+  lead,
+  formats = ['png', 'jpg', 'webp'],
+  defaultFormat = 'png',
+  accept = 'image/gif,.gif',
+  uploadTitle,
+  uploadHint,
+  selectLabel,
+  sampleLabel,
+  urlPlaceholder,
+  intro = [],
+  faq = [],
+  related = [],
+} = Astro.props;
+
+const absoluteOgImage = new URL('/demo/frame-01.png', Astro.site).href;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebApplication',
+      name: title,
+      url: pageUrl,
+      applicationCategory: 'MultimediaApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires JavaScript',
+      inLanguage: 'en',
+      image: absoluteOgImage,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+    {
+      '@type': 'HowTo',
+      name: `How to use ${h1}`,
+      image: absoluteOgImage,
+      totalTime: 'PT1M',
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Open a GIF', text: 'Upload a GIF file, paste it from the clipboard, or load it from a URL.' },
+        { '@type': 'HowToStep', position: 2, name: 'Select frames', text: 'Choose all frames, a range, or every Nth frame in the filmstrip.' },
+        { '@type': 'HowToStep', position: 3, name: 'Export frames', text: `Choose ${formats.map((format) => format.toUpperCase()).join(', ')} and download the selected frames.` },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'GIF to Frames', item: 'https://gif-to-frames.com/' },
+        { '@type': 'ListItem', position: 2, name: h1, item: pageUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a,
+        },
+      })),
+    },
+  ],
+});
+---
+
+<BaseLayout title={title} description={description} ogImage="/demo/frame-01.png" schema={schema}>
+  <GifFrameTool
+    h1={h1}
+    lead={lead}
+    formats={formats}
+    defaultFormat={defaultFormat}
+    accept={accept}
+    showSchema={false}
+    uploadTitle={uploadTitle}
+    uploadHint={uploadHint}
+    selectLabel={selectLabel}
+    sampleLabel={sampleLabel}
+    urlPlaceholder={urlPlaceholder}
+  />
+
+  {
+    intro.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+        <div class="max-w-4xl space-y-12">
+          {intro.map((section) => (
+            <article>
+              <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">{section.heading}</h2>
+              <div class="mt-5 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+                {section.body.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    faq.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Frequently asked questions</h2>
+          <div class="mt-8 divide-y divide-line rounded-md border border-line bg-canvas/70 dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
+            {faq.map((item) => (
+              <details class="group px-5 py-4">
+                <summary class="flex list-none items-center justify-between gap-4 text-left text-sm font-medium text-ink dark:text-white">
+                  {item.q}
+                  <span class="shrink-0 text-ink-muted transition-transform group-open:rotate-45 dark:text-emerald-50/50">
+                    <Icon name="tabler:plus" class="h-4 w-4" />
+                  </span>
+                </summary>
+                <p class="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    related.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Related tools</h2>
+          <div class="mt-8 grid gap-3 sm:grid-cols-2">
+            {related.map((link) => (
+              <a href={link.href} class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+                <span class="text-sm font-semibold text-ink dark:text-white">{link.label}</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-muted dark:text-emerald-50/55">{link.description}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

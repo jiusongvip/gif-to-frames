@@ -1,0 +1,72 @@
+# GIF to Frames
+
+GIF to Frames is a free browser-based tool for splitting animated GIFs into individual image frames. The tool also handles animated WebP and APNG in supporting browsers, and can rebuild a sequence of images into an animated GIF.
+
+All decoding, previewing, selection, and export work happens locally in the user's browser. Source files are not uploaded to a server.
+
+## Primary workflow
+
+1. Open an animated GIF by uploading a file, pasting it, or loading it from a URL.
+2. Preview the decoded frames, playback speed, dimensions, duration, and per-frame delay.
+3. Select all frames, a range, the first frame, the last frame, or every Nth frame.
+4. Export the selected frames as PNG, JPG, or WebP, or download them as a ZIP archive.
+
+## Input formats
+
+- Animated GIF
+- Animated WebP
+- APNG
+- Static PNG input is accepted for the Frames to GIF tool
+
+## Output formats
+
+- PNG: lossless, supports transparency, best for design, sprites, UI, and video editing
+- JPG: smaller flattened images, best for sharing, slides, and previews
+- WebP: modern compressed output, supports transparency
+- ZIP: selected frames packaged with predictable file names
+- JSON: frame metadata export
+- CSV: frame metadata export
+- GIF: reverse selected frames or combine images into a new animated GIF
+- Sprite sheet: selected frames arranged into one PNG
+
+## Frame metadata
+
+The tool exposes these fields for every decoded frame:
+
+- Frame number
+- Delay in milliseconds
+- Width and height
+- Offset X and offset Y
+- Disposal type and human-readable disposal label
+- Transparency state
+
+Metadata can be downloaded as JSON or CSV.
+
+## Extraction controls
+
+- Play or pause frame preview
+- Playback speed: 0.25x, 0.5x, 1x, or 2x
+- Start frame and end frame range
+- Every Nth frame
+- First frame, last frame, transparent frames, duplicate frames
+- Invert or clear selection
+- Scale, rotation, and mirroring
+- Custom file naming with index and source placeholders
+- Quality control for JPG and WebP
+
+## Reverse and rebuild
+
+Selected frames can be reversed into a new animated GIF. The Frames to GIF tool can combine PNG, JPG, or WebP images into an animated GIF with configurable delay, loop count, scale, and transparency.
+
+## Privacy
+
+The upload, decoding, previewing, selection, and export flow runs in the user's browser. Files are not uploaded. No account, watermark, or installation is required. The uploader accepts files up to 100 MB.
+
+## Use cases
+
+- Design reference and asset extraction
+- Video and motion sequences for After Effects, Premiere, and CapCut
+- Game and UI animation frames
+- Sprite sheet creation
+- Content and social media cover images
+- QA and animation inspection

@@ -1,0 +1,1599 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  h1?: string;
+  lead?: string;
+  formats?: ('png' | 'jpg' | 'webp')[];
+  defaultFormat?: 'png' | 'jpg' | 'webp';
+  initialSelection?: 'all' | 'first' | 'last' | 'none';
+  accept?: string;
+  showSchema?: boolean;
+  uploadTitle?: string;
+  uploadHint?: string;
+  selectLabel?: string;
+  sampleLabel?: string;
+  urlPlaceholder?: string;
+}
+
+const {
+  h1 = 'GIF to Frames Extractor',
+  lead = 'Split any animated GIF into individual images. Preview every frame, select a range or every Nth frame, then export PNG, JPG, or WebP as a ZIP.',
+  formats = ['png', 'jpg', 'webp'],
+  defaultFormat = 'png',
+  initialSelection = 'all',
+  accept = 'image/gif,.gif',
+  showSchema = false,
+  uploadTitle = 'Drop your GIFs here',
+  uploadHint = 'Click to browse for one or more GIFs, paste from clipboard, or use a remote URL.',
+  selectLabel = 'Select GIFs',
+  sampleLabel = 'Try sample GIF',
+  urlPlaceholder = 'Paste a GIF URL',
+} = Astro.props;
+
+const formatOptions = formats.length ? formats : ['png'];
+const lockedFormat = formatOptions.length === 1;
+const toolSchema = showSchema
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: h1,
+      url: `https://gif-to-frames.com/${Astro.url.pathname.replace(/^\/|\/$/g, '')}`,
+      applicationCategory: 'MultimediaApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires JavaScript',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      featureList: [
+        'Extract animation frames locally in the browser',
+        'Preview frames, delay, dimensions, and metadata',
+        'Select all frames, a range, or every Nth frame',
+        `Export ${formatOptions.map((format) => format.toUpperCase()).join(', ')} frames`,
+        'Download selected frames as ZIP',
+        'Rebuild selected frames into a GIF',
+      ],
+    })
+  : '';
+---
+
+<section id="tool" class="mx-auto max-w-[1400px] px-4 pb-20 pt-10 sm:px-6 lg:pt-14">
+  {showSchema && <script type="application/ld+json" set:html={toolSchema} />}
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+    <div class="max-w-3xl">
+      <div class="mb-5 flex flex-wrap items-center gap-2 text-xs font-medium">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-emerald-300/20 dark:bg-emerald-300/10 dark:text-emerald-200">
+          <Icon name="tabler:shield-check" class="h-3.5 w-3.5" />
+          Local processing
+        </span>
+        <span class="text-ink-muted dark:text-emerald-50/55">No upload. No watermark.</span>
+      </div>
+      <h1 class="max-w-[24ch] text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl dark:text-white">
+        {h1}
+      </h1>
+      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-emerald-50/65">
+        {lead}
+      </p>
+    </div>
+
+    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-emerald-50/60">
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Input</span>
+        <p class="mt-1 font-medium text-ink dark:text-white">GIF files, clipboard, URL</p>
+      </div>
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Output</span>
+        <p class="mt-1 font-medium text-ink dark:text-white">PNG, JPG, WebP, ZIP</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <input id="file-input" type="file" accept={accept} multiple class="hidden" />
+
+    <div id="upload-state" class="rounded-lg border border-dashed border-line bg-canvas/70 px-5 py-14 text-center dark:border-white/15 dark:bg-white/5">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+        <Icon name="tabler:upload" class="h-6 w-6" />
+      </div>
+      <p class="mt-5 text-lg font-semibold text-ink dark:text-white">{uploadTitle}</p>
+      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+        {uploadHint}
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button id="select-btn" type="button" class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
+          <Icon name="tabler:file" class="h-4 w-4" />
+          {selectLabel}
+        </button>
+        <button id="demo-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          {sampleLabel}
+        </button>
+      </div>
+      <div class="mx-auto mt-5 flex max-w-sm items-center gap-2" role="search">
+        <input id="url-input" type="url" inputmode="url" aria-label="GIF URL" placeholder={urlPlaceholder} class="min-w-0 flex-1 rounded-md border border-line bg-canvas px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/55 focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-emerald-50/35" />
+        <button id="url-load-btn" type="button" class="rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          Load
+        </button>
+      </div>
+    </div>
+
+    <div id="progress-state" class="mt-4 hidden">
+      <div class="h-1.5 overflow-hidden rounded-full bg-line dark:bg-white/10">
+        <div id="progress-fill" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300 ease-out"></div>
+      </div>
+      <p id="progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-emerald-50/55"></p>
+    </div>
+
+    <div id="tool-state" tabindex="-1" class="mt-4 hidden">
+      <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div id="job-tabs" class="flex min-w-0 flex-1 flex-wrap gap-2"></div>
+        <button id="download-all-zip" type="button" class="hidden inline-flex shrink-0 items-center justify-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          <Icon name="tabler:folders" class="h-4 w-4" />
+          All jobs ZIP
+        </button>
+      </div>
+
+      <div class="mb-4 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4 dark:border-white/10 dark:bg-white/10">
+        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frames</span>
+          <p id="stat-frames" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
+        </div>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Dimensions</span>
+          <p id="stat-size" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0 x 0</p>
+        </div>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Duration</span>
+          <p id="stat-duration" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0s</p>
+        </div>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Selected</span>
+          <p id="stat-selected" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
+        </div>
+      </div>
+
+      <div id="result-actions" class="sticky top-16 z-20 mb-4 rounded-md border border-line bg-canvas/95 px-3 py-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#0f1714]/95">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-2 text-xs text-ink-muted dark:text-emerald-50/60">
+            <span class="font-mono uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/45">Ready to export</span>
+            <span id="result-selected-summary" class="font-medium tabular-nums text-ink dark:text-white">0 selected</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="sticky-current" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:download" class="h-4 w-4" />
+              Current
+            </button>
+            <button id="sticky-zip" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md bg-accent px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40">
+              <Icon name="tabler:archive" class="h-4 w-4" />
+              All ZIP
+            </button>
+            <button id="sticky-json" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:json" class="h-4 w-4" />
+              Metadata JSON
+            </button>
+            <button id="sticky-gif" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:movie" class="h-4 w-4" />
+              Reverse GIF
+            </button>
+            <button id="sticky-sprite" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:grid-dots" class="h-4 w-4" />
+              Sprite sheet
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4 flex flex-wrap gap-2 text-xs">
+        <button id="quick-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">First frame</button>
+        <button id="quick-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Last frame</button>
+        <button id="quick-nth" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Every 2nd</button>
+        <button id="quick-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Transparent</button>
+        <button id="quick-all-zip" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">All ZIP</button>
+        <button id="quick-json" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Metadata JSON</button>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div id="export-settings" class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+          <div class="flex items-center justify-between border-b border-line px-4 py-3 dark:border-white/10">
+            <div>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame preview</span>
+              <p class="mt-1 text-sm font-medium text-ink dark:text-white">
+                Frame <span id="preview-index" class="tabular-nums">1</span>
+                <span class="text-ink-muted/60 dark:text-emerald-50/45">/</span>
+                <span id="preview-total" class="text-ink-muted dark:text-emerald-50/60">0</span>
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="preview-delay" class="rounded-md bg-accent-soft px-2.5 py-1 font-mono text-xs text-accent dark:bg-emerald-300/10 dark:text-emerald-200">0 ms</span>
+              <select id="playback-speed" aria-label="Playback speed" class="rounded-md border border-line bg-canvas px-2 py-1.5 text-xs text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                <option value="0.25">0.25×</option>
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+              </select>
+              <button id="playback-toggle" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+                <span id="playback-play-icon"><Icon name="tabler:player-play" class="h-4 w-4" /></span>
+                <span id="playback-pause-icon" class="hidden"><Icon name="tabler:player-pause" class="h-4 w-4" /></span>
+                <span id="playback-label">Play</span>
+              </button>
+            </div>
+          </div>
+          <div class="grid min-h-[320px] place-items-center bg-[linear-gradient(135deg,rgba(15,118,110,0.06)_25%,transparent_25%,transparent_50%,rgba(15,118,110,0.06)_50%,rgba(15,118,110,0.06)_75%,transparent_75%,transparent)] bg-[length:20px_20px] p-4 dark:bg-[linear-gradient(135deg,rgba(45,212,191,0.08)_25%,transparent_25%,transparent_50%,rgba(45,212,191,0.08)_50%,rgba(45,212,191,0.08)_75%,transparent_75%,transparent)] dark:bg-[length:20px_20px]">
+            <canvas id="preview-canvas" class="max-h-[70vh] max-w-full rounded-md" aria-label="Current GIF frame preview"></canvas>
+          </div>
+        </div>
+
+        <div class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+          <div class="border-b border-line px-4 py-3 dark:border-white/10">
+            <p class="text-sm font-semibold text-ink dark:text-white">Export settings</p>
+          </div>
+
+          <div class="space-y-5 p-4">
+            <div>
+              <label for="format-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Output format</label>
+              <select id="format-select" disabled={lockedFormat} class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                {formatOptions.map((format) => (
+                  <option value={format} selected={format === defaultFormat}>
+                    {format === 'png' ? 'PNG' : format === 'jpg' ? 'JPG' : 'WebP'}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label for="quality-range" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">
+                Quality <span id="quality-value" class="tabular-nums">90</span>
+              </label>
+              <input id="quality-range" type="range" min="50" max="100" value="90" class="w-full cursor-pointer" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="start-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Start frame</label>
+                <input id="start-frame" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+              </div>
+              <div>
+                <label for="end-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">End frame</label>
+                <input id="end-frame" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+              </div>
+            </div>
+
+            <div>
+              <label for="every-n" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Every Nth frame</label>
+              <input id="every-n" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+            </div>
+
+            <div>
+              <label for="scale-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Frame size</label>
+              <select id="scale-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                <option value="1">100%</option>
+                <option value="0.75">75%</option>
+                <option value="0.5">50%</option>
+                <option value="0.25">25%</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="rotate-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Rotate</label>
+                <select id="rotate-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                  <option value="0">0°</option>
+                  <option value="90">90°</option>
+                  <option value="180">180°</option>
+                  <option value="270">270°</option>
+                </select>
+              </div>
+              <div>
+                <label for="flip-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Flip</label>
+                <select id="flip-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                  <option value="none">None</option>
+                  <option value="horizontal">Horizontal</option>
+                  <option value="vertical">Vertical</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="flex items-start gap-3 rounded-md border border-line p-3 dark:border-white/15">
+              <input id="transparent-toggle" type="checkbox" checked class="mt-0.5 h-4 w-4 rounded border-line text-accent focus:ring-accent/30 dark:border-white/25 dark:bg-white/10" />
+              <span class="text-xs leading-relaxed text-ink-muted dark:text-emerald-50/60">
+                Keep transparent background where the GIF supports it.
+              </span>
+            </label>
+
+            <div>
+              <label for="naming-input" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">File naming</label>
+              <input id="naming-input" type="text" value={'frame-{index}'} spellcheck="false" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+              <p class="mt-2 text-xs leading-relaxed text-ink-muted dark:text-emerald-50/55">
+                Use <span class="font-mono text-accent">{'{index}'}</span> and <span class="font-mono text-accent">{'{source}'}</span> placeholders.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button id="download-zip" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40">
+                <Icon name="tabler:archive" class="h-4 w-4" />
+                Download ZIP
+              </button>
+              <button id="download-current" type="button" disabled class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+                <Icon name="tabler:download" class="h-4 w-4" />
+                Current
+              </button>
+              <button id="reset-btn" type="button" class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+                <Icon name="tabler:refresh" class="h-4 w-4" />
+                New GIF
+              </button>
+              <button id="download-gif" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+                <Icon name="tabler:movie" class="h-4 w-4" />
+                Reverse GIF
+              </button>
+              <button id="download-sprite" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+                <Icon name="tabler:grid-dots" class="h-4 w-4" />
+                Sprite sheet
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="metadata" class="mt-4 rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+        <div class="flex flex-col gap-3 border-b border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame metadata</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Delay, size, offset, disposal, and transparency per frame.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button id="export-json" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:json" class="h-4 w-4" />
+              JSON
+            </button>
+            <button id="export-csv" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <Icon name="tabler:file-spreadsheet" class="h-4 w-4" />
+              CSV
+            </button>
+          </div>
+        </div>
+        <div class="max-h-72 overflow-auto">
+          <table class="w-full min-w-[760px] border-collapse text-left text-xs">
+            <thead class="sticky top-0 z-10 bg-canvas text-ink-muted dark:bg-[#0f1714] dark:text-emerald-50/55">
+              <tr class="border-b border-line dark:border-white/10">
+                <th class="px-4 py-3 font-medium">Frame</th>
+                <th class="px-4 py-3 font-medium">Delay</th>
+                <th class="px-4 py-3 font-medium">Size</th>
+                <th class="px-4 py-3 font-medium">Offset</th>
+                <th class="px-4 py-3 font-medium">Disposal</th>
+                <th class="px-4 py-3 font-medium">Alpha</th>
+              </tr>
+            </thead>
+            <tbody id="metadata-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-4 rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+        <div class="flex flex-col gap-3 border-b border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Timeline</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Frame width reflects its delay.</p>
+          </div>
+        </div>
+        <div id="timeline" class="flex max-h-28 items-end gap-px overflow-x-auto p-3"></div>
+
+        <div class="flex flex-col gap-3 border-t border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Filmstrip</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Click a frame to select or deselect it.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button id="select-all" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Select all</button>
+            <button id="select-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">First frame</button>
+            <button id="select-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Last frame</button>
+            <button id="select-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Transparent</button>
+            <button id="select-duplicates" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Duplicates</button>
+            <button id="invert-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Invert</button>
+            <button id="clear-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Clear</button>
+          </div>
+        </div>
+        <div id="filmstrip" class="flex max-h-44 gap-3 overflow-x-auto p-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-emerald-50 dark:text-ink"></div>
+</section>
+
+<script define:vars={{ defaultFormat, initialSelection, accept, formats: formatOptions }}>
+  window.__gifFrameToolConfig = {
+    defaultFormat,
+    initialSelection,
+    accept,
+    formats,
+  };
+</script>
+
+<script>
+  import { parseGIF, decompressFrames } from 'gifuct-js';
+  import JSZip from 'jszip';
+  import { GIFEncoder, quantize, applyPalette } from 'gifenc';
+
+  const $ = (id) => document.getElementById(id);
+  const pageDefaultFormat = window.__gifFrameToolConfig?.defaultFormat || 'png';
+  const pageInitialSelection = window.__gifFrameToolConfig?.initialSelection || 'all';
+  const allowedFormats = Array.isArray(window.__gifFrameToolConfig?.formats) ? window.__gifFrameToolConfig.formats : ['png'];
+  const acceptedFileTokens = window.__gifFrameToolConfig?.accept || 'image/gif,.gif';
+
+  const uploadState = $('upload-state');
+  const toolState = $('tool-state');
+  const progressState = $('progress-state');
+  const progressFill = $('progress-fill');
+  const progressText = $('progress-text');
+  const fileInput = $('file-input');
+  const urlInput = $('url-input');
+  const previewCanvas = $('preview-canvas');
+  const filmstrip = $('filmstrip');
+  const toast = $('toast');
+
+  const qualityRange = $('quality-range');
+  const qualityValue = $('quality-value');
+  const formatSelect = $('format-select');
+  const scaleSelect = $('scale-select');
+  const rotateSelect = $('rotate-select');
+  const flipSelect = $('flip-select');
+  const startFrame = $('start-frame');
+  const endFrame = $('end-frame');
+  const everyN = $('every-n');
+  const transparentToggle = $('transparent-toggle');
+  const namingInput = $('naming-input');
+  const playbackToggle = $('playback-toggle');
+  const playbackSpeed = $('playback-speed');
+  const playbackLabel = $('playback-label');
+  const playbackPlayIcon = $('playback-play-icon');
+  const playbackPauseIcon = $('playback-pause-icon');
+  const downloadZip = $('download-zip');
+  const downloadCurrent = $('download-current');
+  const downloadAllZip = $('download-all-zip');
+  const downloadGif = $('download-gif');
+  const downloadSprite = $('download-sprite');
+  const stickyCurrent = $('sticky-current');
+  const stickyZip = $('sticky-zip');
+  const stickyJson = $('sticky-json');
+  const stickyGif = $('sticky-gif');
+  const stickySprite = $('sticky-sprite');
+  const resultSelectedSummary = $('result-selected-summary');
+  const jobTabs = $('job-tabs');
+  const timeline = $('timeline');
+  const metadataBody = $('metadata-body');
+  const exportJson = $('export-json');
+  const exportCsv = $('export-csv');
+
+  let originalFile = null;
+  let originalBytes = null;
+  let frames = [];
+  let composed = [];
+  let delays = [];
+  let gifWidth = 0;
+  let gifHeight = 0;
+  let selected = new Set();
+  let currentIndex = 0;
+  let objectUrls = [];
+  let jobs = [];
+  let activeJobIndex = -1;
+  let playbackTimer = null;
+  let playbackIsPlaying = false;
+  let playbackRate = 1;
+
+  function stopPlayback() {
+    if (playbackTimer) {
+      window.clearTimeout(playbackTimer);
+      playbackTimer = null;
+    }
+    playbackIsPlaying = false;
+    playbackLabel.textContent = 'Play';
+    playbackPlayIcon.classList.remove('hidden');
+    playbackPauseIcon.classList.add('hidden');
+  }
+
+  function startPlayback() {
+    if (!frames.length) return;
+    playbackIsPlaying = true;
+    playbackLabel.textContent = 'Pause';
+    playbackPlayIcon.classList.add('hidden');
+    playbackPauseIcon.classList.remove('hidden');
+    schedulePlaybackFrame();
+  }
+
+  function schedulePlaybackFrame() {
+    if (!playbackIsPlaying) return;
+    const sourceDelay = delays[currentIndex] || 100;
+    const delay = Math.max(16, Math.round(sourceDelay / playbackRate));
+    playbackTimer = window.setTimeout(() => {
+      if (!playbackIsPlaying) return;
+      currentIndex = (currentIndex + 1) % frames.length;
+      drawPreview(currentIndex);
+      schedulePlaybackFrame();
+    }, delay);
+  }
+
+  function togglePlayback() {
+    if (playbackIsPlaying) {
+      stopPlayback();
+    } else {
+      startPlayback();
+    }
+  }
+
+  function formatSize(bytes) {
+    if (bytes >= 1048576) return `${(bytes / 1048576).toFixed(1)} MB`;
+    if (bytes >= 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+    return `${bytes} B`;
+  }
+
+  function formatDuration(ms) {
+    const seconds = Math.max(0, Math.round(ms / 100) / 10);
+    return `${seconds.toFixed(1)}s`;
+  }
+
+  function getActiveJob() {
+    return jobs[activeJobIndex] || null;
+  }
+
+  function persistActiveJob() {
+    const job = getActiveJob();
+    if (!job) return;
+    job.selected = new Set(selected);
+    job.currentIndex = currentIndex;
+  }
+
+  function setActiveJob(index) {
+    if (!jobs[index]) return;
+    stopPlayback();
+    if (activeJobIndex >= 0 && activeJobIndex !== index) {
+      const previousJob = jobs[activeJobIndex];
+      if (previousJob) {
+        previousJob.selected = new Set(selected);
+        previousJob.currentIndex = currentIndex;
+      }
+    }
+    activeJobIndex = index;
+    const job = jobs[index];
+    originalFile = job.file;
+    originalBytes = job.bytes;
+    frames = job.frames;
+    composed = job.composed;
+    delays = job.delays;
+    gifWidth = job.width;
+    gifHeight = job.height;
+    selected = new Set(job.selected);
+    currentIndex = job.currentIndex;
+  }
+
+  function refreshSelection() {
+    renderFilmstrip();
+    renderTimeline();
+    renderMetadata();
+    updateSelectedCount();
+  }
+
+  function getDisposalLabel(type) {
+    if (type === 1) return 'Keep';
+    if (type === 2) return 'Clear';
+    if (type === 3) return 'Restore';
+    return 'Unspecified';
+  }
+
+  function getInitialSelectedSet(frameCount) {
+    if (pageInitialSelection === 'first') return new Set([0]);
+    if (pageInitialSelection === 'last') return new Set([Math.max(0, frameCount - 1)]);
+    if (pageInitialSelection === 'none') return new Set();
+    return new Set(Array.from({ length: frameCount }, (_, index) => index));
+  }
+
+  function trackEvent(eventName, data = {}) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: eventName, ...data });
+    window.dispatchEvent(new CustomEvent('tool:event', { detail: { event: eventName, ...data } }));
+  }
+
+  function showToast(message) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    window.clearTimeout(showToast.timer);
+    showToast.timer = window.setTimeout(() => toast.classList.add('hidden'), 2600);
+  }
+
+  function setProgress(visible, percent = 0, text = '') {
+    progressState.classList.toggle('hidden', !visible);
+    progressFill.style.width = `${percent}%`;
+    progressText.textContent = text;
+  }
+
+  function cleanupUrls() {
+    objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    objectUrls = [];
+  }
+
+  function reset() {
+    stopPlayback();
+    cleanupUrls();
+    originalFile = null;
+    originalBytes = null;
+    frames = [];
+    composed = [];
+    delays = [];
+    selected.clear();
+    currentIndex = 0;
+    gifWidth = 0;
+    gifHeight = 0;
+    jobs = [];
+    activeJobIndex = -1;
+    previewCanvas.width = 0;
+    previewCanvas.height = 0;
+    filmstrip.innerHTML = '';
+    timeline.innerHTML = '';
+    jobTabs.innerHTML = '';
+    metadataBody.innerHTML = '';
+    downloadAllZip.classList.add('hidden');
+    uploadState.classList.remove('hidden');
+    toolState.classList.add('hidden');
+    setProgress(false);
+  }
+
+  function composeFrames(parsed) {
+    composed = [];
+    delays = [];
+
+    const canvas = document.createElement('canvas');
+    canvas.width = gifWidth;
+    canvas.height = gifHeight;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    for (const frame of frames) {
+      if (frame.disposalType === 2) {
+        ctx.clearRect(0, 0, gifWidth, gifHeight);
+      }
+
+      const patchCanvas = document.createElement('canvas');
+      patchCanvas.width = frame.dims.width;
+      patchCanvas.height = frame.dims.height;
+      const patchCtx = patchCanvas.getContext('2d');
+      patchCtx.putImageData(new ImageData(new Uint8ClampedArray(frame.patch), frame.dims.width, frame.dims.height), 0, 0);
+      ctx.drawImage(patchCanvas, frame.dims.left, frame.dims.top);
+
+      const snapshot = document.createElement('canvas');
+      snapshot.width = gifWidth;
+      snapshot.height = gifHeight;
+      const snapshotCtx = snapshot.getContext('2d');
+      snapshotCtx.drawImage(canvas, 0, 0);
+      composed.push(snapshot);
+      delays.push(frame.delay || 0);
+    }
+  }
+
+  function drawPreview(index) {
+    if (!composed[index]) return;
+    currentIndex = index;
+    const source = composed[index];
+    previewCanvas.width = source.width;
+    previewCanvas.height = source.height;
+    const ctx = previewCanvas.getContext('2d');
+    ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+    ctx.drawImage(source, 0, 0);
+    $('preview-index').textContent = String(index + 1);
+    $('preview-total').textContent = String(composed.length);
+    $('preview-delay').textContent = `${delays[index] || 0} ms`;
+    updateTimelineCurrent();
+  }
+
+  function renderFilmstrip() {
+    filmstrip.innerHTML = '';
+    const visibleCount = Math.min(composed.length, 180);
+
+    for (let i = 0; i < visibleCount; i += 1) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'shrink-0 rounded-md border p-1 transition-colors';
+      button.setAttribute('aria-label', `Frame ${i + 1}`);
+      button.setAttribute('aria-pressed', selected.has(i) ? 'true' : 'false');
+      button.classList.toggle('border-accent', selected.has(i));
+      button.classList.toggle('bg-accent-soft', selected.has(i));
+      button.classList.toggle('border-line', !selected.has(i));
+      button.classList.toggle('dark:border-emerald-200/35', selected.has(i));
+      button.classList.toggle('dark:border-white/15', !selected.has(i));
+      button.classList.toggle('ring-1', i === currentIndex);
+      button.classList.toggle('ring-accent/40', i === currentIndex);
+
+      const thumb = document.createElement('canvas');
+      const ratio = composed[i].height / composed[i].width;
+      thumb.width = 96;
+      thumb.height = Math.max(1, Math.round(96 * ratio));
+      thumb.getContext('2d').drawImage(composed[i], 0, 0, thumb.width, thumb.height);
+      button.appendChild(thumb);
+
+      button.addEventListener('click', () => {
+        stopPlayback();
+        if (selected.has(i)) {
+          selected.delete(i);
+        } else {
+          selected.add(i);
+        }
+        drawPreview(i);
+        refreshSelection();
+      });
+
+      filmstrip.appendChild(button);
+    }
+  }
+
+  function renderTimeline() {
+    timeline.innerHTML = '';
+    if (!frames.length) return;
+
+    const maxDelay = Math.max(1, ...delays);
+    const minWidth = 12;
+    const maxWidth = 80;
+
+    for (let i = 0; i < frames.length; i += 1) {
+      const block = document.createElement('button');
+      block.type = 'button';
+      block.className = 'shrink-0 rounded-sm border transition-colors';
+      block.style.width = `${Math.max(minWidth, Math.min(maxWidth, Math.round((delays[i] / maxDelay) * maxWidth)))}px`;
+      block.style.height = `${selected.has(i) ? 40 : 28}px`;
+      block.setAttribute('aria-label', `Frame ${i + 1}, ${delays[i]}ms`);
+      block.title = `Frame ${i + 1} - ${delays[i]}ms`;
+      block.classList.toggle('border-accent', selected.has(i));
+      block.classList.toggle('bg-accent-soft', selected.has(i));
+      block.classList.toggle('border-line', !selected.has(i));
+      block.classList.toggle('bg-canvas', !selected.has(i));
+      block.classList.toggle('dark:border-emerald-200/35', selected.has(i));
+      block.classList.toggle('dark:border-white/15', !selected.has(i));
+      block.classList.toggle('dark:bg-white/5', !selected.has(i));
+      block.classList.toggle('ring-1', i === currentIndex);
+      block.classList.toggle('ring-accent/40', i === currentIndex);
+
+      block.addEventListener('click', () => {
+        stopPlayback();
+        if (selected.has(i)) {
+          selected.delete(i);
+        } else {
+          selected.add(i);
+        }
+        drawPreview(i);
+        refreshSelection();
+      });
+
+      timeline.appendChild(block);
+    }
+  }
+
+  function updateTimelineCurrent() {
+    [...timeline.children].forEach((block, index) => {
+      block.classList.toggle('ring-1', index === currentIndex);
+      block.classList.toggle('ring-accent/40', index === currentIndex);
+    });
+  }
+
+  function renderMetadata() {
+    metadataBody.innerHTML = '';
+    const visibleCount = Math.min(frames.length, 500);
+
+    for (let i = 0; i < visibleCount; i += 1) {
+      const frame = frames[i];
+      const row = document.createElement('tr');
+      row.className = 'border-b border-line transition-colors hover:bg-accent-soft/60 dark:border-white/10 dark:hover:bg-white/5';
+      row.classList.toggle('bg-accent-soft/60', selected.has(i));
+      row.classList.toggle('dark:bg-white/5', selected.has(i));
+
+      const alpha = typeof frame.transparentIndex === 'number' && frame.transparentIndex >= 0 ? 'Yes' : 'No';
+      const cells = [
+        String(i + 1),
+        `${frame.delay || 0} ms`,
+        `${frame.dims.width} x ${frame.dims.height}`,
+        `${frame.dims.left}, ${frame.dims.top}`,
+        getDisposalLabel(frame.disposalType),
+        alpha,
+      ];
+
+      cells.forEach((text, cellIndex) => {
+        const cell = document.createElement('td');
+        cell.className = 'px-4 py-2.5 tabular-nums text-ink-muted dark:text-emerald-50/65';
+        if (cellIndex === 0) {
+          cell.className += ' font-medium text-ink dark:text-white';
+        }
+        cell.textContent = text;
+        row.appendChild(cell);
+      });
+
+      row.addEventListener('click', () => {
+        stopPlayback();
+        if (selected.has(i)) {
+          selected.delete(i);
+        } else {
+          selected.add(i);
+        }
+        drawPreview(i);
+        refreshSelection();
+      });
+
+      metadataBody.appendChild(row);
+    }
+
+    if (frames.length > visibleCount) {
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.colSpan = 6;
+      cell.className = 'px-4 py-3 text-xs text-ink-muted dark:text-emerald-50/55';
+      cell.textContent = `Showing ${visibleCount} of ${frames.length} frames. Metadata export includes every frame.`;
+      row.appendChild(cell);
+      metadataBody.appendChild(row);
+    }
+  }
+
+  function renderJobTabs() {
+    jobTabs.innerHTML = '';
+    jobs.forEach((job, index) => {
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.className = 'inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors';
+      tab.classList.toggle('border-accent', index === activeJobIndex);
+      tab.classList.toggle('bg-accent-soft', index === activeJobIndex);
+      tab.classList.toggle('text-accent', index === activeJobIndex);
+      tab.classList.toggle('border-line', index !== activeJobIndex);
+      tab.classList.toggle('text-ink-muted', index !== activeJobIndex);
+      tab.classList.toggle('dark:border-emerald-200/35', index === activeJobIndex);
+      tab.classList.toggle('dark:border-white/15', index !== activeJobIndex);
+      tab.classList.toggle('dark:text-emerald-50/55', index !== activeJobIndex);
+      tab.textContent = `${job.file.name || 'GIF'} (${job.frames.length})`;
+      tab.addEventListener('click', () => {
+        setActiveJob(index);
+        renderActive();
+      });
+      jobTabs.appendChild(tab);
+    });
+    downloadAllZip.classList.toggle('hidden', jobs.length < 2);
+  }
+
+  function renderActive() {
+    $('stat-frames').textContent = String(frames.length);
+    $('stat-size').textContent = `${gifWidth} x ${gifHeight}`;
+    $('stat-duration').textContent = formatDuration(delays.reduce((sum, delay) => sum + delay, 0));
+    startFrame.value = '1';
+    endFrame.value = String(frames.length);
+    everyN.value = '1';
+    renderJobTabs();
+    renderFilmstrip();
+    renderTimeline();
+    renderMetadata();
+    updateSelectedCount();
+    drawPreview(currentIndex);
+    updateTimelineCurrent();
+  }
+
+  function updateSelectedCount() {
+    $('stat-selected').textContent = String(selected.size);
+    const hasSelection = selected.size > 0;
+    resultSelectedSummary.textContent = `${selected.size} selected`;
+    downloadZip.disabled = !hasSelection;
+    downloadCurrent.disabled = !hasSelection || !selected.has(currentIndex);
+    downloadAllZip.disabled = jobs.length < 2;
+    downloadGif.disabled = !hasSelection;
+    downloadSprite.disabled = !hasSelection;
+    stickyCurrent.disabled = !hasSelection || !selected.has(currentIndex);
+    stickyZip.disabled = !hasSelection;
+    stickyJson.disabled = !frames.length;
+    stickyGif.disabled = !hasSelection;
+    stickySprite.disabled = !hasSelection;
+    const job = getActiveJob();
+    if (job) {
+      job.selected = new Set(selected);
+      job.currentIndex = currentIndex;
+    }
+  }
+
+  function applyRangeSelection() {
+    stopPlayback();
+    const start = Math.max(1, Number(startFrame.value) || 1) - 1;
+    const end = Math.min(frames.length, Number(endFrame.value) || frames.length) - 1;
+    const step = Math.max(1, Number(everyN.value) || 1);
+    selected.clear();
+
+    for (let i = Math.max(0, start); i <= Math.min(frames.length - 1, end); i += step) {
+      selected.add(i);
+    }
+
+    refreshSelection();
+    if (!selected.has(currentIndex)) {
+      drawPreview(selected.values().next().value || 0);
+    }
+  }
+
+  function makeFileName(index, extension, baseName) {
+    const num = String(index + 1).padStart(3, '0');
+    const pattern = namingInput.value.trim() || 'frame-{index}';
+    const fileName = pattern.replaceAll('{index}', num).replaceAll('{source}', baseName);
+    return `${fileName}.${extension}`;
+  }
+
+  function buildExportCanvas(index, source = composed[index]) {
+    const scale = Number(scaleSelect.value) || 1;
+    const baseWidth = Math.max(1, Math.round(source.width * scale));
+    const baseHeight = Math.max(1, Math.round(source.height * scale));
+    const rotation = Number(rotateSelect.value) || 0;
+    const flip = flipSelect.value;
+    const rotated = rotation === 90 || rotation === 270;
+    const canvasWidth = rotated ? baseHeight : baseWidth;
+    const canvasHeight = rotated ? baseWidth : baseHeight;
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    const ctx = canvas.getContext('2d');
+    const keepTransparent = transparentToggle.checked && formatSelect.value !== 'jpg';
+
+    if (!keepTransparent) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    }
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.save();
+    ctx.translate(canvasWidth / 2, canvasHeight / 2);
+    ctx.rotate((rotation * Math.PI) / 180);
+    ctx.scale(
+      flip === 'horizontal' || flip === 'both' ? -1 : 1,
+      flip === 'vertical' || flip === 'both' ? -1 : 1,
+    );
+    ctx.drawImage(source, -baseWidth / 2, -baseHeight / 2, baseWidth, baseHeight);
+    ctx.restore();
+    return canvas;
+  }
+
+  function canvasToBlob(canvas, type, quality) {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error('Could not export frame'));
+      }, type, quality);
+    });
+  }
+
+  function saveBlob(blob, fileName) {
+    const url = URL.createObjectURL(blob);
+    objectUrls.push(url);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+  }
+
+  function getOutputType() {
+    if (formatSelect.value === 'jpg') return { type: 'image/jpeg', extension: 'jpg', quality: Number(qualityRange.value) / 100 };
+    if (formatSelect.value === 'webp') return { type: 'image/webp', extension: 'webp', quality: Number(qualityRange.value) / 100 };
+    return { type: 'image/png', extension: 'png', quality: undefined };
+  }
+
+  function setDownloadButtonsBusy(busy) {
+    [downloadCurrent, downloadZip, downloadAllZip, downloadGif, downloadSprite, stickyCurrent, stickyZip, stickyJson, stickyGif, stickySprite].forEach((button) => {
+      button.disabled = busy;
+      button.classList.toggle('opacity-60', busy);
+      button.setAttribute('aria-busy', String(busy));
+    });
+  }
+
+  async function downloadCurrentFrame() {
+    if (!selected.has(currentIndex)) return;
+    setDownloadButtonsBusy(true);
+    try {
+      const { type, extension, quality } = getOutputType();
+      const blob = await canvasToBlob(buildExportCanvas(currentIndex), type, quality);
+      saveBlob(blob, makeFileName(currentIndex, extension, getBaseName()));
+      trackEvent('download_current', { format: formatSelect.value, frame: currentIndex + 1 });
+    } finally {
+      setDownloadButtonsBusy(false);
+      updateSelectedCount();
+    }
+  }
+
+  function getBaseName(file = originalFile) {
+    const raw = file?.name || 'gif';
+    return raw.replace(/\.gif$/i, '').replace(/[^\w.-]+/g, '-') || 'gif';
+  }
+
+  async function addJobToZip(zip, job, selectionSet, baseName, output, startPercent, endPercent) {
+    const folder = zip.folder(`${baseName}-frames`);
+    const selectedIndices = [...selectionSet].sort((a, b) => a - b);
+
+    for (let i = 0; i < selectedIndices.length; i += 1) {
+      const index = selectedIndices[i];
+      const blob = await canvasToBlob(buildExportCanvas(index, job.composed[index]), output.type, output.quality);
+      folder.file(makeFileName(index, output.extension, baseName), blob);
+      const ratio = selectedIndices.length === 1 ? 1 : (i + 1) / selectedIndices.length;
+      setProgress(true, Math.round(startPercent + ratio * (endPercent - startPercent)), `${baseName}: frame ${i + 1} of ${selectedIndices.length}`);
+    }
+  }
+
+  async function downloadZipArchive() {
+    if (selected.size === 0) return;
+    setDownloadButtonsBusy(true);
+    try {
+      const output = getOutputType();
+      const job = getActiveJob();
+      if (!job) return;
+      const zip = new JSZip();
+
+      setProgress(true, 5, 'Preparing frames...');
+      await addJobToZip(zip, job, selected, getBaseName(), output, 5, 85);
+      const archiveBlob = await zip.generateAsync({ type: 'blob' }, (meta) => {
+        setProgress(true, Math.round(85 + meta.percent * 0.15), 'Creating ZIP...');
+      });
+
+      saveBlob(archiveBlob, `${getBaseName()}-frames.zip`);
+      trackEvent('download_zip', { format: formatSelect.value, count: selected.size });
+      setProgress(false);
+    } finally {
+      setDownloadButtonsBusy(false);
+      updateSelectedCount();
+    }
+  }
+
+  async function downloadAllZipArchive() {
+    const output = getOutputType();
+    const selectedJobs = jobs.map((job, index) => ({ job, index })).filter(({ job }) => job.selected.size > 0);
+    if (selectedJobs.length === 0) return;
+    setDownloadButtonsBusy(true);
+    try {
+      const zip = new JSZip();
+      const totalSelected = selectedJobs.reduce((sum, { job }) => sum + job.selected.size, 0);
+      let completed = 0;
+
+      setProgress(true, 5, 'Preparing jobs...');
+      for (const { job } of selectedJobs) {
+        const startPercent = 5 + Math.round((completed / totalSelected) * 80);
+        const endPercent = 5 + Math.round(((completed + job.selected.size) / totalSelected) * 80);
+        await addJobToZip(zip, job, job.selected, getBaseName(job.file), output, startPercent, endPercent);
+        completed += job.selected.size;
+      }
+
+      const archiveBlob = await zip.generateAsync({ type: 'blob' }, (meta) => {
+        setProgress(true, Math.round(85 + meta.percent * 0.15), 'Creating ZIP...');
+      });
+
+      saveBlob(archiveBlob, 'gif-frames-all.zip');
+      trackEvent('download_all_zip', { jobs: selectedJobs.length, format: formatSelect.value });
+      setProgress(false);
+    } finally {
+      setDownloadButtonsBusy(false);
+      updateSelectedCount();
+    }
+  }
+
+  async function downloadReverseGif() {
+    if (selected.size === 0) return;
+    setDownloadButtonsBusy(true);
+    try {
+      const selectedIndices = [...selected].sort((a, b) => a - b);
+      if (selectedIndices.length > 240) {
+        showToast('Reverse GIF is limited to 240 frames.');
+        return;
+      }
+
+      const encoder = GIFEncoder();
+      const transparent = transparentToggle.checked;
+      const format = transparent ? 'rgba4444' : 'rgb565';
+      const options = transparent
+        ? { format, oneBitAlpha: true, clearAlpha: true, clearAlphaThreshold: 0 }
+        : { format };
+
+      setProgress(true, 8, 'Preparing reverse GIF...');
+
+      for (let i = 0; i < selectedIndices.length; i += 1) {
+        const index = selectedIndices[i];
+        const source = composed[index];
+        const ctx = source.getContext('2d', { willReadFrequently: true });
+        const imageData = ctx.getImageData(0, 0, source.width, source.height);
+        const palette = quantize(imageData.data, 256, options);
+        const indexed = applyPalette(imageData.data, palette, format);
+        encoder.writeFrame(indexed, source.width, source.height, {
+          palette,
+          delay: delays[index] || 100,
+          repeat: 0,
+          transparent,
+        });
+        setProgress(true, Math.round(8 + ((i + 1) / selectedIndices.length) * 82), `Encoding frame ${i + 1} of ${selectedIndices.length}`);
+      }
+
+      encoder.finish();
+      const bytes = encoder.bytes();
+      saveBlob(new Blob([bytes], { type: 'image/gif' }), `${getBaseName()}-reverse.gif`);
+      trackEvent('download_gif', { count: selectedIndices.length });
+      setProgress(false);
+    } finally {
+      setDownloadButtonsBusy(false);
+      updateSelectedCount();
+    }
+  }
+
+  async function downloadSpriteSheet() {
+    if (selected.size === 0) return;
+    setDownloadButtonsBusy(true);
+    try {
+      const selectedIndices = [...selected].sort((a, b) => a - b);
+      const columns = Math.max(1, Math.min(8, Math.ceil(Math.sqrt(selectedIndices.length))));
+      const rows = Math.ceil(selectedIndices.length / columns);
+      const scale = Number(scaleSelect.value) || 1;
+      const frameWidth = Math.max(1, Math.round(gifWidth * scale));
+      const frameHeight = Math.max(1, Math.round(gifHeight * scale));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = columns * frameWidth;
+      canvas.height = rows * frameHeight;
+      const ctx = canvas.getContext('2d');
+
+      setProgress(true, 8, 'Building sprite sheet...');
+
+      for (let i = 0; i < selectedIndices.length; i += 1) {
+        const index = selectedIndices[i];
+        const x = (i % columns) * frameWidth;
+        const y = Math.floor(i / columns) * frameHeight;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(composed[index], x, y, frameWidth, frameHeight);
+        setProgress(true, Math.round(8 + ((i + 1) / selectedIndices.length) * 82), `Placing frame ${i + 1} of ${selectedIndices.length}`);
+      }
+
+      const blob = await canvasToBlob(canvas, 'image/png');
+      saveBlob(blob, `${getBaseName()}-spritesheet.png`);
+      trackEvent('download_sprite', { count: selectedIndices.length });
+      setProgress(false);
+    } finally {
+      setDownloadButtonsBusy(false);
+      updateSelectedCount();
+    }
+  }
+
+  function isAcceptedFile(file) {
+    if (!file) return false;
+    const acceptTokens = acceptedFileTokens
+      .split(',')
+      .map((token) => token.trim())
+      .filter(Boolean);
+    const extension = `.${file.name.split('.').pop()?.toLowerCase() || ''}`;
+
+    return acceptTokens.some((token) => {
+      if (token.startsWith('.')) return extension === token.toLowerCase();
+      if (token === 'image/png') return file.type === 'image/png' || file.type === 'image/apng';
+      return file.type === token;
+    });
+  }
+
+  async function decodeAnimatedFileWithImageDecoder(file, bytes) {
+    if (!('ImageDecoder' in window)) {
+      throw new Error('This browser does not support ImageDecoder for this format.');
+    }
+
+    const type = file.type || (file.name.toLowerCase().endsWith('.webp') ? 'image/webp' : 'image/png');
+    const decoder = new window.ImageDecoder({ data: bytes, type });
+    await decoder.tracks.ready;
+
+    const decodedCanvases = [];
+    const decodedDelays = [];
+    let frameIndex = 0;
+
+    while (frameIndex < 2000) {
+      try {
+        const { image } = await decoder.decode({ frameIndex });
+        const width = image.displayWidth || image.codedWidth || 1;
+        const height = image.displayHeight || image.codedHeight || 1;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(image, 0, 0);
+        decodedCanvases.push(canvas);
+        decodedDelays.push(image.duration ? Math.round(image.duration / 1000) : 100);
+        image.close();
+        frameIndex += 1;
+      } catch {
+        break;
+      }
+    }
+
+    if (!decodedCanvases.length) throw new Error('No frames found');
+
+    return {
+      frames: decodedCanvases.map((canvas, index) => ({
+        delay: decodedDelays[index],
+        dims: { width: canvas.width, height: canvas.height, left: 0, top: 0 },
+        disposalType: 0,
+        transparentIndex: -1,
+      })),
+      composed: decodedCanvases,
+      delays: decodedDelays,
+      width: decodedCanvases[0].width,
+      height: decodedCanvases[0].height,
+    };
+  }
+
+  async function loadFile(file) {
+    if (!file) return;
+    if (!isAcceptedFile(file)) return;
+    if (file.size > 100 * 1024 * 1024) {
+      showToast('File too large. Maximum 100MB.');
+      return;
+    }
+
+    cleanupUrls();
+    const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+    setProgress(true, 8, isGif ? 'Reading GIF...' : 'Decoding animation...');
+
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      let parsedFrames;
+      let width;
+      let height;
+
+      if (isGif) {
+        const parsed = parseGIF(bytes);
+        parsedFrames = decompressFrames(parsed, true);
+        width = parsed.lsd?.width || parsedFrames[0]?.dims?.width || 1;
+        height = parsed.lsd?.height || parsedFrames[0]?.dims?.height || 1;
+
+        if (!parsedFrames.length) throw new Error('No frames found');
+
+        setProgress(true, 38, 'Rendering frames...');
+        frames = parsedFrames;
+        gifWidth = width;
+        gifHeight = height;
+        composeFrames();
+      } else {
+        const decoded = await decodeAnimatedFileWithImageDecoder(file, bytes);
+        frames = decoded.frames;
+        composed = decoded.composed;
+        delays = decoded.delays;
+        gifWidth = decoded.width;
+        gifHeight = decoded.height;
+      }
+
+      const job = {
+        file,
+        bytes,
+        frames,
+        composed,
+        delays,
+        width: gifWidth,
+        height: gifHeight,
+        selected: getInitialSelectedSet(frames.length),
+        currentIndex: pageInitialSelection === 'last' ? Math.max(0, frames.length - 1) : 0,
+      };
+
+      const existingIndex = jobs.findIndex(
+        (item) => item.file.name === file.name && item.file.size === file.size && item.file.lastModified === file.lastModified,
+      );
+      const targetIndex = existingIndex >= 0 ? existingIndex : jobs.length;
+      if (existingIndex >= 0) {
+        jobs[existingIndex] = job;
+      } else {
+        jobs.push(job);
+      }
+
+      setActiveJob(targetIndex);
+      uploadState.classList.add('hidden');
+      toolState.classList.remove('hidden');
+      renderActive();
+      if (window.innerWidth < 768) {
+        toolState.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      toolState.focus({ preventScroll: true });
+      trackEvent('upload', { type: isGif ? 'gif' : file.type, frames: frames.length });
+      setProgress(false);
+    } catch (error) {
+      console.error(error);
+      setProgress(false);
+      showToast(isGif ? 'Could not read this GIF. Try a smaller or different file.' : 'Could not decode this animation in your browser.');
+    }
+  }
+
+  async function loadFiles(files) {
+    const list = [...files].filter(isAcceptedFile);
+    if (list.length === 0) return;
+
+    for (let i = 0; i < list.length; i += 1) {
+      setProgress(true, Math.round((i / list.length) * 20), `Loading ${i + 1} of ${list.length}...`);
+      await loadFile(list[i]);
+    }
+
+    fileInput.value = '';
+    setProgress(false);
+  }
+
+  function updateQualityControl() {
+    const isPng = formatSelect.value === 'png';
+    qualityRange.disabled = isPng;
+    qualityValue.textContent = isPng ? 'lossless' : qualityRange.value;
+    qualityValue.classList.toggle('opacity-40', isPng);
+  }
+
+  function frameHasTransparency(index) {
+    const source = composed[index];
+    if (!source) return false;
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(source, 0, 0, 64, 64);
+    const data = ctx.getImageData(0, 0, 64, 64).data;
+
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] < 255) return true;
+    }
+    return false;
+  }
+
+  function frameSignature(index) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 12;
+    canvas.height = 12;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(composed[index], 0, 0, canvas.width, canvas.height);
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let hash = 2166136261;
+
+    for (let i = 0; i < data.length; i += 4) {
+      hash ^= data[i];
+      hash = Math.imul(hash, 16777619);
+      hash ^= data[i + 3];
+      hash = Math.imul(hash, 16777619);
+    }
+
+    return hash >>> 0;
+  }
+
+  function selectTransparentFrames() {
+    stopPlayback();
+    selected.clear();
+    for (let i = 0; i < frames.length; i += 1) {
+      if (frameHasTransparency(i)) selected.add(i);
+    }
+    refreshSelection();
+  }
+
+  function selectDuplicateFrames() {
+    stopPlayback();
+    selected.clear();
+    const signatures = frames.map((_, index) => frameSignature(index));
+    for (let i = 1; i < signatures.length; i += 1) {
+      if (signatures[i] === signatures[i - 1]) selected.add(i);
+    }
+    refreshSelection();
+  }
+
+  function invertSelection() {
+    stopPlayback();
+    const next = new Set();
+    for (let i = 0; i < frames.length; i += 1) {
+      if (!selected.has(i)) next.add(i);
+    }
+    selected = next;
+    refreshSelection();
+  }
+
+  function clearSelection() {
+    stopPlayback();
+    selected.clear();
+    refreshSelection();
+  }
+
+  function getMetadataRows() {
+    return frames.map((frame, index) => ({
+      frame: index + 1,
+      delayMs: frame.delay || 0,
+      width: frame.dims.width,
+      height: frame.dims.height,
+      offsetX: frame.dims.left,
+      offsetY: frame.dims.top,
+      disposalType: frame.disposalType,
+      disposal: getDisposalLabel(frame.disposalType),
+      transparent: typeof frame.transparentIndex === 'number' && frame.transparentIndex >= 0,
+    }));
+  }
+
+  function downloadMetadata(format) {
+    if (!frames.length) return;
+    const rows = getMetadataRows();
+    const baseName = getBaseName();
+    let blob;
+
+    if (format === 'json') {
+      blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+    } else {
+      const headers = ['frame', 'delay_ms', 'width', 'height', 'offset_x', 'offset_y', 'disposal_type', 'disposal', 'transparent'];
+      const escape = (value) => {
+        const text = String(value);
+        return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+      };
+      const lines = [
+        headers.join(','),
+        ...rows.map((row) => [row.frame, row.delayMs, row.width, row.height, row.offsetX, row.offsetY, row.disposalType, row.disposal, row.transparent].map(escape).join(',')),
+      ];
+      blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+    }
+
+    saveBlob(blob, `${baseName}-metadata.${format}`);
+    trackEvent('metadata_export', { format });
+  }
+
+  $('select-btn').addEventListener('click', () => fileInput.click());
+  $('demo-btn').addEventListener('click', async () => {
+    setProgress(true, 10, 'Loading sample GIF...');
+    try {
+      const response = await fetch('/demo.gif');
+      const blob = await response.blob();
+      await loadFile(new File([blob], 'sample.gif', { type: 'image/gif' }));
+    } catch {
+      setProgress(false);
+      showToast('Could not load sample GIF.');
+    }
+  });
+
+  uploadState.addEventListener('click', (event) => {
+    if (event.target.closest('input') || event.target.closest('button')) return;
+    fileInput.click();
+  });
+
+  uploadState.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    uploadState.classList.add('border-accent');
+  });
+
+  uploadState.addEventListener('dragleave', () => {
+    uploadState.classList.remove('border-accent');
+  });
+
+  uploadState.addEventListener('drop', (event) => {
+    event.preventDefault();
+    uploadState.classList.remove('border-accent');
+    loadFiles(event.dataTransfer?.files);
+  });
+
+  fileInput.addEventListener('change', () => loadFiles(fileInput.files));
+
+  document.addEventListener('paste', (event) => {
+    for (const item of event.clipboardData?.items || []) {
+      const file = item.getAsFile();
+      if (file && isAcceptedFile(file)) {
+        loadFile(file);
+        break;
+      }
+    }
+  });
+
+  $('url-load-btn').addEventListener('click', async () => {
+    const url = urlInput.value.trim();
+    if (!url) return;
+    setProgress(true, 10, 'Fetching URL...');
+    try {
+      let response;
+      try {
+        response = await fetch(url, { mode: 'cors' });
+      } catch {
+        const proxyPrefixes = ['https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?url='];
+        for (const prefix of proxyPrefixes) {
+          try {
+            response = await fetch(`${prefix}${encodeURIComponent(url)}`, { mode: 'cors' });
+            if (response.ok) break;
+          } catch {
+            response = null;
+          }
+        }
+      }
+
+      if (!response || !response.ok) throw new Error(response ? `HTTP ${response.status}` : 'Network error');
+      const blob = await response.blob();
+      const inferredType = blob.type || (url.toLowerCase().endsWith('.webp') ? 'image/webp' : url.toLowerCase().endsWith('.png') ? 'image/png' : 'image/gif');
+      urlInput.value = '';
+      await loadFile(new File([blob], url.split('/').pop() || 'remote.gif', { type: inferredType }));
+    } catch {
+      setProgress(false);
+      trackEvent('url_load_failed', { url });
+      showToast('Could not load this URL. Download the GIF first.');
+    }
+  });
+
+  $('url-input').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') $('url-load-btn').click();
+  });
+
+  playbackToggle.addEventListener('click', togglePlayback);
+  playbackSpeed.addEventListener('change', () => {
+    playbackRate = Number(playbackSpeed.value) || 1;
+    if (playbackIsPlaying) {
+      stopPlayback();
+      startPlayback();
+    }
+  });
+
+  formatSelect.addEventListener('change', updateQualityControl);
+  qualityRange.addEventListener('input', () => {
+    qualityValue.textContent = qualityRange.value;
+  });
+
+  startFrame.addEventListener('input', () => {
+    startFrame.max = String(frames.length);
+    endFrame.min = startFrame.value;
+    applyRangeSelection();
+  });
+
+  endFrame.addEventListener('input', () => {
+    endFrame.max = String(frames.length);
+    startFrame.max = endFrame.value;
+    applyRangeSelection();
+  });
+
+  everyN.addEventListener('input', applyRangeSelection);
+  $('select-all').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set(frames.map((_, index) => index));
+    refreshSelection();
+  });
+  $('select-first').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set([0]);
+    drawPreview(0);
+    refreshSelection();
+  });
+  $('select-last').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set([frames.length - 1]);
+    drawPreview(frames.length - 1);
+    refreshSelection();
+  });
+  $('select-transparent').addEventListener('click', selectTransparentFrames);
+  $('select-duplicates').addEventListener('click', selectDuplicateFrames);
+  $('invert-selection').addEventListener('click', invertSelection);
+  $('clear-selection').addEventListener('click', clearSelection);
+  exportJson.addEventListener('click', () => downloadMetadata('json'));
+  exportCsv.addEventListener('click', () => downloadMetadata('csv'));
+  $('quick-first').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set([0]);
+    drawPreview(0);
+    refreshSelection();
+  });
+  $('quick-last').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set([frames.length - 1]);
+    drawPreview(frames.length - 1);
+    refreshSelection();
+  });
+  $('quick-nth').addEventListener('click', () => {
+    stopPlayback();
+    everyN.value = '2';
+    applyRangeSelection();
+  });
+  $('quick-transparent').addEventListener('click', () => {
+    stopPlayback();
+    formatSelect.value = 'png';
+    updateQualityControl();
+    selectTransparentFrames();
+  });
+  $('quick-all-zip').addEventListener('click', () => {
+    stopPlayback();
+    selected = new Set(frames.map((_, index) => index));
+    refreshSelection();
+    downloadZipArchive();
+  });
+  $('quick-json').addEventListener('click', () => downloadMetadata('json'));
+
+  downloadCurrent.addEventListener('click', downloadCurrentFrame);
+  downloadZip.addEventListener('click', downloadZipArchive);
+  downloadAllZip.addEventListener('click', downloadAllZipArchive);
+  downloadGif.addEventListener('click', downloadReverseGif);
+  downloadSprite.addEventListener('click', downloadSpriteSheet);
+  stickyCurrent.addEventListener('click', downloadCurrentFrame);
+  stickyZip.addEventListener('click', downloadZipArchive);
+  stickyJson.addEventListener('click', () => downloadMetadata('json'));
+  stickyGif.addEventListener('click', downloadReverseGif);
+  stickySprite.addEventListener('click', downloadSpriteSheet);
+  $('reset-btn').addEventListener('click', reset);
+
+  updateQualityControl();
+</script>

@@ -1,0 +1,70 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'How do I convert a GIF to JPG frames?',
+    a: 'Upload the GIF, select the frames you need, choose JPG, and download them as individual images or a ZIP archive.',
+  },
+  {
+    q: 'Does JPG keep transparency?',
+    a: 'No. JPG does not support transparency, so transparent areas are flattened to a white background.',
+  },
+  {
+    q: 'When should I choose JPG instead of PNG?',
+    a: 'Choose JPG when you need smaller flattened frames for slides, social posts, documents, or quick sharing.',
+  },
+  {
+    q: 'Can I adjust JPG quality?',
+    a: 'Yes. Use the Quality slider to balance file size and image detail before exporting.',
+  },
+  {
+    q: 'Can I extract a range of frames as JPG?',
+    a: 'Yes. Set the start frame, end frame, and Every Nth frame value before downloading.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-png-frames', label: 'GIF to PNG Frames', description: 'Keep transparency and clean edges with lossless output.' },
+  { href: '/gif-to-webp-frames', label: 'GIF to WebP Frames', description: 'Export modern compressed frames with transparency.' },
+  { href: '/gif-to-zip-frames', label: 'GIF to ZIP Frames', description: 'Package selected frames into one organized archive.' },
+];
+---
+
+<ToolLanding
+  title="GIF to JPG Frames: Convert Animated GIF to JPG Online"
+  description="Convert an animated GIF to JPG frames online. Extract selected frames as smaller flattened images and download them locally as JPG or ZIP."
+  h1="GIF to JPG Frames"
+  lead="Convert an animated GIF into smaller JPG frames. Preview the animation, select a range, and download the flattened frames you need."
+  formats={['jpg']}
+  defaultFormat="jpg"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF, paste it, or load from a URL. JPG creates smaller flattened frames."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'When JPG frames are the right choice',
+      body: [
+        'JPG is useful when file size matters more than perfect edges. It flattens transparency and creates smaller images for sharing, slides, and previews.',
+        'Use the range and Nth frame controls to keep long animations manageable before exporting.',
+      ],
+    },
+    {
+      heading: 'Quality and file size',
+      body: [
+        'The Quality slider lets you reduce compression artifacts or prioritize smaller files. Higher quality is better for detail, while lower quality is fine for quick previews.',
+      ],
+    },
+    {
+      heading: 'Quick social and document exports',
+      body: [
+        'JPG frames are widely compatible. They are a practical choice for cover images, article thumbnails, slides, and messages where a flattened still is all that is needed.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

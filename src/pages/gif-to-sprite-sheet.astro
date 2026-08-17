@@ -1,0 +1,70 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'How do I create a sprite sheet from a GIF?',
+    a: 'Upload the GIF, select the frames you want, choose a scale, and click Sprite sheet.',
+  },
+  {
+    q: 'What output format is used for sprite sheets?',
+    a: 'Sprite sheets are exported as a single PNG image arranged for game or web animation.',
+  },
+  {
+    q: 'Can I choose only part of the GIF for a sprite sheet?',
+    a: 'Yes. Select all frames, a range, or every Nth frame before creating the sprite sheet.',
+  },
+  {
+    q: 'Can I change the size of the sprite sheet?',
+    a: 'Yes. Use the scale control to reduce or keep the frame dimensions before arranging the sheet.',
+  },
+  {
+    q: 'What layout is used for the sprite sheet?',
+    a: 'The tool arranges selected frames into a square-ish grid with up to eight columns, which is a common format for game and CSS animation.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-png-frames', label: 'GIF to PNG Frames', description: 'Export individual lossless frames with transparency.' },
+  { href: '/gif-frame-metadata', label: 'GIF Frame Metadata', description: 'Inspect frame timing and compositing data.' },
+  { href: '/frames-to-gif', label: 'Frames to GIF', description: 'Combine images back into a new animated GIF.' },
+];
+---
+
+<ToolLanding
+  title="GIF to Sprite Sheet: Create a PNG Sprite Sheet Online"
+  description="Convert a GIF into a PNG sprite sheet online. Select frames, choose a scale, and download one arranged image for games and web animation."
+  h1="GIF to Sprite Sheet"
+  lead="Turn selected GIF frames into a single PNG sprite sheet. Choose a scale and download a layout ready for games and web animation."
+  formats={['png']}
+  defaultFormat="png"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF, paste it, or load from a URL. Selected frames can be arranged into a sprite sheet."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'Build game-ready sprite sheets',
+      body: [
+        'A sprite sheet places multiple animation frames into one image, which is a common format for games, CSS animation, and UI systems.',
+        'Select the frames you need, set a scale, and download one arranged PNG without leaving the browser.',
+      ],
+    },
+    {
+      heading: 'Choose the right frames',
+      body: [
+        'Use a frame range or every Nth frame to skip near-duplicate frames and keep the sprite sheet compact. The selected set becomes the final sheet.',
+      ],
+    },
+    {
+      heading: 'Scale for your target',
+      body: [
+        'The scale control adjusts all frames consistently, so the final sprite sheet matches the resolution your game or UI system expects.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

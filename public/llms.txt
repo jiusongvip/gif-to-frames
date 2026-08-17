@@ -1,0 +1,21 @@
+# GIF to Frames
+
+GIF to Frames is a free browser-based tool for splitting animated GIFs into individual image frames.
+
+The tool runs locally in the browser. Files are not uploaded to a server. No account, watermark, or installation is required.
+
+## Core capabilities
+
+- Extract animated GIF, WebP, or APNG frames as PNG, JPG, or WebP images.
+- Preview every frame with adjustable playback speed.
+- Select all frames, a range, the first frame, the last frame, or every Nth frame.
+- Filter transparent or duplicate frames.
+- Export selected frames as ZIP.
+- Inspect and export frame delay, size, offset, disposal, and transparency as JSON or CSV.
+- Reverse selected frames into a new GIF.
+- Create a sprite sheet from selected frames.
+- Combine PNG, JPG, or WebP images into a GIF.
+
+## Privacy
+
+All decoding, previewing, selection, and export work happens in the user's browser. Source files do not need to be uploaded.

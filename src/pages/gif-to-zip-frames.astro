@@ -1,0 +1,70 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'How do I download GIF frames as a ZIP?',
+    a: 'Upload the GIF, select the frames you need, choose an output format, then click All ZIP.',
+  },
+  {
+    q: 'Can I customize the file names inside the ZIP?',
+    a: 'Yes. Use the File naming field with index and source placeholders before exporting.',
+  },
+  {
+    q: 'Can I package multiple GIF files into one ZIP?',
+    a: 'Yes. Upload multiple GIFs and use All jobs ZIP to package each source into its own folder.',
+  },
+  {
+    q: 'Which output formats can I put inside the ZIP?',
+    a: 'PNG, JPG, or WebP. PNG keeps transparency, JPG creates smaller flattened frames, and WebP offers modern compressed output.',
+  },
+  {
+    q: 'Can I include only selected frames in the ZIP?',
+    a: 'Yes. Select all frames, a range, or every Nth frame before clicking All ZIP.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-png-frames', label: 'GIF to PNG Frames', description: 'Export lossless frames with transparency.' },
+  { href: '/gif-frame-metadata', label: 'GIF Frame Metadata', description: 'Inspect timing and compositing metadata before export.' },
+  { href: '/frames-to-gif', label: 'Frames to GIF', description: 'Combine images back into a new animated GIF.' },
+];
+---
+
+<ToolLanding
+  title="GIF to ZIP Frames: Package Extracted Frames Online"
+  description="Extract GIF frames and download them as a ZIP archive online. Select all frames, a range, or every Nth frame, then package locally."
+  h1="GIF to ZIP Frames"
+  lead="Extract GIF frames and package them into a ZIP archive. Choose PNG, JPG, or WebP output and download every selected frame locally."
+  formats={['png', 'jpg', 'webp']}
+  defaultFormat="png"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF, paste it, or load from a URL. Selected frames can be packaged into a ZIP archive."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'Build a clean frame archive',
+      body: [
+        'ZIP export keeps a long image sequence organized in one download. Set a naming pattern such as frame-001 before packaging.',
+        'Use the range and Nth frame controls to include only the frames your project actually needs.',
+      ],
+    },
+    {
+      heading: 'Batch package multiple GIFs',
+      body: [
+        'When several GIFs are loaded, each source can be packaged into its own folder inside one ZIP. This keeps multi-file projects tidy and reduces manual organization.',
+      ],
+    },
+    {
+      heading: 'Predictable file names',
+      body: [
+        'The File naming field accepts index and source placeholders. A predictable pattern makes it easier to import the sequence into editing or game tools.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

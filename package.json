@@ -1,0 +1,29 @@
+{
+  "name": "gif-to-frames",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "generate-demo": "node scripts/generate-demo.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0",
+    "@fontsource-variable/outfit": "^5.1.0",
+    "@iconify-json/tabler": "^1.2.0",
+    "astro": "^5.6.2",
+    "astro-icon": "^1.1.4",
+    "gif-encoder-2": "^1.0.5",
+    "gifenc": "^1.0.3",
+    "gifuct-js": "^2.1.2",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.5.0"
+  }
+}

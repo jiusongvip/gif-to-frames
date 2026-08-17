@@ -1,0 +1,103 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  schema?: string;
+  robots?: string;
+}
+
+const {
+  title,
+  description,
+  canonical = new URL(Astro.url.pathname || '/', Astro.site).href.replace(/\/$/, ''),
+  ogImage = '/demo/frame-01.png',
+  schema,
+  robots,
+} = Astro.props;
+
+const absoluteOgImage = new URL(ogImage, Astro.site).href;
+
+const orgSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'GIF to Frames',
+  url: 'https://gif-to-frames.com/',
+  logo: 'https://gif-to-frames.com/favicon.svg',
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f766e" />
+    {robots && <meta name="robots" content={robots} />}
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GIF to Frames" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:alt" content="Preview of extracted GIF frames" />
+    <meta property="og:image:width" content="240" />
+    <meta property="og:image:height" content="160" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+    <meta name="twitter:image:alt" content="Preview of extracted GIF frames" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {schema && <script type="application/ld+json" set:html={schema} />}
+    <script type="application/ld+json" set:html={orgSchema} />
+  </head>
+  <body class="min-h-[100dvh] text-ink dark:text-emerald-50/90">
+    <header class="sticky top-0 z-50 h-16 border-b border-line/80 bg-canvas/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#0f1714]/85">
+      <div class="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 sm:px-6">
+        <a href="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink dark:text-white">
+          <span class="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white">
+            <span class="font-mono text-xs font-semibold">G</span>
+          </span>
+          GIF to Frames
+        </a>
+        <nav aria-label="Primary" class="hidden items-center gap-1 text-sm text-ink-muted md:flex dark:text-emerald-50/60">
+          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#how-it-works">How it works</a>
+          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#features">Features</a>
+          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-20 border-t border-line bg-canvas dark:border-white/10 dark:bg-[#0f1714]">
+      <div class="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm font-semibold text-ink dark:text-white">GIF to Frames</p>
+          <p class="mt-1 max-w-[46ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+            Extract, inspect, and download every frame from an animated GIF. Processed locally in your browser.
+          </p>
+        </div>
+        <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-muted dark:text-emerald-50/55">
+          <a class="hover:text-accent" href="/">Home</a>
+          <a class="hover:text-accent" href="/gif-to-png-frames">GIF to PNG</a>
+          <a class="hover:text-accent" href="/frames-to-gif">Frames to GIF</a>
+          <a class="hover:text-accent" href="/#about">About</a>
+          <a class="hover:text-accent" href="/#privacy">Privacy</a>
+          <a class="hover:text-accent" href="mailto:hello@gif-to-frames.com">Contact</a>
+        </nav>
+        <p class="text-xs text-ink-muted/70 dark:text-emerald-50/40">Last updated August 17, 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>

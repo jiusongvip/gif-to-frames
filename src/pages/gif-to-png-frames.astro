@@ -1,0 +1,75 @@
+---
+import ToolLanding from '../layouts/ToolLanding.astro';
+
+const faq = [
+  {
+    q: 'How do I convert a GIF to PNG frames?',
+    a: 'Upload the GIF, preview the frames, select all frames or a custom range, then choose PNG and download the selected frames as ZIP.',
+  },
+  {
+    q: 'Does PNG output keep transparency?',
+    a: 'Yes. PNG output keeps transparent areas from the original GIF where they exist.',
+  },
+  {
+    q: 'Can I extract only one PNG frame?',
+    a: 'Yes. Use First frame, Last frame, or click any frame in the filmstrip, then download the current frame.',
+  },
+  {
+    q: 'Are my files uploaded to a server?',
+    a: 'No. The GIF is decoded and rendered locally in your browser.',
+  },
+  {
+    q: 'Can I batch convert multiple GIFs to PNG?',
+    a: 'Yes. Upload multiple GIFs, switch between them with the job tabs, and use All jobs ZIP to package each source into its own folder.',
+  },
+  {
+    q: 'Can I choose a custom file name pattern?',
+    a: 'Yes. Use the File naming field with index and source placeholders, such as frame-001 or source-001.',
+  },
+];
+
+const related = [
+  { href: '/gif-to-jpg-frames', label: 'GIF to JPG Frames', description: 'Create smaller flattened frames for sharing and slides.' },
+  { href: '/gif-to-webp-frames', label: 'GIF to WebP Frames', description: 'Export modern compressed frames with transparency.' },
+  { href: '/gif-frame-metadata', label: 'GIF Frame Metadata', description: 'Inspect delay, disposal, dimensions, and transparency.' },
+];
+---
+
+<ToolLanding
+  title="GIF to PNG Frames: Convert Animated GIF to PNG Online"
+  description="Convert an animated GIF to PNG frames online. Extract every frame, keep transparency, and download selected frames as PNG or ZIP locally."
+  h1="GIF to PNG Frames"
+  lead="Convert an animated GIF into lossless PNG frames. Preview every frame, keep transparency, and download only the frames you need."
+  formats={['png']}
+  defaultFormat="png"
+  accept="image/gif,.gif"
+  uploadTitle="Drop your GIF here"
+  uploadHint="Choose an animated GIF, paste it, or load from a URL. PNG output keeps transparency."
+  selectLabel="Select GIF"
+  sampleLabel="Try sample GIF"
+  urlPlaceholder="Paste a GIF URL"
+  intro={[
+    {
+      heading: 'Why export GIF frames as PNG',
+      body: [
+        'PNG is the best choice when you need lossless frames with clean edges and transparency. It preserves the original GIF detail without JPG compression artifacts.',
+        'PNG frames are useful for design references, game sprites, UI animation, and image sequences imported into video or motion tools.',
+      ],
+    },
+    {
+      heading: 'Transparency and clean edges',
+      body: [
+        'GIF files often include transparent regions or partial-frame animation. PNG keeps that alpha information, so logos, icons, and UI elements remain clean when exported.',
+        'JPG flattens transparency, so choose PNG when you need to preserve the original compositing information.',
+      ],
+    },
+    {
+      heading: 'Prepare frames for another app',
+      body: [
+        'Export a numbered image sequence and import it into Photoshop, After Effects, Premiere, or CapCut. Use the custom naming field to match the naming convention your editor expects.',
+      ],
+    },
+  ]}
+  faq={faq}
+  related={related}
+/>

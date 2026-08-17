@@ -1,0 +1,438 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  h1?: string;
+  lead?: string;
+  showSchema?: boolean;
+  sectionId?: string;
+  titleLevel?: 'h1' | 'h2';
+}
+
+const {
+  h1 = 'Frames to GIF',
+  lead = 'Upload PNG, JPG, or WebP frames, set timing, and create an animated GIF.',
+  showSchema = false,
+  sectionId = 'tool',
+  titleLevel = 'h1',
+} = Astro.props;
+
+const HeadingTag = titleLevel === 'h2' ? 'h2' : 'h1';
+
+const toolSchema = showSchema
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: h1,
+      url: 'https://gif-to-frames.com/#frames-to-gif',
+      applicationCategory: 'MultimediaApplication',
+      operatingSystem: 'Any',
+      browserRequirements: 'Requires JavaScript',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      featureList: [
+        'Combine PNG, JPG, or WebP images into an animated GIF',
+        'Reorder frames by dragging',
+        'Set frame delay and loop count',
+        'Resize frames before export',
+        'Keep or flatten transparency',
+      ],
+    })
+  : '';
+---
+
+<section id={sectionId} class="mx-auto max-w-[1400px] px-4 pb-20 pt-10 sm:px-6 lg:pt-14">
+  {showSchema && <script type="application/ld+json" set:html={toolSchema} />}
+
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+    <div class="max-w-3xl">
+      <div class="mb-5 flex flex-wrap items-center gap-2 text-xs font-medium">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-emerald-300/20 dark:bg-emerald-300/10 dark:text-emerald-200">
+          <Icon name="tabler:shield-check" class="h-3.5 w-3.5" />
+          Local processing
+        </span>
+        <span class="text-ink-muted dark:text-emerald-50/55">No upload. No watermark.</span>
+      </div>
+      <HeadingTag class="max-w-[12ch] text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl dark:text-white">{h1}</HeadingTag>
+      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-emerald-50/65">{lead}</p>
+    </div>
+
+    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-emerald-50/60">
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Input</span>
+        <p class="mt-1 font-medium text-ink dark:text-white">PNG, JPG, WebP</p>
+      </div>
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Output</span>
+        <p class="mt-1 font-medium text-ink dark:text-white">Animated GIF</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <input id="frames-file-input" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple class="hidden" />
+
+    <div id="frames-upload-state" class="rounded-lg border border-dashed border-line bg-canvas/70 px-5 py-14 text-center dark:border-white/15 dark:bg-white/5">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+        <Icon name="tabler:upload" class="h-6 w-6" />
+      </div>
+      <p class="mt-5 text-lg font-semibold text-ink dark:text-white">Drop your image frames here</p>
+      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+        Choose multiple PNG, JPG, or WebP images. You can add more later. They stay in your browser and are assembled locally into one GIF.
+      </p>
+      <button id="frames-select-btn" type="button" class="mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
+        <Icon name="tabler:file" class="h-4 w-4" />
+        Select images
+      </button>
+    </div>
+
+    <div id="frames-tool-state" tabindex="-1" class="mt-4 hidden">
+      <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frames</span>
+          <p id="frames-count" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button id="frames-add-btn" type="button" class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
+            <Icon name="tabler:plus" class="h-4 w-4" />
+            Add images
+          </button>
+          <button id="frames-reverse-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <Icon name="tabler:arrows-up-down" class="h-4 w-4" />
+            Reverse order
+          </button>
+          <button id="frames-sort-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <Icon name="tabler:sort-ascending" class="h-4 w-4" />
+            Sort by name
+          </button>
+          <button id="frames-clear-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <Icon name="tabler:trash" class="h-4 w-4" />
+            Clear all
+          </button>
+          <button id="frames-reset-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <Icon name="tabler:refresh" class="h-4 w-4" />
+            New sequence
+          </button>
+        </div>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+          <div class="border-b border-line px-4 py-3 dark:border-white/10">
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame order</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Drag thumbnails to change the animation order.</p>
+          </div>
+          <div id="frames-list" class="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3 lg:grid-cols-4"></div>
+        </div>
+
+        <div class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
+          <div class="border-b border-line px-4 py-3 dark:border-white/10">
+            <p class="text-sm font-semibold text-ink dark:text-white">GIF settings</p>
+          </div>
+          <div class="space-y-5 p-4">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="frames-delay" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Delay ms</label>
+                <input id="frames-delay" type="number" min="10" value="100" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+              </div>
+              <div>
+                <label for="frames-loop" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Loops</label>
+                <input id="frames-loop" type="number" min="0" value="0" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+              </div>
+            </div>
+
+            <div>
+              <label for="frames-scale" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Frame size</label>
+              <select id="frames-scale" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
+                <option value="1">100%</option>
+                <option value="0.75">75%</option>
+                <option value="0.5">50%</option>
+                <option value="0.25">25%</option>
+              </select>
+            </div>
+
+            <label class="flex items-start gap-3 rounded-md border border-line p-3 dark:border-white/15">
+              <input id="frames-transparent" type="checkbox" checked class="mt-0.5 h-4 w-4 rounded border-line text-accent focus:ring-accent/30 dark:border-white/25 dark:bg-white/10" />
+              <span class="text-xs leading-relaxed text-ink-muted dark:text-emerald-50/60">Keep transparency where source images support it.</span>
+            </label>
+
+            <button id="frames-download" type="button" disabled class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40">
+              <Icon name="tabler:movie" class="h-4 w-4" />
+              Download GIF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="frames-progress-state" class="mt-4 hidden">
+      <div class="h-1.5 overflow-hidden rounded-full bg-line dark:bg-white/10">
+        <div id="frames-progress-fill" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300 ease-out"></div>
+      </div>
+      <p id="frames-progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-emerald-50/55"></p>
+    </div>
+  </div>
+
+  <div id="frames-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-emerald-50 dark:text-ink"></div>
+</section>
+
+<script>
+  import { GIFEncoder, quantize, applyPalette } from 'gifenc';
+
+  const $ = (id) => document.getElementById(id);
+  const uploadState = $('frames-upload-state');
+  const toolState = $('frames-tool-state');
+  const progressState = $('frames-progress-state');
+  const progressFill = $('frames-progress-fill');
+  const progressText = $('frames-progress-text');
+  const fileInput = $('frames-file-input');
+  const list = $('frames-list');
+  const count = $('frames-count');
+  const download = $('frames-download');
+  const toast = $('frames-toast');
+
+  let frames = [];
+  let objectUrls = [];
+  let dragIndex = -1;
+
+  function trackEvent(eventName, data = {}) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: eventName, ...data });
+    window.dispatchEvent(new CustomEvent('tool:event', { detail: { event: eventName, ...data } }));
+  }
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    window.clearTimeout(showToast.timer);
+    showToast.timer = window.setTimeout(() => toast.classList.add('hidden'), 2600);
+  }
+
+  function setProgress(visible, percent = 0, text = '') {
+    progressState.classList.toggle('hidden', !visible);
+    progressFill.style.width = `${percent}%`;
+    progressText.textContent = text;
+  }
+
+  function cleanupUrls() {
+    objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    objectUrls = [];
+  }
+
+  function renderList() {
+    list.innerHTML = '';
+    count.textContent = String(frames.length);
+    download.disabled = frames.length < 2;
+
+    frames.forEach((entry, index) => {
+      const item = document.createElement('article');
+      item.className = 'group relative rounded-md border border-line bg-canvas p-2 transition-colors dark:border-white/10 dark:bg-white/5';
+      item.draggable = true;
+      item.dataset.index = String(index);
+
+      const canvas = document.createElement('canvas');
+      const image = entry.image;
+      const ratio = image.naturalHeight / image.naturalWidth;
+      canvas.width = 160;
+      canvas.height = Math.max(1, Math.round(160 * ratio));
+      canvas.className = 'h-24 w-full rounded object-contain';
+      canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+      item.appendChild(canvas);
+
+      const meta = document.createElement('div');
+      meta.className = 'mt-2 flex items-center justify-between gap-2';
+      const label = document.createElement('span');
+      label.className = 'min-w-0 truncate text-xs font-medium text-ink dark:text-white';
+      label.textContent = `${index + 1}. ${entry.file.name}`;
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'rounded-md border border-line px-2 py-1 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60';
+      remove.textContent = 'Remove';
+      remove.addEventListener('click', () => {
+        URL.revokeObjectURL(entry.url);
+        objectUrls = objectUrls.filter((url) => url !== entry.url);
+        frames.splice(index, 1);
+        renderList();
+      });
+      meta.appendChild(label);
+      meta.appendChild(remove);
+      item.appendChild(meta);
+
+      item.addEventListener('dragstart', (event) => {
+        dragIndex = index;
+        event.dataTransfer.effectAllowed = 'move';
+        item.classList.add('opacity-60');
+      });
+      item.addEventListener('dragend', () => {
+        dragIndex = -1;
+        item.classList.remove('opacity-60');
+      });
+      item.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        item.classList.add('ring-2', 'ring-accent/40');
+      });
+      item.addEventListener('dragleave', () => {
+        item.classList.remove('ring-2', 'ring-accent/40');
+      });
+      item.addEventListener('drop', (event) => {
+        event.preventDefault();
+        item.classList.remove('ring-2', 'ring-accent/40');
+        const from = dragIndex;
+        const to = index;
+        if (from >= 0 && from !== to) {
+          const [moved] = frames.splice(from, 1);
+          frames.splice(to, 0, moved);
+          renderList();
+        }
+      });
+
+      list.appendChild(item);
+    });
+  }
+
+  async function loadFiles(files) {
+    const accepted = [...files].filter((file) => /^image\/(png|jpeg|webp)$/i.test(file.type) || /\.(png|jpe?g|webp)$/i.test(file.name));
+    if (!accepted.length) return;
+
+    for (const file of accepted) {
+      const url = URL.createObjectURL(file);
+      objectUrls.push(url);
+      const image = new Image();
+      image.src = url;
+      try {
+        await image.decode();
+      } catch {
+        showToast(`Could not read ${file.name}`);
+        continue;
+      }
+      frames.push({ file, image, url });
+    }
+
+    renderList();
+    uploadState.classList.add('hidden');
+    toolState.classList.remove('hidden');
+    toolState.focus({ preventScroll: true });
+    trackEvent('frames_to_gif_upload', { count: frames.length });
+    fileInput.value = '';
+  }
+
+  function buildCanvas(entry, scale) {
+    const image = entry.image;
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!$('frames-transparent').checked) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+    }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(image, 0, 0, width, height);
+    return canvas;
+  }
+
+  async function downloadGif() {
+    if (frames.length < 2) return;
+    download.disabled = true;
+    download.classList.add('opacity-60');
+    download.setAttribute('aria-busy', 'true');
+    try {
+      const scale = Number($('frames-scale').value) || 1;
+      const delay = Math.max(10, Number($('frames-delay').value) || 100);
+      const repeat = Math.max(0, Number($('frames-loop').value) || 0);
+      const transparent = $('frames-transparent').checked;
+      const encoder = GIFEncoder();
+      const format = transparent ? 'rgba4444' : 'rgb565';
+      const options = transparent
+        ? { format, oneBitAlpha: true, clearAlpha: true, clearAlphaThreshold: 0 }
+        : { format };
+
+      setProgress(true, 8, 'Preparing frames...');
+
+      for (let i = 0; i < frames.length; i += 1) {
+        const canvas = buildCanvas(frames[i], scale);
+        const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        const palette = quantize(imageData.data, 256, options);
+        const indexed = applyPalette(imageData.data, palette, format);
+        encoder.writeFrame(indexed, canvas.width, canvas.height, {
+          palette,
+          delay,
+          repeat,
+          transparent,
+        });
+        setProgress(true, Math.round(8 + ((i + 1) / frames.length) * 82), `Encoding frame ${i + 1} of ${frames.length}`);
+      }
+
+      encoder.finish();
+      const blob = new Blob([encoder.bytes()], { type: 'image/gif' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'frames.gif';
+      anchor.click();
+      URL.revokeObjectURL(url);
+      trackEvent('frames_to_gif_download', { count: frames.length, delay, repeat });
+      setProgress(false);
+    } finally {
+      download.disabled = false;
+      download.classList.remove('opacity-60');
+      download.removeAttribute('aria-busy');
+      download.disabled = frames.length < 2;
+    }
+  }
+
+  function reset() {
+    cleanupUrls();
+    frames = [];
+    dragIndex = -1;
+    list.innerHTML = '';
+    count.textContent = '0';
+    download.disabled = true;
+    uploadState.classList.remove('hidden');
+    toolState.classList.add('hidden');
+    setProgress(false);
+  }
+
+  $('frames-select-btn').addEventListener('click', () => fileInput.click());
+  $('frames-add-btn').addEventListener('click', () => fileInput.click());
+  uploadState.addEventListener('click', () => fileInput.click());
+  uploadState.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    uploadState.classList.add('border-accent');
+  });
+  uploadState.addEventListener('dragleave', () => {
+    uploadState.classList.remove('border-accent');
+  });
+  uploadState.addEventListener('drop', (event) => {
+    event.preventDefault();
+    uploadState.classList.remove('border-accent');
+    loadFiles(event.dataTransfer?.files);
+  });
+  fileInput.addEventListener('change', () => loadFiles(fileInput.files));
+  $('frames-reverse-btn').addEventListener('click', () => {
+    frames.reverse();
+    renderList();
+  });
+  $('frames-sort-btn').addEventListener('click', () => {
+    frames.sort((a, b) => a.file.name.localeCompare(b.file.name, undefined, { numeric: true, sensitivity: 'base' }));
+    renderList();
+  });
+  $('frames-clear-btn').addEventListener('click', () => {
+    cleanupUrls();
+    frames = [];
+    dragIndex = -1;
+    list.innerHTML = '';
+    count.textContent = '0';
+    download.disabled = true;
+    uploadState.classList.remove('hidden');
+    toolState.classList.add('hidden');
+  });
+  $('frames-reset-btn').addEventListener('click', reset);
+  download.addEventListener('click', downloadGif);
+</script>
