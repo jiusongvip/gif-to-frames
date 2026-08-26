@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 
 const title = 'GIF to Frames: Split GIF into PNG, JPG or WebP Online';
 const description =
-  'Convert GIF to frames online: split animated GIFs into PNG, JPG, or WebP images, preview every frame, and download as ZIP. Free and local.';
+  'Convert GIF to frames online: split animated GIFs into PNG, JPG, or WebP images, preview every frame, and download as ZIP. Free, local, and private.';
 
 const absoluteOgImage = new URL('/demo/frame-01.png', Astro.site).href;
 
@@ -199,42 +199,42 @@ const schema = JSON.stringify({
     </div>
 
     <div class="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-      <a href="/gif-to-png-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-to-png-frames/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file-type-png" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to PNG frames</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Export lossless frames with transparency for design, sprites, and video editing.
         </p>
       </a>
-      <a href="/gif-to-jpg-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-to-jpg-frames/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file-type-jpg" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to JPG frames</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Create smaller flattened frames for slides, social posts, and quick sharing.
         </p>
       </a>
-      <a href="/gif-to-webp-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-to-webp-frames/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to WebP frames</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Export modern web assets with transparency and a smaller file size.
         </p>
       </a>
-      <a href="/gif-to-zip-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-to-zip-frames/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:archive" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to ZIP frames</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Package selected frames into one archive with predictable file names.
         </p>
       </a>
-      <a href="/gif-frame-metadata" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-frame-metadata/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:json" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF frame metadata</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Inspect delay, size, offset, disposal, and transparency, then export JSON or CSV.
         </p>
       </a>
-      <a href="/gif-to-sprite-sheet" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
+      <a href="/gif-to-sprite-sheet/" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:grid-dots" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to sprite sheet</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
@@ -414,9 +414,9 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
             <a href="#workflows" class="block transition-colors hover:text-accent">Workflows</a>
             <a href="#developer-guide" class="block transition-colors hover:text-accent">Developer reference</a>
             <a href="#faq" class="block transition-colors hover:text-accent">FAQ</a>
-            <a href="/about" class="block transition-colors hover:text-accent">About</a>
-            <a href="/privacy" class="block transition-colors hover:text-accent">Privacy</a>
-            <a href="/contact" class="block transition-colors hover:text-accent">Contact</a>
+            <a href="/about/" class="block transition-colors hover:text-accent">About</a>
+            <a href="/privacy/" class="block transition-colors hover:text-accent">Privacy</a>
+            <a href="/contact/" class="block transition-colors hover:text-accent">Contact</a>
           </nav>
         </div>
         <div class="rounded-md border border-accent/20 bg-accent-soft p-5 dark:border-accent/30 dark:bg-accent-soft">
@@ -437,7 +437,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
           <Icon name="tabler:movie" class="h-4 w-4" />
           Rebuild a GIF
         </a>
-        <a href="/gif-to-sprite-sheet" class="btn-ghost">
+        <a href="/gif-to-sprite-sheet/" class="btn-ghost">
           <Icon name="tabler:grid-dots" class="h-4 w-4" />
           Sprite sheet
         </a>

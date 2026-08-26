@@ -16,7 +16,10 @@ interface Props {
 const {
   title,
   description,
-  canonical = new URL(Astro.url.pathname || '/', Astro.site).href.replace(/\/$/, ''),
+  canonical = (() => {
+    const href = new URL(Astro.url.pathname || '/', Astro.site).href;
+    return Astro.url.pathname === '/' ? href.replace(/\/$/, '') : href;
+  })(),
   ogImage = '/og-1200x630.png',
   schema,
   robots,

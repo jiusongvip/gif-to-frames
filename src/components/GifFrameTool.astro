@@ -38,7 +38,9 @@ const toolSchema = showSchema
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       name: h1,
-      url: `https://www.gif-to-frames.com/${Astro.url.pathname.replace(/^\/|\/$/g, '')}`,
+      url: Astro.url.pathname === '/'
+        ? 'https://www.gif-to-frames.com'
+        : `https://www.gif-to-frames.com${Astro.url.pathname}`,
       applicationCategory: 'MultimediaApplication',
       operatingSystem: 'Any',
       browserRequirements: 'Requires JavaScript',
