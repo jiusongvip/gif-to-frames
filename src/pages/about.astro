@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+const title = 'About GIF to Frames';
+const description =
+  'About GIF to Frames: a free browser-based tool for splitting animated GIFs into individual image frames, built for designers, developers, and motion artists.';
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+    <p class="overline">About</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">About GIF to Frames</h1>
+
+    <div class="mt-10 space-y-6 text-base leading-relaxed text-ink-muted">
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Why this tool exists</h2>
+        <p>
+          GIF to Frames is a free, browser-based utility for splitting animated GIFs into individual image frames. It also covers the surrounding workflow: selecting ranges, inspecting frame metadata, exporting JSON or CSV, rebuilding a GIF, and creating sprite sheets.
+        </p>
+        <p>
+          We built it because the common way to get a frame out of a GIF — screenshots, timeline scrubbing, or installing a desktop editor — is slow and lossy. The goal is a single page where an animated file becomes a set of clean, named, ready-to-use images with the original timing intact.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">How it works</h2>
+        <p>
+          The upload, decoding, preview, selection, and export flow runs entirely in your browser. Your GIF never leaves your device, there is no account, and no watermark is added.
+        </p>
+        <p>
+          Because processing is local, large animations are limited only by your browser's memory and decoding capabilities rather than server queues or file-size upload caps.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Who it is for</h2>
+        <p>
+          Designers pulling reference frames, motion and video editors importing image sequences, game and front-end developers building sprite sheets, content teams grabbing a cover frame, and anyone doing QA on animation timing.
+        </p>
+        <p>
+          The interface stays close to the preview so you can inspect, select, and export without switching tools.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">The team</h2>
+        <p>
+          The tool is built and maintained by a small product team focused on practical animation and image workflows. We read every message.
+        </p>
+        <p>
+          Questions, corrections, or ideas? <a href="/contact" class="text-accent hover:underline">Get in touch</a>.
+        </p>
+      </section>
+    </div>
+
+    <div class="mt-12 flex flex-wrap gap-3">
+      <a href="/#tool" class="btn-primary">
+        <Icon name="tabler:scissors" class="h-4 w-4" />
+        Open the tool
+      </a>
+      <a href="/contact" class="btn-ghost">
+        <Icon name="tabler:mail" class="h-4 w-4" />
+        Contact us
+      </a>
+    </div>
+  </div>
+</BaseLayout>

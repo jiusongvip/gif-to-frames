@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from './BaseLayout.astro';
 import GifFrameTool from '../components/GifFrameTool.astro';
 import { Icon } from 'astro-icon/components';
@@ -39,7 +39,7 @@ const {
   related = [],
 } = Astro.props;
 
-const absoluteOgImage = new URL('/demo/frame-01.png', Astro.site).href;
+const absoluteOgImage = new URL('/og-1200x630.png', Astro.site).href;
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 
 const schema = JSON.stringify({
@@ -93,7 +93,7 @@ const schema = JSON.stringify({
 });
 ---
 
-<BaseLayout title={title} description={description} ogImage="/demo/frame-01.png" schema={schema}>
+<BaseLayout title={title} description={description} ogImage="/og-1200x630.png" schema={schema}>
   <GifFrameTool
     h1={h1}
     lead={lead}
@@ -110,12 +110,12 @@ const schema = JSON.stringify({
 
   {
     intro.length > 0 && (
-      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+      <section class="reveal mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
         <div class="max-w-4xl space-y-12">
           {intro.map((section) => (
             <article>
               <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">{section.heading}</h2>
-              <div class="mt-5 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+              <div class="mt-5 space-y-4 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
                 {section.body.map((paragraph) => (
                   <p>{paragraph}</p>
                 ))}
@@ -129,7 +129,7 @@ const schema = JSON.stringify({
 
   {
     faq.length > 0 && (
-      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+      <section class="reveal mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
         <div class="max-w-3xl">
           <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Frequently asked questions</h2>
           <div class="mt-8 divide-y divide-line rounded-md border border-line bg-canvas/70 dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
@@ -137,11 +137,11 @@ const schema = JSON.stringify({
               <details class="group px-5 py-4">
                 <summary class="flex list-none items-center justify-between gap-4 text-left text-sm font-medium text-ink dark:text-white">
                   {item.q}
-                  <span class="shrink-0 text-ink-muted transition-transform group-open:rotate-45 dark:text-emerald-50/50">
+                  <span class="shrink-0 text-ink-muted transition-transform group-open:rotate-45 dark:text-ink-muted/70">
                     <Icon name="tabler:plus" class="h-4 w-4" />
                   </span>
                 </summary>
-                <p class="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">{item.a}</p>
+                <p class="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">{item.a}</p>
               </details>
             ))}
           </div>
@@ -152,14 +152,14 @@ const schema = JSON.stringify({
 
   {
     related.length > 0 && (
-      <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+      <section class="reveal mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
         <div class="max-w-3xl">
           <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Related tools</h2>
           <div class="mt-8 grid gap-3 sm:grid-cols-2">
             {related.map((link) => (
               <a href={link.href} class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
                 <span class="text-sm font-semibold text-ink dark:text-white">{link.label}</span>
-                <span class="mt-1 block text-xs leading-relaxed text-ink-muted dark:text-emerald-50/55">{link.description}</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-muted dark:text-ink-muted">{link.description}</span>
               </a>
             ))}
           </div>

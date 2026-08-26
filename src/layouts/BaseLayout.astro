@@ -1,5 +1,8 @@
----
+﻿---
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   title: string;
@@ -14,7 +17,7 @@ const {
   title,
   description,
   canonical = new URL(Astro.url.pathname || '/', Astro.site).href.replace(/\/$/, ''),
-  ogImage = '/demo/frame-01.png',
+  ogImage = '/og-1200x630.png',
   schema,
   robots,
 } = Astro.props;
@@ -35,7 +38,7 @@ const orgSchema = JSON.stringify({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f766e" />
+    <meta name="theme-color" content="#6d4bf2" />
     {robots && <meta name="robots" content={robots} />}
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -46,9 +49,9 @@ const orgSchema = JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />
-    <meta property="og:image:alt" content="Preview of extracted GIF frames" />
-    <meta property="og:image:width" content="240" />
-    <meta property="og:image:height" content="160" />
+    <meta property="og:image:alt" content="GIF to Frames brand image with frame grid motif" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -59,45 +62,109 @@ const orgSchema = JSON.stringify({
     {schema && <script type="application/ld+json" set:html={schema} />}
     <script type="application/ld+json" set:html={orgSchema} />
   </head>
-  <body class="min-h-[100dvh] text-ink dark:text-emerald-50/90">
-    <header class="sticky top-0 z-50 h-16 border-b border-line/80 bg-canvas/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#0f1714]/85">
-      <div class="mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 sm:px-6">
-        <a href="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink dark:text-white">
-          <span class="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white">
-            <span class="font-mono text-xs font-semibold">G</span>
-          </span>
-          GIF to Frames
-        </a>
-        <nav aria-label="Primary" class="hidden items-center gap-1 text-sm text-ink-muted md:flex dark:text-emerald-50/60">
-          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#how-it-works">How it works</a>
-          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#features">Features</a>
-          <a class="rounded-md px-3 py-2 transition-colors hover:bg-accent/8 hover:text-ink dark:hover:bg-white/5 dark:hover:text-white" href="#faq">FAQ</a>
-        </nav>
+  <body class="min-h-[100dvh] text-ink">
+    <div id="loading-veil" class="loading-veil" aria-hidden="true">
+      <div class="text-center">
+        <div class="loading-mark mx-auto">
+          <span class="font-mono text-sm font-bold">G</span>
+        </div>
+        <p class="loading-word">GIF to Frames</p>
       </div>
-    </header>
+    </div>
+
+    <div id="reading-progress" class="fixed left-0 top-0 z-[9999] h-0.5 bg-accent" style="width:0%;transition:width 0.1s linear"></div>
+
+    <button id="back-to-top" type="button" aria-label="Back to top" class="fixed bottom-5 right-5 z-[9998] hidden h-11 w-11 items-center justify-center rounded-full border border-line bg-canvas text-accent shadow-lg transition-colors hover:border-accent/40" style="display:none">
+      <Icon name="tabler:arrow-up" class="h-5 w-5" />
+    </button>
+
+    <Nav />
 
     <main class="flex-1">
       <slot />
     </main>
 
-    <footer class="mt-20 border-t border-line bg-canvas dark:border-white/10 dark:bg-[#0f1714]">
-      <div class="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p class="text-sm font-semibold text-ink dark:text-white">GIF to Frames</p>
-          <p class="mt-1 max-w-[46ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
-            Extract, inspect, and download every frame from an animated GIF. Processed locally in your browser.
-          </p>
-        </div>
-        <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-muted dark:text-emerald-50/55">
-          <a class="hover:text-accent" href="/">Home</a>
-          <a class="hover:text-accent" href="/gif-to-png-frames">GIF to PNG</a>
-          <a class="hover:text-accent" href="/frames-to-gif">Frames to GIF</a>
-          <a class="hover:text-accent" href="/#about">About</a>
-          <a class="hover:text-accent" href="/#privacy">Privacy</a>
-          <a class="hover:text-accent" href="mailto:hello@gif-to-frames.com">Contact</a>
-        </nav>
-        <p class="text-xs text-ink-muted/70 dark:text-emerald-50/40">Last updated August 17, 2026</p>
-      </div>
-    </footer>
+    <Footer />
   </body>
 </html>
+
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Loading ritual
+    var veil = document.getElementById('loading-veil');
+    if (veil) {
+      var dismiss = function () { veil.classList.add('done'); };
+      if (reduce) { dismiss(); }
+      else {
+        setTimeout(dismiss, 800);
+        window.addEventListener('load', function () { setTimeout(dismiss, 400); });
+      }
+    }
+
+    // Split-letter title reveal (starts after the veil lifts)
+    setTimeout(function () {
+      document.querySelectorAll('[data-split-title]').forEach(function (el) {
+        var chars = (el.textContent || '').trim().split('');
+        el.textContent = '';
+        chars.forEach(function (ch, i) {
+          var span = document.createElement('span');
+          span.className = 'split-char';
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          span.style.transitionDelay = Math.min(i * 16, 640) + 'ms';
+          el.appendChild(span);
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { span.classList.add('in'); });
+          });
+        });
+      });
+    }, reduce ? 0 : 900);
+
+    // Reading progress + floating back-to-top
+    var bar = document.getElementById('reading-progress');
+    var topBtn = document.getElementById('back-to-top');
+    var onScroll = function () {
+      var h = document.documentElement;
+      var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      if (bar) bar.style.width = Math.min(pct, 100) + '%';
+      if (topBtn) topBtn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (topBtn) topBtn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    var footerTop = document.getElementById('footer-top');
+    if (footerTop) footerTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    // Scroll reveal
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) entry.target.classList.add('reveal-in');
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+
+    // Sticky nav solid state
+    var nav = document.getElementById('main-nav');
+    if (nav) {
+      var onNavScroll = function () { nav.classList.toggle('nav-solid', window.scrollY > 40); };
+      onNavScroll();
+      window.addEventListener('scroll', onNavScroll, { passive: true });
+    }
+
+    // Mobile menu
+    var menuBtn = document.getElementById('mobile-menu-btn');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function () {
+        var open = mobileMenu.classList.toggle('hidden');
+        menuBtn.setAttribute('aria-expanded', String(!open));
+      });
+      mobileMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () { mobileMenu.classList.add('hidden'); });
+      });
+    }
+  })();
+</script>

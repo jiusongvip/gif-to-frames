@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GifFrameTool from '../components/GifFrameTool.astro';
 import FramesToGifTool from '../components/FramesToGifTool.astro';
@@ -12,100 +12,7 @@ const absoluteOgImage = new URL('/demo/frame-01.png', Astro.site).href;
 
 const demoFrames = Array.from({ length: 8 }, (_, index) => index + 1);
 
-const faqItems = [
-  {
-    q: 'How do I convert a GIF into separate frames?',
-    a: 'Open the tool, upload your GIF, then select all frames or a custom range. Choose PNG, JPG, or WebP and download the selected frames as a ZIP archive.',
-  },
-  {
-    q: 'Is this GIF to frames tool free?',
-    a: 'Yes. The tool is free to use, does not add a watermark, and does not require an account or installation.',
-  },
-  {
-    q: 'Will my GIF be uploaded to a server?',
-    a: 'No. The page reads and renders the GIF locally in your browser. Your file stays on your device.',
-  },
-  {
-    q: 'Can I open WebP or APNG files here?',
-    a: 'Yes. The uploader accepts animated GIF, WebP, and APNG files in browsers that support animated image decoding.',
-  },
-  {
-    q: 'Can I extract only one frame from a GIF?',
-    a: 'Yes. Use First frame, Last frame, or click any frame in the filmstrip. Then download the current frame.',
-  },
-  {
-    q: 'Can I keep transparent backgrounds?',
-    a: 'Yes. PNG and WebP exports can keep transparency. JPG will use a white background because it does not support alpha.',
-  },
-  {
-    q: 'Can I extract every second, third, or Nth frame?',
-    a: 'Yes. Set the start frame, end frame, and Every Nth frame value before exporting.',
-  },
-  {
-    q: 'Can I convert GIF frames to PNG?',
-    a: 'Yes. Upload the GIF, choose PNG as the output format, and download the current frame or all selected frames as a ZIP. PNG keeps transparency and clean edges.',
-  },
-  {
-    q: 'Can I split a GIF into frames without uploading it?',
-    a: 'Yes. The GIF is read and rendered locally in your browser. Your file is not sent to a server, and no account or installation is required.',
-  },
-  {
-    q: 'How do I make a GIF from images?',
-    a: 'Use the Frames to GIF section. Select two or more PNG, JPG, or WebP images, drag them into order, set delay and loops, then click Download GIF.',
-  },
-  {
-    q: 'Can I export GIF frames as a sprite sheet?',
-    a: 'Yes. Select the frames you want, choose a scale, and click Sprite sheet. The tool creates one PNG image arranged for game or web animation.',
-  },
-  {
-    q: 'What output formats are supported?',
-    a: 'You can export PNG, JPG, or WebP. PNG keeps transparency, JPG creates smaller flattened images, and WebP offers a modern balance of quality and file size.',
-  },
-  {
-    q: 'Can I combine frames back into a GIF?',
-    a: 'Yes. Use the Frames to GIF section to upload PNG, JPG, or WebP images, drag them into order, set delay and loop count, then download the new GIF.',
-  },
-  {
-    q: 'What is frame delay?',
-    a: 'Frame delay is how long each frame stays visible before the animation moves to the next frame. It is measured in milliseconds and controls the speed and rhythm of a GIF.',
-  },
-  {
-    q: 'What is disposal in GIF metadata?',
-    a: 'Disposal tells a decoder how to treat the previous frame before drawing the next one. It is important for transparency, partial-frame animations, and rebuilding a GIF accurately.',
-  },
-  {
-    q: 'Can I process multiple GIF files at once?',
-    a: 'Yes. Upload multiple files, switch between them with the job tabs, then use All jobs ZIP to package each source into its own folder.',
-  },
-  {
-    q: 'Can I preview the animation before downloading frames?',
-    a: 'Yes. Load a GIF and use the Play control to preview it frame by frame. You can set 0.25×, 0.5×, 1×, or 2× speed before choosing which frames to export.',
-  },
-  {
-    q: 'Why choose PNG instead of JPG for GIF frames?',
-    a: 'PNG is lossless and supports transparency, so it is better for logos, UI elements, sprites, and animation frames that need clean edges. JPG is smaller but flattens transparency and may introduce compression artifacts.',
-  },
-  {
-    q: 'Can I change the file name pattern before downloading?',
-    a: 'Yes. Use the File naming field with {index} and {source} placeholders. For example, frame-{index} creates frame-001, while {source}-{index} adds the source file name.',
-  },
-  {
-    q: 'What is the maximum file size?',
-    a: 'The uploader accepts files up to 100 MB. Very large or complex animations may take longer to decode and export.',
-  },
-  {
-    q: 'Can I extract GIF frames without installing software?',
-    a: 'Yes. This tool runs in your browser, so you can extract frames without downloading or installing an application.',
-  },
-  {
-    q: 'Can I use extracted GIF frames in Photoshop or After Effects?',
-    a: 'Yes. Export PNG frames with a numbered naming pattern, then import the image sequence into Photoshop, After Effects, Premiere, or another editing application.',
-  },
-  {
-    q: 'Can I turn GIF frames into a sprite sheet?',
-    a: 'Yes. Select the frames you want, choose a scale, and click Sprite sheet to download one PNG image arranged for game or web animation.',
-  },
-];
+import { faqs as faqItems } from '../data/faq';
 
 const schema = JSON.stringify({
   '@context': 'https://schema.org',
@@ -118,7 +25,7 @@ const schema = JSON.stringify({
       operatingSystem: 'Any',
       browserRequirements: 'Requires JavaScript',
       inLanguage: 'en',
-      dateModified: '2026-08-17',
+      dateModified: '2026-08-25',
       image: absoluteOgImage,
       thumbnailUrl: absoluteOgImage,
       offers: {
@@ -185,22 +92,85 @@ const schema = JSON.stringify({
 });
 ---
 
-<BaseLayout title={title} description={description} ogImage="/demo/frame-01.png" schema={schema}>
-  <GifFrameTool
-    h1="GIF to Frames: Split GIF into PNG, JPG or WebP"
-    lead="Split any animated GIF into individual images. Preview every frame with adjustable playback, select a range or every Nth frame, then export PNG, JPG, or WebP as a ZIP."
-    accept="image/gif,.gif,image/webp,.webp,image/apng,.apng,image/png,.png"
-    uploadTitle="Drop your GIF, WebP, or APNG here"
-    uploadHint="Choose an animated GIF, WebP, or APNG file, paste it, or load from a URL. Processing stays in your browser."
-    selectLabel="Select animation"
-    sampleLabel="Try sample GIF"
-    urlPlaceholder="Paste a GIF, WebP, or APNG URL"
-  />
+<BaseLayout title={title} description={description} ogImage="/og-1200x630.png" schema={schema}>
+  <section class="hero-stage">
+    <div class="hero-filmstrip" aria-hidden="true">
+      <div class="hero-filmstrip-track">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <canvas id="hero-particles" class="hero-particles" aria-hidden="true"></canvas>
+
+    <div class="hero-content">
+      <GifFrameTool
+        h1="GIF to Frames: Split GIF into PNG, JPG or WebP"
+        lead="Split any animated GIF into individual images. Preview every frame with adjustable playback, select a range or every Nth frame, then export PNG, JPG, or WebP as a ZIP."
+        accept="image/gif,.gif,image/webp,.webp,image/apng,.apng,image/png,.png"
+        uploadTitle="Drop your GIF, WebP, or APNG here"
+        uploadHint="Choose an animated GIF, WebP, or APNG file, paste it, or load from a URL. Processing stays in your browser."
+        selectLabel="Select animation"
+        sampleLabel="Try sample GIF"
+        urlPlaceholder="Paste a GIF, WebP, or APNG URL"
+      />
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true"></div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var canvas = document.getElementById('hero-particles');
+      if (!canvas || reduce) return;
+      var ctx = canvas.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = 0, h = 0, parts = [];
+
+      function resize() {
+        var rect = canvas.parentElement.getBoundingClientRect();
+        w = rect.width; h = rect.height;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function spawn(p) {
+        p.x = Math.random() * w;
+        p.y = h + 10 + Math.random() * 40;
+        p.s = 2 + Math.random() * 4;
+        p.vy = 0.15 + Math.random() * 0.4;
+        p.vx = (Math.random() - 0.5) * 0.15;
+        p.a = 0.08 + Math.random() * 0.22;
+        p.tw = Math.random() * Math.PI * 2;
+      }
+      function init() {
+        resize();
+        var count = Math.min(40, Math.floor(w / 30));
+        parts = [];
+        for (var i = 0; i < count; i++) { var p = {}; spawn(p); parts.push(p); }
+      }
+      function frame() {
+        ctx.clearRect(0, 0, w, h);
+        for (var i = 0; i < parts.length; i++) {
+          var p = parts[i];
+          p.x += p.vx; p.y -= p.vy; p.tw += 0.012;
+          if (p.y < -20) spawn(p);
+          ctx.fillStyle = 'rgba(124,92,255,' + (p.a * (0.5 + 0.5 * Math.sin(p.tw))).toFixed(3) + ')';
+          ctx.fillRect(p.x, p.y, p.s, p.s);
+        }
+        requestAnimationFrame(frame);
+      }
+      init();
+      requestAnimationFrame(frame);
+      var onResize;
+      window.addEventListener('resize', function () { clearTimeout(onResize); onResize = setTimeout(init, 200); }, { passive: true });
+    })();
+  </script>
 
   <section class="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Sample output: one GIF, eight frames</h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         The sample animation becomes eight numbered images. Upload your own GIF to preview and select the exact frames you need.
       </p>
     </div>
@@ -212,7 +182,7 @@ const schema = JSON.stringify({
           return (
             <figure class="overflow-hidden rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
               <img src={`/demo/frame-${number}.png`} alt={`Sample GIF frame ${number}`} loading="lazy" decoding="async" width="240" height="160" class="aspect-square w-full object-cover" />
-              <figcaption class="border-t border-line px-3 py-2 font-mono text-xs text-ink-muted dark:border-white/10 dark:text-emerald-50/55">frame-{number}.png</figcaption>
+              <figcaption class="border-t border-line px-3 py-2 font-mono text-xs text-ink-muted dark:border-white/10 dark:text-ink-muted">frame-{number}.png</figcaption>
             </figure>
           );
         })
@@ -220,10 +190,10 @@ const schema = JSON.stringify({
     </div>
   </section>
 
-  <section id="popular-conversions" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="popular-conversions" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Popular GIF frame conversions</h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         Jump straight to the output or workflow you need. Every conversion runs locally in your browser.
       </p>
     </div>
@@ -232,42 +202,42 @@ const schema = JSON.stringify({
       <a href="/gif-to-png-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file-type-png" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to PNG frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Export lossless frames with transparency for design, sprites, and video editing.
         </p>
       </a>
       <a href="/gif-to-jpg-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file-type-jpg" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to JPG frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Create smaller flattened frames for slides, social posts, and quick sharing.
         </p>
       </a>
       <a href="/gif-to-webp-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to WebP frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Export modern web assets with transparency and a smaller file size.
         </p>
       </a>
       <a href="/gif-to-zip-frames" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:archive" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to ZIP frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Package selected frames into one archive with predictable file names.
         </p>
       </a>
       <a href="/gif-frame-metadata" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:json" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF frame metadata</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Inspect delay, size, offset, disposal, and transparency, then export JSON or CSV.
         </p>
       </a>
       <a href="/gif-to-sprite-sheet" class="rounded-md border border-line bg-canvas/70 p-5 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:grid-dots" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">GIF to sprite sheet</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Arrange selected frames into one PNG sprite sheet for games and UI animation.
         </p>
       </a>
@@ -282,12 +252,12 @@ const schema = JSON.stringify({
     lead="Upload PNG, JPG, or WebP frames, drag them into order, and create a clean animated GIF."
   />
 
-  <section id="guide" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="guide" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
       <div class="max-w-4xl space-y-14">
         <article>
           <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">What is GIF frame extraction?</h2>
-          <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
             <p>
               An animated GIF is not a single image. It is a compact container made from multiple still images called frames, along with timing and compositing information. Frame extraction reads that container, renders each frame in order, and exports the frames as separate image files.
             </p>
@@ -307,7 +277,7 @@ const schema = JSON.stringify({
           <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">How to choose the best output format</h2>
           <div class="mt-6 overflow-x-auto rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
             <table class="w-full min-w-[720px] border-collapse text-left text-sm">
-              <thead class="border-b border-line text-xs uppercase tracking-[0.12em] text-ink-muted dark:border-white/10 dark:text-emerald-50/55">
+              <thead class="border-b border-line text-xs uppercase tracking-[0.12em] text-ink-muted dark:border-white/10 dark:text-ink-muted">
                 <tr>
                   <th class="px-4 py-3 font-medium">Format</th>
                   <th class="px-4 py-3 font-medium">Best for</th>
@@ -319,29 +289,29 @@ const schema = JSON.stringify({
               <tbody class="divide-y divide-line dark:divide-white/10">
                 <tr>
                   <td class="px-4 py-3 font-semibold text-ink dark:text-white">PNG</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Lossless output, clean edges, UI and game assets</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Yes</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Larger</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Design, sprites, video editing</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Lossless output, clean edges, UI and game assets</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Yes</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Larger</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Design, sprites, video editing</td>
                 </tr>
                 <tr>
                   <td class="px-4 py-3 font-semibold text-ink dark:text-white">JPG</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Photos, slides, social posts, lighter sequences</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">No</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Smaller</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Documents, sharing, previews</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Photos, slides, social posts, lighter sequences</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">No</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Smaller</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Documents, sharing, previews</td>
                 </tr>
                 <tr>
                   <td class="px-4 py-3 font-semibold text-ink dark:text-white">WebP</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Modern web assets with good quality and smaller files</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Yes</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Small</td>
-                  <td class="px-4 py-3 text-ink-muted dark:text-emerald-50/65">Web, app, content workflows</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Modern web assets with good quality and smaller files</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Yes</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Small</td>
+                  <td class="px-4 py-3 text-ink-muted dark:text-ink-muted">Web, app, content workflows</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
             Use PNG when quality and transparency are more important than file size. Use WebP when you need modern, efficient web output. Use JPG when you need maximum compatibility and smaller flattened stills.
           </p>
         </article>
@@ -351,22 +321,22 @@ const schema = JSON.stringify({
           <div class="mt-6 grid gap-3 sm:grid-cols-2">
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Frame delay</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">The time a frame remains visible before the next frame appears. Short delays create fast motion; long delays create pauses.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">The time a frame remains visible before the next frame appears. Short delays create fast motion; long delays create pauses.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Frame dimensions and offset</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">GIF frames can be smaller than the full canvas and positioned at a specific offset. The metadata table shows these values for every frame.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">GIF frames can be smaller than the full canvas and positioned at a specific offset. The metadata table shows these values for every frame.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Disposal</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Disposal controls whether the previous frame is kept, cleared, or restored before drawing the next one. It matters when rebuilding transparent or partial-frame animations.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Disposal controls whether the previous frame is kept, cleared, or restored before drawing the next one. It matters when rebuilding transparent or partial-frame animations.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Transparency</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">A frame may include transparent pixels. PNG and WebP preserve alpha. JPG flattens transparent areas to white because it does not support transparency.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">A frame may include transparent pixels. PNG and WebP preserve alpha. JPG flattens transparent areas to white because it does not support transparency.</p>
             </div>
           </div>
-          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
             Use the JSON or CSV export when you need to feed frame timing and dimensions into a build script, spreadsheet, QA process, or animation pipeline.
           </p>
         </article>
@@ -376,19 +346,19 @@ const schema = JSON.stringify({
           <div class="mt-6 grid gap-3 md:grid-cols-2">
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">After Effects and video editing</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Export PNG frames with a numbered naming pattern, import the sequence into After Effects, Premiere, or CapCut, and use the original frame delay as a timing reference.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Export PNG frames with a numbered naming pattern, import the sequence into After Effects, Premiere, or CapCut, and use the original frame delay as a timing reference.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Game and UI animation</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Select the frames you need, export a sprite sheet, or keep individual PNG frames with alpha for engines, UI tools, and CSS animation.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Select the frames you need, export a sprite sheet, or keep individual PNG frames with alpha for engines, UI tools, and CSS animation.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">Content and social media</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Extract the first, last, or clearest frame for a thumbnail, avatar, article image, or social post without installing an editor.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Extract the first, last, or clearest frame for a thumbnail, avatar, article image, or social post without installing an editor.</p>
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-base font-semibold text-ink dark:text-white">QA and animation inspection</h3>
-              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Review frame order, delay, transparency, and disposal. Export metadata as CSV to document issues or compare multiple animation versions.</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Review frame order, delay, transparency, and disposal. Export metadata as CSV to document issues or compare multiple animation versions.</p>
             </div>
           </div>
         </article>
@@ -398,7 +368,7 @@ const schema = JSON.stringify({
           <div class="mt-6 grid gap-4 md:grid-cols-2">
             <div class="rounded-md border border-line bg-canvas/70 p-4 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-sm font-semibold text-ink dark:text-white">Python with Pillow</h3>
-              <pre class="mt-3 overflow-x-auto rounded-md bg-ink p-4 font-mono text-xs leading-relaxed text-emerald-50 dark:bg-black/40"><code>from PIL import Image
+              <pre class="mt-3 overflow-x-auto rounded-md bg-ink p-4 font-mono text-xs leading-relaxed text-[#ecebf4] dark:bg-black/40"><code>from PIL import Image
 
 with Image.open("animation.gif") as im:
     for index in range(im.n_frames):
@@ -408,20 +378,20 @@ with Image.open("animation.gif") as im:
             </div>
             <div class="rounded-md border border-line bg-canvas/70 p-4 dark:border-white/10 dark:bg-white/5">
               <h3 class="text-sm font-semibold text-ink dark:text-white">FFmpeg</h3>
-              <pre class="mt-3 overflow-x-auto rounded-md bg-ink p-4 font-mono text-xs leading-relaxed text-emerald-50 dark:bg-black/40"><code>ffmpeg -i animation.gif frame_%03d.png
+              <pre class="mt-3 overflow-x-auto rounded-md bg-ink p-4 font-mono text-xs leading-relaxed text-[#ecebf4] dark:bg-black/40"><code>ffmpeg -i animation.gif frame_%03d.png
 
 ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
 </code></pre>
             </div>
           </div>
-          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
             Use the browser tool when you need a fast visual workflow. Use these commands when you need frame extraction inside an automated script, server process, or local development pipeline. See the <a href="https://pillow.readthedocs.io/en/stable/reference/Image.html" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">Pillow Image docs</a> and the <a href="https://ffmpeg.org/documentation.html" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">FFmpeg documentation</a> for full reference.
           </p>
         </article>
 
         <article id="local-processing">
           <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Why local processing matters</h2>
-          <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
             <p>
               The upload, decoding, preview, selection, and export flow runs in your browser. The source file does not need to be sent to a server, which reduces privacy risk and makes the tool feel faster for sensitive or confidential work.
             </p>
@@ -435,7 +405,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       <aside class="space-y-6 lg:sticky lg:top-24">
         <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
           <h2 class="text-sm font-semibold text-ink dark:text-white">On this page</h2>
-          <nav class="mt-4 space-y-2 text-sm text-ink-muted dark:text-emerald-50/60">
+          <nav class="mt-4 space-y-2 text-sm text-ink-muted dark:text-ink-muted">
             <a href="#tool" class="block transition-colors hover:text-accent">Extract frames</a>
             <a href="#frames-to-gif" class="block transition-colors hover:text-accent">Rebuild GIF</a>
             <a href="#popular-conversions" class="block transition-colors hover:text-accent">Popular conversions</a>
@@ -444,36 +414,54 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
             <a href="#workflows" class="block transition-colors hover:text-accent">Workflows</a>
             <a href="#developer-guide" class="block transition-colors hover:text-accent">Developer reference</a>
             <a href="#faq" class="block transition-colors hover:text-accent">FAQ</a>
-            <a href="#about" class="block transition-colors hover:text-accent">About</a>
-            <a href="#privacy" class="block transition-colors hover:text-accent">Privacy</a>
-            <a href="#contact" class="block transition-colors hover:text-accent">Contact</a>
+            <a href="/about" class="block transition-colors hover:text-accent">About</a>
+            <a href="/privacy" class="block transition-colors hover:text-accent">Privacy</a>
+            <a href="/contact" class="block transition-colors hover:text-accent">Contact</a>
           </nav>
         </div>
-        <div class="rounded-md border border-accent/20 bg-accent-soft p-5 dark:border-emerald-300/20 dark:bg-emerald-300/10">
+        <div class="rounded-md border border-accent/20 bg-accent-soft p-5 dark:border-accent/30 dark:bg-accent-soft">
           <h2 class="text-sm font-semibold text-ink dark:text-white">Private by default</h2>
-          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">Files are processed locally in your browser. No upload, no account, and no watermark.</p>
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">Files are processed locally in your browser. No upload, no account, and no watermark.</p>
         </div>
       </aside>
     </div>
   </section>
 
-  <section id="how-it-works" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="mid-cta" class="reveal border-y border-line bg-accent-soft/70 py-12 dark:bg-accent-soft">
+    <div class="mx-auto flex max-w-[1100px] flex-col items-center justify-between gap-6 px-4 sm:px-6 md:flex-row">
+      <p class="max-w-xl text-center text-xl font-semibold tracking-tight text-ink md:text-left dark:text-white">
+        The frames are out. Put them to work — rebuild the animation, make a sprite sheet, or import the sequence into your editor.
+      </p>
+      <div class="flex shrink-0 flex-wrap justify-center gap-3">
+        <a href="#frames-to-gif" class="btn-primary">
+          <Icon name="tabler:movie" class="h-4 w-4" />
+          Rebuild a GIF
+        </a>
+        <a href="/gif-to-sprite-sheet" class="btn-ghost">
+          <Icon name="tabler:grid-dots" class="h-4 w-4" />
+          Sprite sheet
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">
         Three moves from GIF to image sequence
       </h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         The tool stays in your browser, so the file does not leave your device.
       </p>
     </div>
 
     <div class="mt-10 grid gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-stretch">
       <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-accent-soft dark:text-accent-200">
           <Icon name="tabler:upload" class="h-5 w-5" />
         </div>
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Open a GIF</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Upload, paste, or load from a URL.
         </p>
       </div>
@@ -483,11 +471,11 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       </div>
 
       <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-accent-soft dark:text-accent-200">
           <Icon name="tabler:pointer" class="h-5 w-5" />
         </div>
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Select frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Click thumbnails, set a range, or take every Nth frame.
         </p>
       </div>
@@ -497,23 +485,23 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       </div>
 
       <div class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+        <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-accent-soft dark:text-accent-200">
           <Icon name="tabler:archive" class="h-5 w-5" />
         </div>
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Export frames</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Download the current frame or all selected frames as ZIP.
         </p>
       </div>
     </div>
   </section>
 
-  <section id="features" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="features" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">
         Built for real frame work, not just extraction
       </h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         The controls stay close to the preview so you can inspect, select, and export without switching tools.
       </p>
     </div>
@@ -523,19 +511,19 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
         <img src="/demo/frame-01.png" alt="Demo GIF frame with moving shapes" loading="lazy" decoding="async" width="240" height="160" class="h-52 w-full object-cover" />
         <div class="p-5">
           <h3 class="text-base font-semibold text-ink dark:text-white">Frame inspection</h3>
-          <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+          <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
             See the current frame, its position, and its delay before you export.
           </p>
         </div>
       </article>
 
-      <article class="flex min-h-72 flex-col justify-between rounded-md bg-accent-soft p-5 dark:bg-emerald-300/10">
+      <article class="flex min-h-72 flex-col justify-between rounded-md bg-accent-soft p-5 dark:bg-accent-soft">
         <div>
-          <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent/10 text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+          <div class="flex h-9 w-9 items-center justify-center rounded-md bg-accent/10 text-accent dark:bg-accent-soft dark:text-accent-200">
             <Icon name="tabler:adjustments-horizontal" class="h-5 w-5" />
           </div>
           <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Range and Nth frame</h3>
-          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
             Start, end, and interval controls keep long animations manageable.
           </p>
         </div>
@@ -546,7 +534,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
         <img src="/demo/frame-03.png" alt="Third frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-40 w-full object-cover" />
         <div class="p-5">
           <h3 class="text-base font-semibold text-ink dark:text-white">Transparent PNG</h3>
-          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+          <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
             Keep alpha in PNG or WebP output where your GIF supports it.
           </p>
         </div>
@@ -557,7 +545,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
           <img src="/demo/frame-05.png" alt="Middle frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-28 w-40 rounded-md object-cover" />
           <div>
             <h3 class="text-base font-semibold text-ink dark:text-white">ZIP export</h3>
-            <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+            <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
               Export every selected frame into a single archive with predictable file names.
             </p>
           </div>
@@ -566,12 +554,12 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
     </div>
   </section>
 
-  <section id="use-cases" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="use-cases" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">
         Built for the way GIFs are actually used
       </h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         Extract the exact frames you need for design, motion, games, content, and QA.
       </p>
     </div>
@@ -580,54 +568,54 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:palette" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Design reference</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Pull frames from a GIF to study layout, illustration, or motion references.
         </p>
       </article>
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:video" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Video and motion</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Export image sequences for After Effects, Premiere, CapCut, or stop-motion projects.
         </p>
       </article>
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:device-gamepad-2" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Games and UI</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Turn frames into sprite sheets or individual assets for web and game animation.
         </p>
       </article>
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:photo" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Content and social</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Grab the first, last, or clearest frame for a cover image or social post.
         </p>
       </article>
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:file-check" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">QA and inspection</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Check frame order, delay, transparency, and disposal before shipping an animation.
         </p>
       </article>
       <article class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <Icon name="tabler:movie" class="h-5 w-5 text-accent" />
         <h3 class="mt-4 text-base font-semibold text-ink dark:text-white">Reuse and rebuild</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-emerald-50/55">
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Select clean frames and reverse them into a new GIF with your own timing.
         </p>
       </article>
     </div>
   </section>
 
-  <section id="related-tools" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="related-tools" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">
         One page, every frame task
       </h2>
-      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
         Everything stays on this page. Jump straight to the task you need without opening separate tool pages.
       </p>
     </div>
@@ -635,19 +623,19 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
     <div class="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
       <a href="#tool" class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <span class="text-sm font-semibold text-ink dark:text-white">Extract frames</span>
-        <span class="mt-1 block text-xs text-ink-muted dark:text-emerald-50/55">Upload GIF, WebP, or APNG and preview every frame.</span>
+        <span class="mt-1 block text-xs text-ink-muted dark:text-ink-muted">Upload GIF, WebP, or APNG and preview every frame.</span>
       </a>
       <a href="#frames-to-gif" class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <span class="text-sm font-semibold text-ink dark:text-white">Rebuild GIF</span>
-        <span class="mt-1 block text-xs text-ink-muted dark:text-emerald-50/55">Combine PNG, JPG, or WebP frames into a new GIF.</span>
+        <span class="mt-1 block text-xs text-ink-muted dark:text-ink-muted">Combine PNG, JPG, or WebP frames into a new GIF.</span>
       </a>
       <a href="#metadata-guide" class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <span class="text-sm font-semibold text-ink dark:text-white">Inspect metadata</span>
-        <span class="mt-1 block text-xs text-ink-muted dark:text-emerald-50/55">See delay, size, offset, disposal, and transparency.</span>
+        <span class="mt-1 block text-xs text-ink-muted dark:text-ink-muted">See delay, size, offset, disposal, and transparency.</span>
       </a>
       <a href="#formats" class="rounded-md border border-line bg-canvas/70 p-4 transition-colors hover:border-accent/40 dark:border-white/10 dark:bg-white/5">
         <span class="text-sm font-semibold text-ink dark:text-white">Export settings</span>
-        <span class="mt-1 block text-xs text-ink-muted dark:text-emerald-50/55">Choose PNG, JPG, WebP, ZIP, rotation, flip, and scale.</span>
+        <span class="mt-1 block text-xs text-ink-muted dark:text-ink-muted">Choose PNG, JPG, WebP, ZIP, rotation, flip, and scale.</span>
       </a>
     </div>
   </section>
@@ -658,7 +646,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
         <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">
           Why a GIF frame workspace beats a basic converter
         </h2>
-        <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
+        <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
           <p>
             A basic converter gives you files. A GIF to frames workspace gives you control over the frames you actually need. Instead of downloading every frame and cleaning up later, you can inspect timing, select a range, keep transparency, export metadata, and rebuild selected frames into a new GIF from the same screen.
           </p>
@@ -672,7 +660,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       </div>
       <aside class="rounded-md border border-line bg-canvas/70 p-5 dark:border-white/10 dark:bg-white/5">
         <h3 class="text-sm font-semibold text-ink dark:text-white">What users can do here</h3>
-        <ul class="mt-4 space-y-3 text-sm text-ink-muted dark:text-emerald-50/60">
+        <ul class="mt-4 space-y-3 text-sm text-ink-muted dark:text-ink-muted">
           <li>Extract PNG, JPG, or WebP frames</li>
           <li>Select a range, first frame, last frame, or every Nth frame</li>
           <li>Inspect delay, dimensions, offset, disposal, and alpha</li>
@@ -685,7 +673,39 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
     </div>
   </section>
 
-  <section id="faq" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
+  <section id="trust" class="reveal mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="card rounded-md p-5">
+        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-accent-soft text-accent">
+          <Icon name="tabler:shield-check" class="h-4 w-4" />
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-ink dark:text-white">Local processing</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
+          Decoding, previewing, and export all run in your browser. Your file never leaves your device.
+        </p>
+      </div>
+      <div class="card rounded-md p-5">
+        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-accent-soft text-accent">
+          <Icon name="tabler:photo" class="h-4 w-4" />
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-ink dark:text-white">No watermark, no account</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
+          Free to use, no signup, no ads, and no watermark on the frames you export.
+        </p>
+      </div>
+      <div class="card rounded-md p-5">
+        <div class="flex h-8 w-8 items-center justify-center rounded-md bg-accent-soft text-accent">
+          <Icon name="tabler:refresh" class="h-4 w-4" />
+        </div>
+        <h3 class="mt-3 text-sm font-semibold text-ink dark:text-white">Updated August 2026</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
+          Actively maintained. New formats, export options, and workflows are added over time.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-3xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Frequently asked questions</h2>
       <div class="mt-8 divide-y divide-line rounded-md border border-line bg-canvas/70 dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
@@ -694,86 +714,16 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
             <details class="group px-5 py-4">
               <summary class="flex list-none items-center justify-between gap-4 text-left text-sm font-medium text-ink dark:text-white">
                 {item.q}
-                <span class="shrink-0 text-ink-muted transition-transform group-open:rotate-45 dark:text-emerald-50/50">
+                <span class="shrink-0 text-ink-muted transition-transform group-open:rotate-45 dark:text-ink-muted/70">
                   <Icon name="tabler:plus" class="h-4 w-4" />
                 </span>
               </summary>
-              <p class="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+              <p class="mt-3 max-w-[65ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
                 {item.a}
               </p>
             </details>
           ))
         }
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
-    <div class="max-w-3xl">
-      <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">About GIF to Frames</h2>
-      <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
-        <p>
-          GIF to Frames is a free browser-based utility for splitting animated GIFs into individual image frames. It also covers the surrounding workflow: selecting ranges, inspecting frame metadata, exporting JSON or CSV, rebuilding a GIF, and creating sprite sheets.
-        </p>
-        <p>
-          The tool is built and maintained by a small product team focused on practical animation and image workflows. The interface stays close to the preview so you can inspect, select, and export without switching tools.
-        </p>
-        <p>
-          Because processing happens locally, large animations are subject to your browser's available memory and decoding limits rather than server queues.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="privacy" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
-    <div class="max-w-3xl">
-      <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Privacy: files stay on your device</h2>
-      <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
-        <p>
-          Uploading, decoding, previewing, selecting, and exporting happen in your browser. GIF, WebP, APNG, PNG, JPG, and WebP source files remain on your device during the tool workflow.
-        </p>
-        <p>
-          The website itself may use standard hosting or security logs for availability and abuse prevention. Those logs are not used to inspect the files you process in the browser.
-        </p>
-        <p>
-          If analytics or advertising services are added later, this page will be updated before those services collect data.
-        </p>
-        <p>
-          For privacy questions, contact <a href="mailto:hello@gif-to-frames.com" class="text-accent hover:underline">hello@gif-to-frames.com</a>.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
-    <div class="max-w-3xl">
-      <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Contact us</h2>
-      <p class="mt-6 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
-        Send feedback, bug reports, or questions. Include the browser, device, and steps to reproduce when reporting a tool issue.
-      </p>
-      <a href="mailto:hello@gif-to-frames.com" class="mt-8 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
-        <Icon name="tabler:mail" class="h-4 w-4" />
-        hello@gif-to-frames.com
-      </a>
-    </div>
-  </section>
-
-  <section id="terms" class="mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
-    <div class="max-w-3xl">
-      <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Terms of use</h2>
-      <div class="mt-6 space-y-4 text-base leading-relaxed text-ink-muted dark:text-emerald-50/60">
-        <p>
-          You may use the tools for lawful image and animation work. Do not attempt to disrupt the service, bypass browser limits, or process content you do not have permission to use.
-        </p>
-        <p>
-          You keep responsibility for the files you upload and the outputs you create. Because processing is local, the tool does not store your source files or exported frames on a server.
-        </p>
-        <p>
-          The tools are provided without warranty of uninterrupted availability or fitness for a particular purpose. Browser decoding behavior varies, so verify important outputs before relying on them.
-        </p>
-        <p>
-          These terms may be updated when tool behavior changes. The current update date is August 17, 2026.
-        </p>
       </div>
     </div>
   </section>

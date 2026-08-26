@@ -23,11 +23,11 @@ All decoding, previewing, selection, and export work happens locally in the user
 - PNG: lossless, supports transparency, best for design, sprites, UI, and video editing
 - JPG: smaller flattened images, best for sharing, slides, and previews
 - WebP: modern compressed output, supports transparency
-- ZIP: selected frames packaged with predictable file names
+- ZIP: selected frames packaged with predictable file names, plus a metadata.json file with per-frame timing
 - JSON: frame metadata export
 - CSV: frame metadata export
 - GIF: reverse selected frames or combine images into a new animated GIF
-- Sprite sheet: selected frames arranged into one PNG
+- Sprite sheet: selected frames arranged into one PNG with custom grid columns and optional frame numbers
 
 ## Frame metadata
 
@@ -51,6 +51,7 @@ Metadata can be downloaded as JSON or CSV.
 - First frame, last frame, transparent frames, duplicate frames
 - Invert or clear selection
 - Scale, rotation, and mirroring
+- Custom sprite sheet columns and optional frame numbers
 - Custom file naming with index and source placeholders
 - Quality control for JPG and WebP
 

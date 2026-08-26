@@ -1,0 +1,60 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<footer class="mt-20 border-t border-line">
+  <div class="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_auto_auto]">
+      <div class="max-w-[34ch]">
+        <a href="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
+          <span class="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white">
+            <span class="font-mono text-xs font-bold">G</span>
+          </span>
+          GIF to Frames
+        </a>
+        <p class="mt-4 text-sm leading-relaxed text-ink-muted">
+          Extract, inspect, and download every frame from an animated GIF. Processed locally in your browser — no upload, no watermark, no account.
+        </p>
+        <p class="mt-5 font-mono text-xs uppercase tracking-[0.18em] text-ink-muted/70">
+          Updated August 25, 2026
+        </p>
+      </div>
+
+      <nav aria-label="Tools" class="text-sm">
+        <p class="overline">Tools</p>
+        <div class="mt-4 grid gap-2 text-ink-muted">
+          <a class="transition-colors hover:text-accent" href="/gif-to-png-frames">GIF to PNG frames</a>
+          <a class="transition-colors hover:text-accent" href="/gif-to-jpg-frames">GIF to JPG frames</a>
+          <a class="transition-colors hover:text-accent" href="/gif-to-webp-frames">GIF to WebP frames</a>
+          <a class="transition-colors hover:text-accent" href="/gif-to-zip-frames">GIF to ZIP frames</a>
+          <a class="transition-colors hover:text-accent" href="/gif-frame-metadata">Frame metadata</a>
+          <a class="transition-colors hover:text-accent" href="/gif-to-sprite-sheet">Sprite sheet</a>
+          <a class="transition-colors hover:text-accent" href="/frames-to-gif">Frames to GIF</a>
+        </div>
+      </nav>
+
+      <nav aria-label="Company" class="text-sm">
+        <p class="overline">Company</p>
+        <div class="mt-4 grid gap-2 text-ink-muted">
+          <a class="transition-colors hover:text-accent" href="/about">About</a>
+          <a class="transition-colors hover:text-accent" href="/contact">Contact</a>
+          <a class="transition-colors hover:text-accent" href="/privacy">Privacy</a>
+        </div>
+        <p class="mt-6 text-sm text-ink-muted">
+          <a href="mailto:hello@gif-to-frames.com" class="inline-flex items-center gap-2 transition-colors hover:text-accent">
+            <Icon name="tabler:mail" class="h-4 w-4" />
+            hello@gif-to-frames.com
+          </a>
+        </p>
+      </nav>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>© 2026 GIF to Frames. Free browser-based GIF frame extraction.</p>
+      <button id="footer-top" type="button" class="inline-flex items-center gap-1.5 transition-colors hover:text-accent">
+        Back to top
+        <Icon name="tabler:arrow-up" class="h-3.5 w-3.5" />
+      </button>
+    </div>
+  </div>
+</footer>

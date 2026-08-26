@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+const title = 'Contact GIF to Frames';
+const description =
+  'Contact the GIF to Frames team with feedback, bug reports, or questions about extracting frames from animated GIFs.';
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+    <p class="overline">Contact</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Contact us</h1>
+
+    <div class="mt-10 space-y-6 text-base leading-relaxed text-ink-muted">
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Get in touch</h2>
+        <p>
+          Send feedback, bug reports, or questions. We read every message and reply when we can.
+        </p>
+        <p>
+          When reporting a tool issue, include the browser, device, and the steps to reproduce. Sample files (when sensitive) help a lot.
+        </p>
+      </section>
+
+      <section class="rounded-md border border-line bg-canvas/70 p-5">
+        <h2 class="text-base font-semibold text-ink">Email</h2>
+        <a href="mailto:hello@gif-to-frames.com" class="mt-3 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
+          <Icon name="tabler:mail" class="h-4 w-4" />
+          hello@gif-to-frames.com
+        </a>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Support</h2>
+        <p>
+          Most questions are answered by the tool itself: load a file and the filmstrip, metadata table, and export options are available directly on the page.
+        </p>
+        <p>
+          Because processing is local, we cannot recover files you have not downloaded yourself.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

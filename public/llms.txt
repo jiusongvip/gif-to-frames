@@ -10,10 +10,10 @@ The tool runs locally in the browser. Files are not uploaded to a server. No acc
 - Preview every frame with adjustable playback speed.
 - Select all frames, a range, the first frame, the last frame, or every Nth frame.
 - Filter transparent or duplicate frames.
-- Export selected frames as ZIP.
+- Export selected frames as ZIP with a metadata.json file that records frame timing.
 - Inspect and export frame delay, size, offset, disposal, and transparency as JSON or CSV.
 - Reverse selected frames into a new GIF.
-- Create a sprite sheet from selected frames.
+- Create a sprite sheet from selected frames with custom columns and optional frame numbers.
 - Combine PNG, JPG, or WebP images into a GIF.
 
 ## Privacy

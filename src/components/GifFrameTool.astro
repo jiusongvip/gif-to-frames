@@ -1,4 +1,4 @@
----
+﻿---
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -64,27 +64,27 @@ const toolSchema = showSchema
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
     <div class="max-w-3xl">
       <div class="mb-5 flex flex-wrap items-center gap-2 text-xs font-medium">
-        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-emerald-300/20 dark:bg-emerald-300/10 dark:text-emerald-200">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-accent/30 dark:bg-accent-soft dark:text-accent-200">
           <Icon name="tabler:shield-check" class="h-3.5 w-3.5" />
           Local processing
         </span>
-        <span class="text-ink-muted dark:text-emerald-50/55">No upload. No watermark.</span>
+        <span class="text-ink-muted dark:text-ink-muted">No upload. No watermark.</span>
       </div>
-      <h1 class="max-w-[24ch] text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl dark:text-white">
+      <h1 data-split-title class="max-w-[24ch] text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl dark:text-white">
         {h1}
       </h1>
-      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-emerald-50/65">
+      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-ink-muted">
         {lead}
       </p>
     </div>
 
-    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-emerald-50/60">
+    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-ink-muted">
       <div>
-        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Input</span>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Input</span>
         <p class="mt-1 font-medium text-ink dark:text-white">GIF files, clipboard, URL</p>
       </div>
       <div>
-        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Output</span>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Output</span>
         <p class="mt-1 font-medium text-ink dark:text-white">PNG, JPG, WebP, ZIP</p>
       </div>
     </div>
@@ -94,11 +94,11 @@ const toolSchema = showSchema
     <input id="file-input" type="file" accept={accept} multiple class="hidden" />
 
     <div id="upload-state" class="rounded-lg border border-dashed border-line bg-canvas/70 px-5 py-14 text-center dark:border-white/15 dark:bg-white/5">
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-accent-soft dark:text-accent-200">
         <Icon name="tabler:upload" class="h-6 w-6" />
       </div>
       <p class="mt-5 text-lg font-semibold text-ink dark:text-white">{uploadTitle}</p>
-      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
         {uploadHint}
       </p>
       <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -106,13 +106,13 @@ const toolSchema = showSchema
           <Icon name="tabler:file" class="h-4 w-4" />
           {selectLabel}
         </button>
-        <button id="demo-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+        <button id="demo-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-5 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
           {sampleLabel}
         </button>
       </div>
       <div class="mx-auto mt-5 flex max-w-sm items-center gap-2" role="search">
-        <input id="url-input" type="url" inputmode="url" aria-label="GIF URL" placeholder={urlPlaceholder} class="min-w-0 flex-1 rounded-md border border-line bg-canvas px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/55 focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-emerald-50/35" />
-        <button id="url-load-btn" type="button" class="rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+        <input id="url-input" type="url" inputmode="url" aria-label="GIF URL" placeholder={urlPlaceholder} class="min-w-0 flex-1 rounded-md border border-line bg-canvas px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/55 focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder:text-[#ecebf4]/35" />
+        <button id="url-load-btn" type="button" class="rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
           Load
         </button>
       </div>
@@ -122,45 +122,45 @@ const toolSchema = showSchema
       <div class="h-1.5 overflow-hidden rounded-full bg-line dark:bg-white/10">
         <div id="progress-fill" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300 ease-out"></div>
       </div>
-      <p id="progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-emerald-50/55"></p>
+      <p id="progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-ink-muted"></p>
     </div>
 
     <div id="tool-state" tabindex="-1" class="mt-4 hidden">
       <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div id="job-tabs" class="flex min-w-0 flex-1 flex-wrap gap-2"></div>
-        <button id="download-all-zip" type="button" class="hidden inline-flex shrink-0 items-center justify-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+        <button id="download-all-zip" type="button" class="hidden inline-flex shrink-0 items-center justify-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
           <Icon name="tabler:folders" class="h-4 w-4" />
           All jobs ZIP
         </button>
       </div>
 
       <div class="mb-4 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4 dark:border-white/10 dark:bg-white/10">
-        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frames</span>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#131317]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Frames</span>
           <p id="stat-frames" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
         </div>
-        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Dimensions</span>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#131317]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Dimensions</span>
           <p id="stat-size" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0 x 0</p>
         </div>
-        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Duration</span>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#131317]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Duration</span>
           <p id="stat-duration" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0s</p>
         </div>
-        <div class="bg-canvas px-4 py-3 dark:bg-[#0f1714]">
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Selected</span>
+        <div class="bg-canvas px-4 py-3 dark:bg-[#131317]">
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Selected</span>
           <p id="stat-selected" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
         </div>
       </div>
 
-      <div id="result-actions" class="sticky top-16 z-20 mb-4 rounded-md border border-line bg-canvas/95 px-3 py-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#0f1714]/95">
+      <div id="result-actions" class="sticky top-16 z-20 mb-4 rounded-md border border-line bg-canvas/95 px-3 py-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#131317]/95">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div class="flex items-center gap-2 text-xs text-ink-muted dark:text-emerald-50/60">
-            <span class="font-mono uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/45">Ready to export</span>
+          <div class="flex items-center gap-2 text-xs text-ink-muted dark:text-ink-muted">
+            <span class="font-mono uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/65">Ready to export</span>
             <span id="result-selected-summary" class="font-medium tabular-nums text-ink dark:text-white">0 selected</span>
           </div>
           <div class="flex flex-wrap gap-2">
-            <button id="sticky-current" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="sticky-current" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:download" class="h-4 w-4" />
               Current
             </button>
@@ -168,15 +168,15 @@ const toolSchema = showSchema
               <Icon name="tabler:archive" class="h-4 w-4" />
               All ZIP
             </button>
-            <button id="sticky-json" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="sticky-json" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:json" class="h-4 w-4" />
               Metadata JSON
             </button>
-            <button id="sticky-gif" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="sticky-gif" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:movie" class="h-4 w-4" />
               Reverse GIF
             </button>
-            <button id="sticky-sprite" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="sticky-sprite" type="button" disabled class="inline-flex items-center justify-center gap-1.5 rounded-md border border-line px-3 py-2 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:grid-dots" class="h-4 w-4" />
               Sprite sheet
             </button>
@@ -185,41 +185,41 @@ const toolSchema = showSchema
       </div>
 
       <div class="mb-4 flex flex-wrap gap-2 text-xs">
-        <button id="quick-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">First frame</button>
-        <button id="quick-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Last frame</button>
-        <button id="quick-nth" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Every 2nd</button>
-        <button id="quick-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Transparent</button>
-        <button id="quick-all-zip" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">All ZIP</button>
-        <button id="quick-json" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Metadata JSON</button>
+        <button id="quick-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">First frame</button>
+        <button id="quick-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Last frame</button>
+        <button id="quick-nth" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Every 2nd</button>
+        <button id="quick-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Transparent</button>
+        <button id="quick-all-zip" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">All ZIP</button>
+        <button id="quick-json" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Metadata JSON</button>
       </div>
 
       <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div id="export-settings" class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
           <div class="flex items-center justify-between border-b border-line px-4 py-3 dark:border-white/10">
             <div>
-              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame preview</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Frame preview</span>
               <p class="mt-1 text-sm font-medium text-ink dark:text-white">
                 Frame <span id="preview-index" class="tabular-nums">1</span>
-                <span class="text-ink-muted/60 dark:text-emerald-50/45">/</span>
-                <span id="preview-total" class="text-ink-muted dark:text-emerald-50/60">0</span>
+                <span class="text-ink-muted/60 dark:text-ink-muted/65">/</span>
+                <span id="preview-total" class="text-ink-muted dark:text-ink-muted">0</span>
               </p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <span id="preview-delay" class="rounded-md bg-accent-soft px-2.5 py-1 font-mono text-xs text-accent dark:bg-emerald-300/10 dark:text-emerald-200">0 ms</span>
+              <span id="preview-delay" class="rounded-md bg-accent-soft px-2.5 py-1 font-mono text-xs text-accent dark:bg-accent-soft dark:text-accent-200">0 ms</span>
               <select id="playback-speed" aria-label="Playback speed" class="rounded-md border border-line bg-canvas px-2 py-1.5 text-xs text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
-                <option value="0.25">0.25×</option>
-                <option value="0.5">0.5×</option>
-                <option value="1" selected>1×</option>
-                <option value="2">2×</option>
+                <option value="0.25">0.25脳</option>
+                <option value="0.5">0.5脳</option>
+                <option value="1" selected>1脳</option>
+                <option value="2">2脳</option>
               </select>
-              <button id="playback-toggle" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <button id="playback-toggle" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
                 <span id="playback-play-icon"><Icon name="tabler:player-play" class="h-4 w-4" /></span>
                 <span id="playback-pause-icon" class="hidden"><Icon name="tabler:player-pause" class="h-4 w-4" /></span>
                 <span id="playback-label">Play</span>
               </button>
             </div>
           </div>
-          <div class="grid min-h-[320px] place-items-center bg-[linear-gradient(135deg,rgba(15,118,110,0.06)_25%,transparent_25%,transparent_50%,rgba(15,118,110,0.06)_50%,rgba(15,118,110,0.06)_75%,transparent_75%,transparent)] bg-[length:20px_20px] p-4 dark:bg-[linear-gradient(135deg,rgba(45,212,191,0.08)_25%,transparent_25%,transparent_50%,rgba(45,212,191,0.08)_50%,rgba(45,212,191,0.08)_75%,transparent_75%,transparent)] dark:bg-[length:20px_20px]">
+          <div class="grid min-h-[320px] place-items-center bg-[linear-gradient(135deg,rgba(109,75,242,0.08)_25%,transparent_25%,transparent_50%,rgba(109,75,242,0.08)_50%,rgba(109,75,242,0.08)_75%,transparent_75%,transparent)] bg-[length:20px_20px] p-4 dark:bg-[linear-gradient(135deg,rgba(154,131,255,0.10)_25%,transparent_25%,transparent_50%,rgba(154,131,255,0.10)_50%,rgba(154,131,255,0.10)_75%,transparent_75%,transparent)] dark:bg-[length:20px_20px]">
             <canvas id="preview-canvas" class="max-h-[70vh] max-w-full rounded-md" aria-label="Current GIF frame preview"></canvas>
           </div>
         </div>
@@ -231,7 +231,7 @@ const toolSchema = showSchema
 
           <div class="space-y-5 p-4">
             <div>
-              <label for="format-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Output format</label>
+              <label for="format-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Output format</label>
               <select id="format-select" disabled={lockedFormat} class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:bg-white/5 dark:text-white">
                 {formatOptions.map((format) => (
                   <option value={format} selected={format === defaultFormat}>
@@ -242,7 +242,7 @@ const toolSchema = showSchema
             </div>
 
             <div>
-              <label for="quality-range" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">
+              <label for="quality-range" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">
                 Quality <span id="quality-value" class="tabular-nums">90</span>
               </label>
               <input id="quality-range" type="range" min="50" max="100" value="90" class="w-full cursor-pointer" />
@@ -250,22 +250,22 @@ const toolSchema = showSchema
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="start-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Start frame</label>
+                <label for="start-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Start frame</label>
                 <input id="start-frame" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
               </div>
               <div>
-                <label for="end-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">End frame</label>
+                <label for="end-frame" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">End frame</label>
                 <input id="end-frame" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
               </div>
             </div>
 
             <div>
-              <label for="every-n" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Every Nth frame</label>
+              <label for="every-n" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Every Nth frame</label>
               <input id="every-n" type="number" min="1" value="1" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
             </div>
 
             <div>
-              <label for="scale-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Frame size</label>
+              <label for="scale-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Frame size</label>
               <select id="scale-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
                 <option value="1">100%</option>
                 <option value="0.75">75%</option>
@@ -276,16 +276,16 @@ const toolSchema = showSchema
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="rotate-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Rotate</label>
+                <label for="rotate-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Rotate</label>
                 <select id="rotate-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
-                  <option value="0">0°</option>
-                  <option value="90">90°</option>
-                  <option value="180">180°</option>
-                  <option value="270">270°</option>
+                  <option value="0">0掳</option>
+                  <option value="90">90掳</option>
+                  <option value="180">180掳</option>
+                  <option value="270">270掳</option>
                 </select>
               </div>
               <div>
-                <label for="flip-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Flip</label>
+                <label for="flip-select" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Flip</label>
                 <select id="flip-select" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
                   <option value="none">None</option>
                   <option value="horizontal">Horizontal</option>
@@ -297,17 +297,32 @@ const toolSchema = showSchema
 
             <label class="flex items-start gap-3 rounded-md border border-line p-3 dark:border-white/15">
               <input id="transparent-toggle" type="checkbox" checked class="mt-0.5 h-4 w-4 rounded border-line text-accent focus:ring-accent/30 dark:border-white/25 dark:bg-white/10" />
-              <span class="text-xs leading-relaxed text-ink-muted dark:text-emerald-50/60">
+              <span class="text-xs leading-relaxed text-ink-muted dark:text-ink-muted">
                 Keep transparent background where the GIF supports it.
               </span>
             </label>
 
             <div>
-              <label for="naming-input" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">File naming</label>
+              <label for="naming-input" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">File naming</label>
               <input id="naming-input" type="text" value={'frame-{index}'} spellcheck="false" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
-              <p class="mt-2 text-xs leading-relaxed text-ink-muted dark:text-emerald-50/55">
+              <p class="mt-2 text-xs leading-relaxed text-ink-muted dark:text-ink-muted">
                 Use <span class="font-mono text-accent">{'{index}'}</span> and <span class="font-mono text-accent">{'{source}'}</span> placeholders.
               </p>
+            </div>
+
+            <div>
+              <p class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Sprite sheet layout</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="sprite-columns" class="mb-1.5 block text-xs font-medium text-ink-muted/80 dark:text-ink-muted/70">Columns</label>
+                  <input id="sprite-columns" type="number" min="1" max="16" value="0" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
+                  <p class="mt-1.5 text-xs leading-relaxed text-ink-muted dark:text-ink-muted">0 = auto grid.</p>
+                </div>
+                <label class="flex items-start gap-3 rounded-md border border-line p-3 dark:border-white/15">
+                  <input id="sprite-numbers" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-line text-accent focus:ring-accent/30 dark:border-white/25 dark:bg-white/10" />
+                  <span class="text-xs leading-relaxed text-ink-muted dark:text-ink-muted">Number each sprite cell.</span>
+                </label>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
@@ -315,19 +330,19 @@ const toolSchema = showSchema
                 <Icon name="tabler:archive" class="h-4 w-4" />
                 Download ZIP
               </button>
-              <button id="download-current" type="button" disabled class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <button id="download-current" type="button" disabled class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
                 <Icon name="tabler:download" class="h-4 w-4" />
                 Current
               </button>
-              <button id="reset-btn" type="button" class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <button id="reset-btn" type="button" class="inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
                 <Icon name="tabler:refresh" class="h-4 w-4" />
                 New GIF
               </button>
-              <button id="download-gif" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <button id="download-gif" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
                 <Icon name="tabler:movie" class="h-4 w-4" />
                 Reverse GIF
               </button>
-              <button id="download-sprite" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+              <button id="download-sprite" type="button" disabled class="col-span-2 inline-flex items-center justify-center gap-2 rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
                 <Icon name="tabler:grid-dots" class="h-4 w-4" />
                 Sprite sheet
               </button>
@@ -339,15 +354,15 @@ const toolSchema = showSchema
       <div id="metadata" class="mt-4 rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
         <div class="flex flex-col gap-3 border-b border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame metadata</span>
-            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Delay, size, offset, disposal, and transparency per frame.</p>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Frame metadata</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-ink-muted">Delay, size, offset, disposal, and transparency per frame.</p>
           </div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <button id="export-json" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="export-json" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:json" class="h-4 w-4" />
               JSON
             </button>
-            <button id="export-csv" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+            <button id="export-csv" type="button" class="inline-flex items-center gap-1.5 rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
               <Icon name="tabler:file-spreadsheet" class="h-4 w-4" />
               CSV
             </button>
@@ -355,7 +370,7 @@ const toolSchema = showSchema
         </div>
         <div class="max-h-72 overflow-auto">
           <table class="w-full min-w-[760px] border-collapse text-left text-xs">
-            <thead class="sticky top-0 z-10 bg-canvas text-ink-muted dark:bg-[#0f1714] dark:text-emerald-50/55">
+            <thead class="sticky top-0 z-10 bg-canvas text-ink-muted dark:bg-[#131317] dark:text-ink-muted">
               <tr class="border-b border-line dark:border-white/10">
                 <th class="px-4 py-3 font-medium">Frame</th>
                 <th class="px-4 py-3 font-medium">Delay</th>
@@ -373,25 +388,25 @@ const toolSchema = showSchema
       <div class="mt-4 rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
         <div class="flex flex-col gap-3 border-b border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Timeline</span>
-            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Frame width reflects its delay.</p>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Timeline</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-ink-muted">Frame width reflects its delay.</p>
           </div>
         </div>
         <div id="timeline" class="flex max-h-28 items-end gap-px overflow-x-auto p-3"></div>
 
         <div class="flex flex-col gap-3 border-t border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Filmstrip</span>
-            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Click a frame to select or deselect it.</p>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Filmstrip</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-ink-muted">Click a frame to select or deselect it.</p>
           </div>
           <div class="flex flex-wrap gap-2 text-xs">
-            <button id="select-all" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Select all</button>
-            <button id="select-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">First frame</button>
-            <button id="select-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Last frame</button>
-            <button id="select-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Transparent</button>
-            <button id="select-duplicates" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Duplicates</button>
-            <button id="invert-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Invert</button>
-            <button id="clear-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60">Clear</button>
+            <button id="select-all" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Select all</button>
+            <button id="select-first" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">First frame</button>
+            <button id="select-last" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Last frame</button>
+            <button id="select-transparent" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Transparent</button>
+            <button id="select-duplicates" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Duplicates</button>
+            <button id="invert-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Invert</button>
+            <button id="clear-selection" type="button" class="rounded-md border border-line px-3 py-1.5 font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted">Clear</button>
           </div>
         </div>
         <div id="filmstrip" class="flex max-h-44 gap-3 overflow-x-auto p-4"></div>
@@ -399,7 +414,7 @@ const toolSchema = showSchema
     </div>
   </div>
 
-  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-emerald-50 dark:text-ink"></div>
+  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-white/90 dark:text-ink"></div>
 </section>
 
 <script define:vars={{ defaultFormat, initialSelection, accept, formats: formatOptions }}>
@@ -444,6 +459,8 @@ const toolSchema = showSchema
   const everyN = $('every-n');
   const transparentToggle = $('transparent-toggle');
   const namingInput = $('naming-input');
+  const spriteColumns = $('sprite-columns');
+  const spriteNumbers = $('sprite-numbers');
   const playbackToggle = $('playback-toggle');
   const playbackSpeed = $('playback-speed');
   const playbackLabel = $('playback-label');
@@ -692,13 +709,13 @@ const toolSchema = showSchema
     for (let i = 0; i < visibleCount; i += 1) {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'shrink-0 rounded-md border p-1 transition-colors';
-      button.setAttribute('aria-label', `Frame ${i + 1}`);
+      button.className = 'flex shrink-0 flex-col rounded-md border p-1 transition-colors';
+      button.setAttribute('aria-label', `Frame ${i + 1}, ${delays[i] || 0}ms`);
       button.setAttribute('aria-pressed', selected.has(i) ? 'true' : 'false');
       button.classList.toggle('border-accent', selected.has(i));
       button.classList.toggle('bg-accent-soft', selected.has(i));
       button.classList.toggle('border-line', !selected.has(i));
-      button.classList.toggle('dark:border-emerald-200/35', selected.has(i));
+      button.classList.toggle('dark:border-accent/40', selected.has(i));
       button.classList.toggle('dark:border-white/15', !selected.has(i));
       button.classList.toggle('ring-1', i === currentIndex);
       button.classList.toggle('ring-accent/40', i === currentIndex);
@@ -709,6 +726,11 @@ const toolSchema = showSchema
       thumb.height = Math.max(1, Math.round(96 * ratio));
       thumb.getContext('2d').drawImage(composed[i], 0, 0, thumb.width, thumb.height);
       button.appendChild(thumb);
+
+      const caption = document.createElement('span');
+      caption.className = 'mt-1 font-mono text-[10px] leading-none text-ink-muted dark:text-ink-muted';
+      caption.textContent = `#${i + 1} 路 ${delays[i] || 0}ms`;
+      button.appendChild(caption);
 
       button.addEventListener('click', () => {
         stopPlayback();
@@ -745,7 +767,7 @@ const toolSchema = showSchema
       block.classList.toggle('bg-accent-soft', selected.has(i));
       block.classList.toggle('border-line', !selected.has(i));
       block.classList.toggle('bg-canvas', !selected.has(i));
-      block.classList.toggle('dark:border-emerald-200/35', selected.has(i));
+      block.classList.toggle('dark:border-accent/40', selected.has(i));
       block.classList.toggle('dark:border-white/15', !selected.has(i));
       block.classList.toggle('dark:bg-white/5', !selected.has(i));
       block.classList.toggle('ring-1', i === currentIndex);
@@ -796,7 +818,7 @@ const toolSchema = showSchema
 
       cells.forEach((text, cellIndex) => {
         const cell = document.createElement('td');
-        cell.className = 'px-4 py-2.5 tabular-nums text-ink-muted dark:text-emerald-50/65';
+        cell.className = 'px-4 py-2.5 tabular-nums text-ink-muted dark:text-ink-muted';
         if (cellIndex === 0) {
           cell.className += ' font-medium text-ink dark:text-white';
         }
@@ -822,7 +844,7 @@ const toolSchema = showSchema
       const row = document.createElement('tr');
       const cell = document.createElement('td');
       cell.colSpan = 6;
-      cell.className = 'px-4 py-3 text-xs text-ink-muted dark:text-emerald-50/55';
+      cell.className = 'px-4 py-3 text-xs text-ink-muted dark:text-ink-muted';
       cell.textContent = `Showing ${visibleCount} of ${frames.length} frames. Metadata export includes every frame.`;
       row.appendChild(cell);
       metadataBody.appendChild(row);
@@ -840,9 +862,9 @@ const toolSchema = showSchema
       tab.classList.toggle('text-accent', index === activeJobIndex);
       tab.classList.toggle('border-line', index !== activeJobIndex);
       tab.classList.toggle('text-ink-muted', index !== activeJobIndex);
-      tab.classList.toggle('dark:border-emerald-200/35', index === activeJobIndex);
+      tab.classList.toggle('dark:border-accent/40', index === activeJobIndex);
       tab.classList.toggle('dark:border-white/15', index !== activeJobIndex);
-      tab.classList.toggle('dark:text-emerald-50/55', index !== activeJobIndex);
+      tab.classList.toggle('dark:text-ink-muted', index !== activeJobIndex);
       tab.textContent = `${job.file.name || 'GIF'} (${job.frames.length})`;
       tab.addEventListener('click', () => {
         setActiveJob(index);
@@ -1010,6 +1032,8 @@ const toolSchema = showSchema
       const ratio = selectedIndices.length === 1 ? 1 : (i + 1) / selectedIndices.length;
       setProgress(true, Math.round(startPercent + ratio * (endPercent - startPercent)), `${baseName}: frame ${i + 1} of ${selectedIndices.length}`);
     }
+
+    folder.file('metadata.json', JSON.stringify(getMetadataRows(job.frames), null, 2));
   }
 
   async function downloadZipArchive() {
@@ -1118,11 +1142,16 @@ const toolSchema = showSchema
     setDownloadButtonsBusy(true);
     try {
       const selectedIndices = [...selected].sort((a, b) => a - b);
-      const columns = Math.max(1, Math.min(8, Math.ceil(Math.sqrt(selectedIndices.length))));
+      const requestedColumns = Math.max(1, Number(spriteColumns.value) || 0);
+      const columns =
+        requestedColumns > 0
+          ? Math.min(16, requestedColumns)
+          : Math.max(1, Math.min(8, Math.ceil(Math.sqrt(selectedIndices.length))));
       const rows = Math.ceil(selectedIndices.length / columns);
       const scale = Number(scaleSelect.value) || 1;
       const frameWidth = Math.max(1, Math.round(gifWidth * scale));
       const frameHeight = Math.max(1, Math.round(gifHeight * scale));
+      const addNumbers = spriteNumbers.checked;
 
       const canvas = document.createElement('canvas');
       canvas.width = columns * frameWidth;
@@ -1138,12 +1167,21 @@ const toolSchema = showSchema
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(composed[index], x, y, frameWidth, frameHeight);
+        if (addNumbers) {
+          const labelSize = Math.max(9, Math.round(frameWidth * 0.16));
+          ctx.fillStyle = 'rgba(0,0,0,0.55)';
+          ctx.fillRect(x, y, Math.round(labelSize * 2.2), Math.round(labelSize * 1.4));
+          ctx.fillStyle = '#ffffff';
+          ctx.font = `700 ${labelSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+          ctx.textBaseline = 'middle';
+          ctx.fillText(String(i + 1), x + Math.round(labelSize * 0.4), y + Math.round(labelSize * 0.72));
+        }
         setProgress(true, Math.round(8 + ((i + 1) / selectedIndices.length) * 82), `Placing frame ${i + 1} of ${selectedIndices.length}`);
       }
 
       const blob = await canvasToBlob(canvas, 'image/png');
       saveBlob(blob, `${getBaseName()}-spritesheet.png`);
-      trackEvent('download_sprite', { count: selectedIndices.length });
+      trackEvent('download_sprite', { count: selectedIndices.length, columns, numbered: addNumbers });
       setProgress(false);
     } finally {
       setDownloadButtonsBusy(false);
@@ -1382,8 +1420,8 @@ const toolSchema = showSchema
     refreshSelection();
   }
 
-  function getMetadataRows() {
-    return frames.map((frame, index) => ({
+  function getMetadataRows(sourceFrames = frames) {
+    return sourceFrames.map((frame, index) => ({
       frame: index + 1,
       delayMs: frame.delay || 0,
       width: frame.dims.width,

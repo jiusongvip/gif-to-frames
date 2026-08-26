@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Privacy Policy | GIF to Frames';
+const description =
+  'Privacy policy for GIF to Frames: files are processed locally in your browser and are never uploaded to a server.';
+---
+
+<BaseLayout title={title} description={description} robots="noindex, follow">
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+    <p class="overline">Privacy</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Privacy Policy</h1>
+
+    <div class="mt-10 space-y-8 text-base leading-relaxed text-ink-muted">
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Files stay on your device</h2>
+        <p>
+          Uploading, decoding, previewing, selecting, and exporting happen in your browser. GIF, WebP, APNG, PNG, and JPG source files remain on your device during the tool workflow. The tool does not send your files to a server, does not store them, and adds no watermark.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Server logs and analytics</h2>
+        <p>
+          The website itself may use standard hosting or security logs for availability and abuse prevention. Those logs are not used to inspect the files you process in the browser.
+        </p>
+        <p>
+          If analytics or advertising services are added later, this page will be updated before those services collect data.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Email</h2>
+        <p>
+          If you contact us by email, we use your address only to reply to your message. We do not add it to any list.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Terms of use</h2>
+        <p>
+          You may use the tools for lawful image and animation work. Do not attempt to disrupt the service, bypass browser limits, or process content you do not have permission to use. You keep responsibility for the files you process and the outputs you create.
+        </p>
+        <p>
+          The tools are provided without warranty of uninterrupted availability or fitness for a particular purpose. Browser decoding behavior varies, so verify important outputs before relying on them.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight text-ink">Contact</h2>
+        <p>
+          For privacy questions, contact <a href="mailto:hello@gif-to-frames.com" class="text-accent hover:underline">hello@gif-to-frames.com</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

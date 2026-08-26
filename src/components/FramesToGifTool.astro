@@ -1,4 +1,4 @@
----
+﻿---
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -50,23 +50,23 @@ const toolSchema = showSchema
   <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
     <div class="max-w-3xl">
       <div class="mb-5 flex flex-wrap items-center gap-2 text-xs font-medium">
-        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-emerald-300/20 dark:bg-emerald-300/10 dark:text-emerald-200">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-accent dark:border-accent/30 dark:bg-accent-soft dark:text-accent-200">
           <Icon name="tabler:shield-check" class="h-3.5 w-3.5" />
           Local processing
         </span>
-        <span class="text-ink-muted dark:text-emerald-50/55">No upload. No watermark.</span>
+        <span class="text-ink-muted dark:text-ink-muted">No upload. No watermark.</span>
       </div>
       <HeadingTag class="max-w-[12ch] text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl dark:text-white">{h1}</HeadingTag>
-      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-emerald-50/65">{lead}</p>
+      <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-ink-muted sm:text-lg dark:text-ink-muted">{lead}</p>
     </div>
 
-    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-emerald-50/60">
+    <div class="hidden items-center gap-4 rounded-lg border border-line bg-canvas/70 px-4 py-3 text-sm text-ink-muted lg:flex dark:border-white/10 dark:bg-white/5 dark:text-ink-muted">
       <div>
-        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Input</span>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Input</span>
         <p class="mt-1 font-medium text-ink dark:text-white">PNG, JPG, WebP</p>
       </div>
       <div>
-        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Output</span>
+        <span class="font-mono text-xs uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Output</span>
         <p class="mt-1 font-medium text-ink dark:text-white">Animated GIF</p>
       </div>
     </div>
@@ -76,11 +76,11 @@ const toolSchema = showSchema
     <input id="frames-file-input" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple class="hidden" />
 
     <div id="frames-upload-state" class="rounded-lg border border-dashed border-line bg-canvas/70 px-5 py-14 text-center dark:border-white/15 dark:bg-white/5">
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-emerald-300/10 dark:text-emerald-200">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-accent-soft text-accent dark:bg-accent-soft dark:text-accent-200">
         <Icon name="tabler:upload" class="h-6 w-6" />
       </div>
       <p class="mt-5 text-lg font-semibold text-ink dark:text-white">Drop your image frames here</p>
-      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-emerald-50/60">
+      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
         Choose multiple PNG, JPG, or WebP images. You can add more later. They stay in your browser and are assembled locally into one GIF.
       </p>
       <button id="frames-select-btn" type="button" class="mt-6 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
@@ -92,7 +92,7 @@ const toolSchema = showSchema
     <div id="frames-tool-state" tabindex="-1" class="mt-4 hidden">
       <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frames</span>
+          <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Frames</span>
           <p id="frames-count" class="mt-1 text-sm font-semibold tabular-nums text-ink dark:text-white">0</p>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -100,19 +100,19 @@ const toolSchema = showSchema
             <Icon name="tabler:plus" class="h-4 w-4" />
             Add images
           </button>
-          <button id="frames-reverse-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          <button id="frames-reverse-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
             <Icon name="tabler:arrows-up-down" class="h-4 w-4" />
             Reverse order
           </button>
-          <button id="frames-sort-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          <button id="frames-sort-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
             <Icon name="tabler:sort-ascending" class="h-4 w-4" />
             Sort by name
           </button>
-          <button id="frames-clear-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          <button id="frames-clear-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
             <Icon name="tabler:trash" class="h-4 w-4" />
             Clear all
           </button>
-          <button id="frames-reset-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60 dark:hover:border-emerald-200/30 dark:hover:text-emerald-100">
+          <button id="frames-reset-btn" type="button" class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted dark:hover:border-accent/30 dark:hover:text-accent-100">
             <Icon name="tabler:refresh" class="h-4 w-4" />
             New sequence
           </button>
@@ -122,8 +122,8 @@ const toolSchema = showSchema
       <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div class="rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
           <div class="border-b border-line px-4 py-3 dark:border-white/10">
-            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-emerald-50/40">Frame order</span>
-            <p class="mt-1 text-xs text-ink-muted dark:text-emerald-50/55">Drag thumbnails to change the animation order.</p>
+            <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted/70 dark:text-ink-muted/60">Frame order</span>
+            <p class="mt-1 text-xs text-ink-muted dark:text-ink-muted">Drag thumbnails to change the animation order.</p>
           </div>
           <div id="frames-list" class="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3 lg:grid-cols-4"></div>
         </div>
@@ -135,17 +135,17 @@ const toolSchema = showSchema
           <div class="space-y-5 p-4">
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="frames-delay" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Delay ms</label>
+                <label for="frames-delay" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Delay ms</label>
                 <input id="frames-delay" type="number" min="10" value="100" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
               </div>
               <div>
-                <label for="frames-loop" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Loops</label>
+                <label for="frames-loop" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Loops</label>
                 <input id="frames-loop" type="number" min="0" value="0" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white" />
               </div>
             </div>
 
             <div>
-              <label for="frames-scale" class="mb-2 block text-xs font-medium text-ink-muted dark:text-emerald-50/60">Frame size</label>
+              <label for="frames-scale" class="mb-2 block text-xs font-medium text-ink-muted dark:text-ink-muted">Frame size</label>
               <select id="frames-scale" class="w-full rounded-md border border-line bg-canvas px-3 py-2.5 text-sm text-ink outline-none transition-colors focus:border-accent/50 focus:ring-2 focus:ring-accent/15 dark:border-white/15 dark:bg-white/5 dark:text-white">
                 <option value="1">100%</option>
                 <option value="0.75">75%</option>
@@ -156,7 +156,7 @@ const toolSchema = showSchema
 
             <label class="flex items-start gap-3 rounded-md border border-line p-3 dark:border-white/15">
               <input id="frames-transparent" type="checkbox" checked class="mt-0.5 h-4 w-4 rounded border-line text-accent focus:ring-accent/30 dark:border-white/25 dark:bg-white/10" />
-              <span class="text-xs leading-relaxed text-ink-muted dark:text-emerald-50/60">Keep transparency where source images support it.</span>
+              <span class="text-xs leading-relaxed text-ink-muted dark:text-ink-muted">Keep transparency where source images support it.</span>
             </label>
 
             <button id="frames-download" type="button" disabled class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40">
@@ -172,11 +172,11 @@ const toolSchema = showSchema
       <div class="h-1.5 overflow-hidden rounded-full bg-line dark:bg-white/10">
         <div id="frames-progress-fill" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300 ease-out"></div>
       </div>
-      <p id="frames-progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-emerald-50/55"></p>
+      <p id="frames-progress-text" role="status" aria-live="polite" class="mt-2 text-center text-xs text-ink-muted dark:text-ink-muted"></p>
     </div>
   </div>
 
-  <div id="frames-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-emerald-50 dark:text-ink"></div>
+  <div id="frames-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 hidden -translate-x-1/2 rounded-md bg-ink px-4 py-2 text-xs text-white shadow-lg dark:bg-white/90 dark:text-ink"></div>
 </section>
 
 <script>
@@ -249,7 +249,7 @@ const toolSchema = showSchema
       label.textContent = `${index + 1}. ${entry.file.name}`;
       const remove = document.createElement('button');
       remove.type = 'button';
-      remove.className = 'rounded-md border border-line px-2 py-1 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-emerald-50/60';
+      remove.className = 'rounded-md border border-line px-2 py-1 text-xs text-ink-muted transition-colors hover:border-accent/40 hover:text-accent dark:border-white/15 dark:text-ink-muted';
       remove.textContent = 'Remove';
       remove.addEventListener('click', () => {
         URL.revokeObjectURL(entry.url);
