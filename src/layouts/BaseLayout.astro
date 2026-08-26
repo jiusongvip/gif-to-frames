@@ -37,6 +37,15 @@ const orgSchema = JSON.stringify({
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9R96MYJK9T"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9R96MYJK9T');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#6d4bf2" />
     {robots && <meta name="robots" content={robots} />}
