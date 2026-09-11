@@ -2,18 +2,29 @@
 interface Props {
   class?: string;
   withIcon?: boolean;
+  label?: string;
 }
 
-const { class: cls = '', withIcon = false } = Astro.props;
+const { class: cls = '', withIcon = false, label = 'Email us' } = Astro.props;
 
-// Rendered as raw HTML (set:html) so the browser output contains HTML entities
-// instead of literal email bytes. Cloudflare Email Obfuscation only matches raw
-// bytes, so it neither rewrites this link nor injects its parser-blocking
-// email-decode.min.js on the page.
+// The email is never present as literal bytes in the HTML (Cloudflare's Email
+// Obfuscation decodes entities before matching, so entity tricks do not work).
+// A tiny script assembles the mailto href and the display text at runtime,
+// which keeps Cloudflare from rewriting the link and from injecting its
+// parser-blocking email-decode.min.js into the page.
 const ICON =
   '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M4 6l8 5l8 -5"/></svg>';
-
-const raw = `<a href="mailto:&#104;&#101;&#108;&#108;&#111;&#64;gif-to-frames&#46;com" class="${cls}">${withIcon ? ICON : ''}\n          &#104;&#101;&#108;&#108;&#111;&#64;gif-to-frames&#46;com</a>`;
 ---
 
-<Fragment set:html={raw} />
+<a href="/contact/" class={cls} data-mail="hello|gif-to-frames.com"><Fragment set:html={withIcon ? ICON : ''} />{label}</a>
+
+<script>
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-mail]')) {
+    const parts = (a.dataset.mail || '').split('|');
+    if (parts.length !== 2 || !parts[0] || !parts[1]) continue;
+    const address = `${parts[0]}@${parts[1]}`;
+    a.href = `mailto:${address}`;
+    const textNode = [...a.childNodes].find((n) => n.nodeType === Node.TEXT_NODE && (n.textContent || '').trim().length > 0);
+    if (textNode) textNode.textContent = address;
+  }
+</script>
