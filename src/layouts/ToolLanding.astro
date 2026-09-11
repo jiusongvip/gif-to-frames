@@ -16,7 +16,7 @@ interface Props {
   selectLabel?: string;
   sampleLabel?: string;
   urlPlaceholder?: string;
-  intro?: { heading: string; body: string[] }[];
+  intro?: { heading: string; body: string[]; points?: { heading: string; body: string[] }[] }[];
   faq?: { q: string; a: string }[];
   related?: { href: string; label: string; description: string }[];
 }
@@ -120,6 +120,16 @@ const schema = JSON.stringify({
                   <p>{paragraph}</p>
                 ))}
               </div>
+              {(section.points ?? []).map((point) => (
+                <>
+                  <h3 class="mt-6 text-lg font-semibold tracking-tight text-ink dark:text-white">{point.heading}</h3>
+                  <div class="mt-3 space-y-3 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
+                    {point.body.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </div>
+                </>
+              ))}
             </article>
           ))}
         </div>

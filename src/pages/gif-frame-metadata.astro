@@ -55,12 +55,34 @@ const related = [
         'Animated GIFs store more than images. Each frame has a delay, dimensions, offset, disposal method, and optional transparency.',
         'Exporting that metadata as JSON or CSV is useful for QA, debugging animation timing, and rebuilding a GIF accurately in another tool.',
       ],
+      points: [
+        {
+          heading: 'Offsets and partial frames',
+          body: [
+            'A frame smaller than the canvas carries an x/y offset that says where it is painted. The tool composites these partial frames before it shows you the full picture.',
+          ],
+        },
+      ],
     },
     {
       heading: 'Plain-language field guide',
       body: [
         'Delay is how long a frame stays visible. Offset is where a smaller frame is placed on the full canvas. Disposal controls what happens to the previous frame before drawing the next one.',
         'Transparency indicates whether a frame contains alpha information. Checking these values before export helps catch timing or compositing mistakes.',
+      ],
+      points: [
+        {
+          heading: 'Delay and loop duration',
+          body: [
+            'Delay is measured in milliseconds per frame. Adding up the delays gives you the real length of the loop, which is often different from what a preview suggests.',
+          ],
+        },
+        {
+          heading: 'Reading the disposal method',
+          body: [
+            'Disposal tells the decoder what to do with the current frame before the next one draws: leave it, clear it, or restore the background. Wrong disposal handling is a common cause of ghosting artifacts.',
+          ],
+        },
       ],
     },
     {
