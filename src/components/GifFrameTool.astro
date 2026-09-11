@@ -429,9 +429,12 @@ const toolSchema = showSchema
 </script>
 
 <script>
-  import { parseGIF, decompressFrames } from 'gifuct-js';
-  import JSZip from 'jszip';
-  import { GIFEncoder, quantize, applyPalette } from 'gifenc';
+  let gifuctPromise;
+  const loadGifuct = () => (gifuctPromise ||= import('gifuct-js'));
+  let jszipPromise;
+  const loadJSZip = () => (jszipPromise ||= import('jszip').then((m) => m.default));
+  let gifencPromise;
+  const loadGifenc = () => (gifencPromise ||= import('gifenc'));
 
   const $ = (id) => document.getElementById(id);
   const pageDefaultFormat = window.__gifFrameToolConfig?.defaultFormat || 'png';
@@ -1045,6 +1048,7 @@ const toolSchema = showSchema
       const output = getOutputType();
       const job = getActiveJob();
       if (!job) return;
+      const JSZip = await loadJSZip();
       const zip = new JSZip();
 
       setProgress(true, 5, 'Preparing frames...');
@@ -1068,6 +1072,7 @@ const toolSchema = showSchema
     if (selectedJobs.length === 0) return;
     setDownloadButtonsBusy(true);
     try {
+      const JSZip = await loadJSZip();
       const zip = new JSZip();
       const totalSelected = selectedJobs.reduce((sum, { job }) => sum + job.selected.size, 0);
       let completed = 0;
@@ -1103,6 +1108,7 @@ const toolSchema = showSchema
         return;
       }
 
+      const { GIFEncoder, quantize, applyPalette } = await loadGifenc();
       const encoder = GIFEncoder();
       const transparent = transparentToggle.checked;
       const format = transparent ? 'rgba4444' : 'rgb565';
@@ -1272,6 +1278,7 @@ const toolSchema = showSchema
       let height;
 
       if (isGif) {
+        const { parseGIF, decompressFrames } = await loadGifuct();
         const parsed = parseGIF(bytes);
         parsedFrames = decompressFrames(parsed, true);
         width = parsed.lsd?.width || parsedFrames[0]?.dims?.width || 1;

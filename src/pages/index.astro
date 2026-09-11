@@ -181,7 +181,10 @@ const schema = JSON.stringify({
           const number = String(frame).padStart(2, '0');
           return (
             <figure class="overflow-hidden rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
-              <img src={`/demo/frame-${number}.png`} alt={`Sample GIF frame ${number}`} loading="lazy" decoding="async" width="240" height="160" class="aspect-square w-full object-cover" />
+              <picture>
+                <source srcset={`/demo/frame-${number}.webp`} type="image/webp" />
+                <img src={`/demo/frame-${number}.png`} alt={`Sample GIF frame ${number}`} loading="lazy" decoding="async" width="240" height="160" class="aspect-square w-full object-cover" />
+              </picture>
               <figcaption class="border-t border-line px-3 py-2 font-mono text-xs text-ink-muted dark:border-white/10 dark:text-ink-muted">frame-{number}.png</figcaption>
             </figure>
           );
@@ -508,7 +511,10 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
 
     <div class="mt-10 grid gap-4 lg:grid-cols-3">
       <article class="min-h-72 overflow-hidden rounded-md border border-line bg-canvas/70 lg:col-span-2 dark:border-white/10 dark:bg-white/5">
-        <img src="/demo/frame-01.png" alt="Demo GIF frame with moving shapes" loading="lazy" decoding="async" width="240" height="160" class="h-52 w-full object-cover" />
+        <picture>
+          <source srcset="/demo/frame-01.webp" type="image/webp" />
+          <img src="/demo/frame-01.png" alt="Demo GIF frame with moving shapes" loading="lazy" decoding="async" width="240" height="160" class="h-52 w-full object-cover" />
+        </picture>
         <div class="p-5">
           <h3 class="text-base font-semibold text-ink dark:text-white">Frame inspection</h3>
           <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
@@ -527,11 +533,17 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
             Start, end, and interval controls keep long animations manageable.
           </p>
         </div>
-        <img src="/demo/frame-08.png" alt="Later frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="mt-5 h-24 w-full rounded-md object-cover" />
+        <picture>
+          <source srcset="/demo/frame-08.webp" type="image/webp" />
+          <img src="/demo/frame-08.png" alt="Later frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="mt-5 h-24 w-full rounded-md object-cover" />
+        </picture>
       </article>
 
       <article class="min-h-64 overflow-hidden rounded-md border border-line bg-canvas/70 dark:border-white/10 dark:bg-white/5">
-        <img src="/demo/frame-03.png" alt="Third frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-40 w-full object-cover" />
+        <picture>
+          <source srcset="/demo/frame-03.webp" type="image/webp" />
+          <img src="/demo/frame-03.png" alt="Third frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-40 w-full object-cover" />
+        </picture>
         <div class="p-5">
           <h3 class="text-base font-semibold text-ink dark:text-white">Transparent PNG</h3>
           <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
@@ -542,7 +554,10 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
 
       <article class="grid min-h-64 content-center overflow-hidden rounded-md border border-line bg-canvas/70 p-5 lg:col-span-2 dark:border-white/10 dark:bg-white/5">
         <div class="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
-          <img src="/demo/frame-05.png" alt="Middle frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-28 w-40 rounded-md object-cover" />
+          <picture>
+            <source srcset="/demo/frame-05.webp" type="image/webp" />
+            <img src="/demo/frame-05.png" alt="Middle frame from the sample GIF" loading="lazy" decoding="async" width="240" height="160" class="h-28 w-40 rounded-md object-cover" />
+          </picture>
           <div>
             <h3 class="text-base font-semibold text-ink dark:text-white">ZIP export</h3>
             <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-ink-muted dark:text-ink-muted">

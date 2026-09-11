@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const title = 'Privacy Policy | GIF to Frames';
+const title = 'Privacy Policy: Files Stay on Your Device | GIF to Frames';
 const description =
-  'Privacy policy for GIF to Frames: files are processed locally in your browser and are never uploaded to a server.';
+  'Privacy policy for GIF to Frames: every GIF, WebP, or APNG file is decoded, previewed, and exported locally in your browser and is never uploaded to a server.';
 ---
 
 <BaseLayout title={title} description={description} robots="noindex, follow">
@@ -21,9 +21,11 @@ const description =
 
       <section class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight text-ink">Server logs and analytics</h2>
+        <h3 class="text-lg font-semibold tracking-tight text-ink">Hosting and security logs</h3>
         <p>
           The website itself may use standard hosting or security logs for availability and abuse prevention. Those logs are not used to inspect the files you process in the browser.
         </p>
+        <h3 class="text-lg font-semibold tracking-tight text-ink">Future analytics changes</h3>
         <p>
           If analytics or advertising services are added later, this page will be updated before those services collect data.
         </p>

@@ -180,7 +180,8 @@ const toolSchema = showSchema
 </section>
 
 <script>
-  import { GIFEncoder, quantize, applyPalette } from 'gifenc';
+  let gifencPromise;
+  const loadGifenc = () => (gifencPromise ||= import('gifenc'));
 
   const $ = (id) => document.getElementById(id);
   const uploadState = $('frames-upload-state');
@@ -347,6 +348,7 @@ const toolSchema = showSchema
       const delay = Math.max(10, Number($('frames-delay').value) || 100);
       const repeat = Math.max(0, Number($('frames-loop').value) || 0);
       const transparent = $('frames-transparent').checked;
+      const { GIFEncoder, quantize, applyPalette } = await loadGifenc();
       const encoder = GIFEncoder();
       const format = transparent ? 'rgba4444' : 'rgb565';
       const options = transparent
