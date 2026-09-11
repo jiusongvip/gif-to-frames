@@ -172,8 +172,12 @@ const schema = JSON.stringify({
         }
         requestAnimationFrame(frame);
       }
-      init();
-      requestAnimationFrame(frame);
+      function start() {
+        init();
+        requestAnimationFrame(frame);
+      }
+      if (document.readyState === 'complete') setTimeout(start, 800);
+      else window.addEventListener('load', function () { setTimeout(start, 800); }, { once: true });
       var onResize;
       window.addEventListener('resize', function () { clearTimeout(onResize); onResize = setTimeout(init, 200); }, { passive: true });
     })();

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import EmailLink from './EmailLink.astro';
 ---
 
 <footer class="mt-20 border-t border-line">
@@ -42,10 +43,7 @@ import { Icon } from 'astro-icon/components';
           <a class="transition-colors hover:text-accent" href="/terms/">Terms</a>
         </div>
         <p class="mt-6 text-sm text-ink-muted">
-          <a href="mailto:hello@gif-to-frames.com" class="inline-flex items-center gap-2 transition-colors hover:text-accent">
-            <Icon name="tabler:mail" class="h-4 w-4" />
-            hello@gif-to-frames.com
-          </a>
+          <EmailLink class="inline-flex items-center gap-2 transition-colors hover:text-accent" withIcon />
         </p>
       </nav>
     </div>

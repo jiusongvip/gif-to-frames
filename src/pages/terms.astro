@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailLink from '../components/EmailLink.astro';
 
 const title = 'Terms of Use: How to Use GIF to Frames Freely';
 const description =
@@ -51,7 +52,7 @@ const description =
       <section class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight text-ink">Contact</h2>
         <p>
-          Questions about these terms? Email <a href="mailto:hello@gif-to-frames.com" class="text-accent hover:underline">hello@gif-to-frames.com</a> or use the <a href="/contact/" class="text-accent hover:underline">contact page</a>.
+          Questions about these terms? Email <EmailLink class="text-accent hover:underline" /> or use the <a href="/contact/" class="text-accent hover:underline">contact page</a>.
         </p>
         <p class="text-sm">Last updated August 25, 2026.</p>
       </section>

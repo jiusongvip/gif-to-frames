@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Icon } from 'astro-icon/components';
+import EmailLink from '../components/EmailLink.astro';
 
 const title = 'Contact GIF to Frames: Feedback, Bug Reports & Support';
 const description =
@@ -26,10 +26,7 @@ const description =
 
       <section class="rounded-md border border-line bg-canvas/70 p-5">
         <h2 class="text-base font-semibold text-ink">Email</h2>
-        <a href="mailto:hello@gif-to-frames.com" class="mt-3 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong">
-          <Icon name="tabler:mail" class="h-4 w-4" />
-          hello@gif-to-frames.com
-        </a>
+        <EmailLink class="mt-3 inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-strong" withIcon />
       </section>
 
       <section class="space-y-4">
