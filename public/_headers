@@ -10,5 +10,8 @@
 /og-1200x630.png
   Cache-Control: public, max-age=2592000
 
-/favicon.svg
-  Cache-Control: public, max-age=2592000
+/llms.txt
+  Cache-Control: public, max-age=86400
+
+/llms-full.txt
+  Cache-Control: public, max-age=86400
