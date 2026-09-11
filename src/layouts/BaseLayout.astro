@@ -178,7 +178,7 @@ const orgSchema = JSON.stringify({
           if (entry.isIntersecting) entry.target.classList.add('reveal-in');
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.01, rootMargin: '0px 0px 15% 0px' }
     );
     document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
 
