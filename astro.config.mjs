@@ -6,6 +6,9 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://www.gif-to-frames.com',
   trailingSlash: 'always',
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     sitemap({
       lastmod: new Date('2026-08-25'),

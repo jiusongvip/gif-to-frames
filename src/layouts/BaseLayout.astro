@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import outfitLatin from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2';
+import jetbrainsLatin from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { Icon } from 'astro-icon/components';
@@ -91,6 +93,8 @@ const orgSchema = JSON.stringify({
     <meta name="twitter:image" content={absoluteOgImage} />
     <meta name="twitter:image:alt" content="Preview of extracted GIF frames" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href={outfitLatin} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={jetbrainsLatin} as="font" type="font/woff2" crossorigin="anonymous" />
     {schema && <script type="application/ld+json" set:html={schema} />}
     <script type="application/ld+json" set:html={orgSchema} />
   </head>
@@ -130,8 +134,8 @@ const orgSchema = JSON.stringify({
       var dismiss = function () { veil.classList.add('done'); };
       if (reduce) { dismiss(); }
       else {
-        setTimeout(dismiss, 350);
-        window.addEventListener('load', function () { setTimeout(dismiss, 150); });
+        setTimeout(dismiss, 150);
+        window.addEventListener('load', function () { setTimeout(dismiss, 100); });
       }
     }
 
@@ -144,14 +148,14 @@ const orgSchema = JSON.stringify({
           var span = document.createElement('span');
           span.className = 'split-char';
           span.textContent = ch === ' ' ? '\u00A0' : ch;
-          span.style.transitionDelay = Math.min(i * 12, 320) + 'ms';
+          span.style.transitionDelay = Math.min(i * 10, 200) + 'ms';
           el.appendChild(span);
           requestAnimationFrame(function () {
             requestAnimationFrame(function () { span.classList.add('in'); });
           });
         });
       });
-    }, reduce ? 0 : 400);
+    }, reduce ? 0 : 200);
 
     // Reading progress + floating back-to-top
     var bar = document.getElementById('reading-progress');
