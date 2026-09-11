@@ -25,6 +25,12 @@ const schema = JSON.stringify({
       operatingSystem: 'Any',
       browserRequirements: 'Requires JavaScript',
       inLanguage: 'en',
+      author: {
+        '@type': 'Organization',
+        name: 'GIF to Frames',
+        url: 'https://www.gif-to-frames.com/',
+        email: 'hello@gif-to-frames.com',
+      },
       dateModified: '2026-08-25',
       image: absoluteOgImage,
       thumbnailUrl: absoluteOgImage,
@@ -51,6 +57,12 @@ const schema = JSON.stringify({
     {
       '@type': 'HowTo',
       name: 'How to extract frames from a GIF',
+      author: {
+        '@type': 'Organization',
+        name: 'GIF to Frames',
+        url: 'https://www.gif-to-frames.com/',
+      },
+      dateModified: '2026-08-25',
       image: absoluteOgImage,
       totalTime: 'PT1M',
       step: [
@@ -723,6 +735,11 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
   <section id="faq" class="reveal mx-auto max-w-[1400px] px-4 py-20 sm:px-6">
     <div class="max-w-3xl">
       <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Frequently asked questions</h2>
+      <p class="mt-3 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
+        Written and maintained by the
+        <a href="/about/" class="text-accent hover:underline">GIF to Frames team</a>.
+        Last updated <time datetime="2026-08-25">August 25, 2026</time>.
+      </p>
       <div class="mt-8 divide-y divide-line rounded-md border border-line bg-canvas/70 dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
         {
           faqItems.map((item) => (
@@ -740,6 +757,24 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
           ))
         }
       </div>
+    </div>
+  </section>
+  <section id="sources" class="reveal mx-auto max-w-[1400px] px-4 pb-20 sm:px-6">
+    <div class="max-w-3xl">
+      <h2 class="text-3xl font-semibold tracking-tight text-ink sm:text-4xl dark:text-white">Sources and further reading</h2>
+      <p class="mt-4 max-w-[60ch] text-base leading-relaxed text-ink-muted dark:text-ink-muted">
+        The format facts on this page are based on these primary references:
+      </p>
+      <blockquote class="mt-6 border-l-2 border-accent pl-5 text-base italic leading-relaxed text-ink dark:text-white">
+        “The Graphics Interchange Format (GIF) is a bitmap image format that was introduced by CompuServe in 1987.”
+        <cite class="mt-2 block text-sm not-italic text-ink-muted">— <a href="https://en.wikipedia.org/wiki/GIF" rel="noopener" class="text-accent hover:underline">Wikipedia: Graphics Interchange Format</a></cite>
+      </blockquote>
+      <ul class="mt-6 space-y-3 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
+        <li><a href="https://www.w3.org/TR/PNG/" rel="noopener" class="text-accent hover:underline">W3C: PNG (Portable Network Graphics) Specification</a> — the lossless image format this tool exports for transparent frames.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageDecoder" rel="noopener" class="text-accent hover:underline">MDN: ImageDecoder interface</a> — the browser API used to decode animated WebP and APNG files locally.</li>
+        <li><a href="https://web.dev/blog/webp-lossless-image-format" rel="noopener" class="text-accent hover:underline">web.dev: WebP image format</a> — Google's documentation of WebP's lossy and lossless compression.</li>
+        <li><a href="https://en.wikipedia.org/wiki/APNG" rel="noopener" class="text-accent hover:underline">Wikipedia: Animated Portable Network Graphics (APNG)</a> — the animated PNG container supported by the uploader.</li>
+      </ul>
     </div>
   </section>
 </BaseLayout>

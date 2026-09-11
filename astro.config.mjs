@@ -6,7 +6,13 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://www.gif-to-frames.com',
   trailingSlash: 'always',
-  integrations: [sitemap({ lastmod: new Date('2026-08-25') }), icon()],
+  integrations: [
+    sitemap({
+      lastmod: new Date('2026-08-25'),
+      filter: (page) => !/\/(privacy|terms)\/$/.test(new URL(page).pathname),
+    }),
+    icon(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -30,9 +30,13 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
 const orgSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://www.gif-to-frames.com/#organization',
   name: 'GIF to Frames',
   url: 'https://www.gif-to-frames.com/',
   logo: 'https://www.gif-to-frames.com/favicon.svg',
+  description: 'Free browser-based tools for splitting animated GIFs into individual image frames.',
+  email: 'hello@gif-to-frames.com',
+  sameAs: ['https://github.com/jiusongvip/gif-to-frames'],
 });
 ---
 
