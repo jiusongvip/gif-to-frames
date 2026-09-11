@@ -189,7 +189,7 @@ section[id] {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 .loading-veil.done {
   opacity: 0;

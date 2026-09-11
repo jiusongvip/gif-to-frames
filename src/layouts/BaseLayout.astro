@@ -134,8 +134,8 @@ const orgSchema = JSON.stringify({
       var dismiss = function () { veil.classList.add('done'); };
       if (reduce) { dismiss(); }
       else {
-        setTimeout(dismiss, 150);
-        window.addEventListener('load', function () { setTimeout(dismiss, 100); });
+        setTimeout(dismiss, 100);
+        window.addEventListener('load', function () { setTimeout(dismiss, 80); });
       }
     }
 
@@ -148,14 +148,14 @@ const orgSchema = JSON.stringify({
           var span = document.createElement('span');
           span.className = 'split-char';
           span.textContent = ch === ' ' ? '\u00A0' : ch;
-          span.style.transitionDelay = Math.min(i * 10, 200) + 'ms';
+          span.style.transitionDelay = Math.min(i * 8, 150) + 'ms';
           el.appendChild(span);
           requestAnimationFrame(function () {
             requestAnimationFrame(function () { span.classList.add('in'); });
           });
         });
       });
-    }, reduce ? 0 : 200);
+    }, reduce ? 0 : 100);
 
     // Reading progress + floating back-to-top
     var bar = document.getElementById('reading-progress');
