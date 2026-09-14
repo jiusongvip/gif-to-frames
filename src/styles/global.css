@@ -238,15 +238,6 @@ section[id] {
   width: 1px;
   height: 40%;
   background: var(--color-accent);
-  animation: scrollCue 2s ease-in-out infinite;
-}
-@keyframes scrollCue {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(260%);
-  }
 }
 
 /* Filmstrip marquee — the "frames" motif */
@@ -266,7 +257,6 @@ section[id] {
   display: flex;
   gap: 12px;
   width: max-content;
-  animation: filmstripScroll 30s linear infinite;
 }
 .hero-filmstrip-track span {
   flex-shrink: 0;
@@ -275,14 +265,6 @@ section[id] {
   border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
   background: color-mix(in srgb, var(--color-accent) 9%, transparent);
   border-radius: 7px;
-}
-@keyframes filmstripScroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 
