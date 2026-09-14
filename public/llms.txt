@@ -1,8 +1,8 @@
 # GIF to Frames
 
-GIF to Frames is a free browser-based tool for splitting animated GIFs into individual image frames.
+> Free, private, browser-based tools for splitting animated GIFs into individual image frames.
 
-The tool runs locally in the browser. Files are not uploaded to a server. No account, watermark, or installation is required.
+GIF to Frames is a free browser-based tool for splitting animated GIFs into individual image frames. All decoding, previewing, selection, and export work happens locally in the user's browser. Files are not uploaded to a server. No account, watermark, or installation is required.
 
 ## Core capabilities
 
@@ -16,6 +16,27 @@ The tool runs locally in the browser. Files are not uploaded to a server. No acc
 - Create a sprite sheet from selected frames with custom columns and optional frame numbers.
 - Combine PNG, JPG, or WebP images into a GIF.
 
+## Tools
+
+- [GIF to Frames](https://www.gif-to-frames.com): Split an animated GIF into PNG, JPG, or WebP frames online, with frame preview, selection, and ZIP export.
+- [GIF to PNG Frames](https://www.gif-to-frames.com/gif-to-png-frames/): Convert an animated GIF to lossless PNG frames with transparency preserved.
+- [GIF to JPG Frames](https://www.gif-to-frames.com/gif-to-jpg-frames/): Convert an animated GIF to smaller flattened JPG frames with adjustable quality.
+- [GIF to WebP Frames](https://www.gif-to-frames.com/gif-to-webp-frames/): Convert an animated GIF to modern compressed WebP frames with transparency.
+- [GIF to ZIP Frames](https://www.gif-to-frames.com/gif-to-zip-frames/): Extract GIF frames and download them as one ZIP archive with predictable file names.
+- [GIF Frame Metadata](https://www.gif-to-frames.com/gif-frame-metadata/): Inspect frame delay, dimensions, offset, disposal, and transparency, and export as JSON or CSV.
+- [GIF to Sprite Sheet](https://www.gif-to-frames.com/gif-to-sprite-sheet/): Arrange selected GIF frames into one PNG sprite sheet for games and UI animation.
+- [Frames to GIF](https://www.gif-to-frames.com/frames-to-gif/): Combine PNG, JPG, or WebP images into an animated GIF with custom order, delay, and loops.
+
+## Site
+
+- [About](https://www.gif-to-frames.com/about/): What the tool does, how it works, and who it is for.
+- [Contact](https://www.gif-to-frames.com/contact/): Feedback, bug reports, and support.
+
+## Optional
+
+- [Full documentation](https://www.gif-to-frames.com/llms-full.txt): Extended technical description of formats, metadata fields, and workflows.
+- [Sitemap](https://www.gif-to-frames.com/sitemap-index.xml): Canonical URL list of all indexable pages.
+
 ## Privacy
 
-All decoding, previewing, selection, and export work happens in the user's browser. Source files do not need to be uploaded.
+All decoding, previewing, selection, and export work happens in the user's browser. Source files do not need to be uploaded. See the privacy policy at https://www.gif-to-frames.com/privacy/.
