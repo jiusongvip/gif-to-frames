@@ -97,15 +97,6 @@ const orgSchema = JSON.stringify({
     <script type="application/ld+json" set:html={orgSchema} />
   </head>
   <body class="min-h-[100dvh] text-ink">
-    <div id="loading-veil" class="loading-veil" aria-hidden="true">
-      <div class="text-center">
-        <div class="loading-mark mx-auto">
-          <span class="font-mono text-sm font-bold">G</span>
-        </div>
-        <p class="loading-word">GIF to Frames</p>
-      </div>
-    </div>
-
     <div id="reading-progress" class="fixed left-0 top-0 z-[9999] h-0.5 bg-accent" style="width:0%;transition:width 0.1s linear"></div>
 
     <button id="back-to-top" type="button" aria-label="Back to top" class="fixed bottom-5 right-5 z-[9998] hidden h-11 w-11 items-center justify-center rounded-full border border-line bg-canvas text-accent shadow-lg transition-colors hover:border-accent/40" style="display:none">
@@ -124,37 +115,6 @@ const orgSchema = JSON.stringify({
 
 <script is:inline>
   (function () {
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Loading ritual
-    var veil = document.getElementById('loading-veil');
-    if (veil) {
-      var dismiss = function () { veil.classList.add('done'); };
-      if (reduce) { dismiss(); }
-      else {
-        setTimeout(dismiss, 100);
-        window.addEventListener('load', function () { setTimeout(dismiss, 80); });
-      }
-    }
-
-    // Split-letter title reveal (starts after the veil lifts)
-    setTimeout(function () {
-      document.querySelectorAll('[data-split-title]').forEach(function (el) {
-        var chars = (el.textContent || '').trim().split('');
-        el.textContent = '';
-        chars.forEach(function (ch, i) {
-          var span = document.createElement('span');
-          span.className = 'split-char';
-          span.textContent = ch === ' ' ? '\u00A0' : ch;
-          span.style.transitionDelay = Math.min(i * 8, 150) + 'ms';
-          el.appendChild(span);
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () { span.classList.add('in'); });
-          });
-        });
-      });
-    }, reduce ? 0 : 100);
-
     // Reading progress + floating back-to-top
     var bar = document.getElementById('reading-progress');
     var topBtn = document.getElementById('back-to-top');
