@@ -115,6 +115,16 @@ const orgSchema = JSON.stringify({
 
 <script is:inline>
   (function () {
+    // Start decorative hero motion only after the page has settled, keeping the
+    // initial render visually stable for a better Speed Index.
+    var startAnim = function () {
+      setTimeout(function () {
+        document.body.classList.add('anim-live');
+      }, 1200);
+    };
+    if (document.readyState === 'complete') startAnim();
+    else window.addEventListener('load', startAnim, { once: true });
+
     // Reading progress + floating back-to-top
     var bar = document.getElementById('reading-progress');
     var topBtn = document.getElementById('back-to-top');

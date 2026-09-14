@@ -176,8 +176,11 @@ const schema = JSON.stringify({
         init();
         requestAnimationFrame(frame);
       }
-      if (document.readyState === 'complete') setTimeout(start, 800);
-      else window.addEventListener('load', function () { setTimeout(start, 800); }, { once: true });
+      function whenLive() {
+        if (document.body.classList.contains('anim-live')) setTimeout(start, 300);
+        else setTimeout(whenLive, 150);
+      }
+      whenLive();
       var onResize;
       window.addEventListener('resize', function () { clearTimeout(onResize); onResize = setTimeout(init, 200); }, { passive: true });
     })();
