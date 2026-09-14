@@ -213,12 +213,6 @@ section[id] {
   mask-image: radial-gradient(75% 70% at 50% 26%, black, transparent 78%);
   pointer-events: none;
 }
-.hero-particles {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
 .hero-content {
   position: relative;
   z-index: 2;
