@@ -31,7 +31,7 @@ const schema = JSON.stringify({
         url: 'https://www.gif-to-frames.com/',
         email: 'hello@gif-to-frames.com',
       },
-      dateModified: '2026-08-25',
+      dateModified: '2026-09-14',
       image: absoluteOgImage,
       thumbnailUrl: absoluteOgImage,
       offers: {
@@ -62,7 +62,7 @@ const schema = JSON.stringify({
         name: 'GIF to Frames',
         url: 'https://www.gif-to-frames.com/',
       },
-      dateModified: '2026-08-25',
+      dateModified: '2026-09-14',
       image: absoluteOgImage,
       totalTime: 'PT1M',
       step: [
@@ -276,7 +276,7 @@ const schema = JSON.stringify({
             </table>
           </div>
           <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
-            Use PNG when quality and transparency are more important than file size. Use WebP when you need modern, efficient web output. Use JPG when you need maximum compatibility and smaller flattened stills.
+            Use <a href="/gif-to-png-frames/" class="text-accent hover:underline">GIF to PNG frames</a> when quality and transparency are more important than file size. Use <a href="/gif-to-webp-frames/" class="text-accent hover:underline">GIF to WebP frames</a> when you need modern, efficient web output. Use <a href="/gif-to-jpg-frames/" class="text-accent hover:underline">GIF to JPG frames</a> when you need maximum compatibility and smaller flattened stills.
           </p>
         </article>
 
@@ -301,7 +301,7 @@ const schema = JSON.stringify({
             </div>
           </div>
           <p class="mt-5 text-base leading-relaxed text-ink-muted dark:text-ink-muted">
-            Use the JSON or CSV export when you need to feed frame timing and dimensions into a build script, spreadsheet, QA process, or animation pipeline.
+            Use the <a href="/gif-frame-metadata/" class="text-accent hover:underline">GIF frame metadata export</a> (JSON or CSV) when you need to feed frame timing and dimensions into a build script, spreadsheet, QA process, or animation pipeline.
           </p>
         </article>
 
@@ -673,7 +673,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
         <div class="flex h-8 w-8 items-center justify-center rounded-md bg-accent-soft text-accent">
           <Icon name="tabler:refresh" class="h-4 w-4" />
         </div>
-        <h3 class="mt-3 text-sm font-semibold text-ink dark:text-white">Updated August 2026</h3>
+        <h3 class="mt-3 text-sm font-semibold text-ink dark:text-white">Updated September 2026</h3>
         <p class="mt-2 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
           Actively maintained. New formats, export options, and workflows are added over time.
         </p>
@@ -687,7 +687,7 @@ ffmpeg -i animation.gif -vf "select=not(mod(n\,5))" -vsync vfr frame_%03d.png
       <p class="mt-3 text-sm leading-relaxed text-ink-muted dark:text-ink-muted">
         Written and maintained by the
         <a href="/about/" class="text-accent hover:underline">GIF to Frames team</a>.
-        Last updated <time datetime="2026-08-25">August 25, 2026</time>.
+        Last updated <time datetime="2026-09-14">September 14, 2026</time>.
       </p>
       <div class="mt-8 divide-y divide-line rounded-md border border-line bg-canvas/70 dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
         {

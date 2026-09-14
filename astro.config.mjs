@@ -11,7 +11,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      lastmod: new Date('2026-08-25'),
+      lastmod: new Date('2026-09-14'),
       filter: (page) => !/\/(privacy|terms)\/$/.test(new URL(page).pathname),
     }),
     icon(),
