@@ -245,7 +245,6 @@ section[id] {
   height: 40%;
   background: var(--color-accent);
   animation: scrollCue 2s ease-in-out infinite;
-  animation-play-state: paused;
 }
 @keyframes scrollCue {
   0% {
@@ -274,14 +273,6 @@ section[id] {
   gap: 12px;
   width: max-content;
   animation: filmstripScroll 30s linear infinite;
-  animation-play-state: paused;
-}
-/* Decorative hero motion stays paused until the page has fully loaded, so the
-   initial viewport is visually stable (better Speed Index) and only animates
-   for a real user. */
-body.anim-live .hero-filmstrip-track,
-body.anim-live .hero-scroll::after {
-  animation-play-state: running;
 }
 .hero-filmstrip-track span {
   flex-shrink: 0;
